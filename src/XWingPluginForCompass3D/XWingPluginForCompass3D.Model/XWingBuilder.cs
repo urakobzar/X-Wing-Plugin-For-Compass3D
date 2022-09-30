@@ -22,6 +22,11 @@ namespace XWingPluginForCompass3D.Model
         private ksPart _part;
 
         /// <summary>
+        /// Объект класса констант для построения детали.
+        /// </summary>
+        XWingConstants _xWingConstants = new XWingConstants();
+
+        /// <summary>
         /// Параметризированный конструктор
         /// </summary>
         /// <param name="kompas">Объект Компас API</param>
@@ -57,222 +62,91 @@ namespace XWingPluginForCompass3D.Model
             _part.SetAdvancedColor(14211288, 0.5, 0.6, 0.8, 0.8, 1, 0.5);
 
             _part.Update();
+            BowBody(bowLength);
 
-            BowBody();
-
-            Body();
-
-            Wing();
-
-            CutWing();
-
-            BlasterBody();
-
-            Accelerators();
+            /*            Body();
+                        Wing();
+                        CutWing();
+                        BlasterBody();
+                        Accelerators();*/
         }
 
         /// <summary>
         /// Построение носовой части корпуса
         /// </summary>
-        private void BowBody()
+        private void BowBody(double bowLength)
         {
-            ksEntity entitySketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch;
+
+            // Выдавливание основы носовой части корпуса
             ksEntity basePlane = (ksEntity)_part.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);
-            ksSketchDefinition sketchDefinition = (ksSketchDefinition)entitySketch.GetDefinition();
-            sketchDefinition.SetPlane(basePlane);
-            entitySketch.Create();
-
-            ksDocument2D sketchEdit = (ksDocument2D)sketchDefinition.BeginEdit();
-
-            sketchEdit.ksLineSeg(-43, 0, -26, 26, 1);
-            sketchEdit.ksLineSeg(-26, 26, 26, 26, 1);
-            sketchEdit.ksLineSeg(26, 26, 43, 0, 1);
-            sketchEdit.ksLineSeg(43, 0, 26, -19, 1);
-            sketchEdit.ksLineSeg(26, -19, -26, -19, 1);
-            sketchEdit.ksLineSeg(-26, -19, -43, 0, 1);
-
-            sketchDefinition.EndEdit();
-
-            ExtrudeSketch(_part, entitySketch, 600, false, 5);
-            ExtrudeSketch(_part, entitySketch, 50, true, -3);
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.BowBodyUpperBaseVertexes, _xWingConstants.HexagonVerticesNumber);
+            ExtrudeSketch(_part, sketch, 600, false, 5);
+            ExtrudeSketch(_part, sketch, bowLength, true, -3);
 
             // Выдавливание кабины
-
-            ksEntity iSketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition iDefinition = (ksSketchDefinition)iSketch.GetDefinition();
             ksEntityCollection iCollection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            iCollection.SelectByPoint(0, 52.246599057777, -300);
-            ksEntity iPlane = iCollection.First();
-            iDefinition.SetPlane(iPlane);
-            iSketch.Create();
+            iCollection.SelectByPoint(
+                _xWingConstants.BowBodyUpperFacePlaneCoordinate[0],
+               _xWingConstants.BowBodyUpperFacePlaneCoordinate[1],
+               _xWingConstants.BowBodyUpperFacePlaneCoordinate[2]);
+            basePlane = iCollection.First();
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.BowBodyUpperFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+            ExtrudeSketch(_part, sketch, 50, true, 0);
 
-            ksDocument2D _ksDocument2D = (ksDocument2D)iDefinition.BeginEdit();
-            _ksDocument2D.ksLineSeg(54.395689029929, 604.557951837448, -54.395689029929, 604.557951837448, 1);
-            _ksDocument2D.ksLineSeg(-54.395689029929, 604.557951837448, -26, 2.266049311439, 1);
-            _ksDocument2D.ksLineSeg(-26, 2.266049311439, 26, 2.266049311439, 1);
-            _ksDocument2D.ksLineSeg(26, 2.266049311439, 54.395689029929, 604.557951837448, 1);
-            iDefinition.EndEdit();
-            ExtrudeSketch(_part, iSketch, 50, true, 0);
-
-
-            // Вырез кабины
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            iDefinition = (ksSketchDefinition)iSketch.GetDefinition();
+            // Вырез кабины            
             iCollection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            iCollection.SelectByPoint(0, 50.904867452294, 2.178893568691);
-            iPlane = iCollection.First();
-            iDefinition.SetPlane(iPlane);
-            iSketch.Create();
+            iCollection.SelectByPoint(
+                _xWingConstants.CockpitFrontFacePlaneCoordinate[0],
+                _xWingConstants.CockpitFrontFacePlaneCoordinate[1],
+                _xWingConstants.CockpitFrontFacePlaneCoordinate[2]);
+            basePlane = iCollection.First();
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.FirstCockpitCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+            CutExtrusion(_part, sketch, 602.5, 0, true);
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.SecondCockpitCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+            CutExtrusion(_part, sketch, 602.5, 0, true);
 
-            _ksDocument2D = (ksDocument2D)iDefinition.BeginEdit();
-
-            _ksDocument2D.ksLineSeg(-26, 75.901062150385, -54.395689029929, 75.901062150385, 1);
-            _ksDocument2D.ksLineSeg(-54.395689029929, 75.901062150385, -54.395689029929, 25.901062150385, 1);
-            _ksDocument2D.ksLineSeg(-54.395689029929, 25.901062150385, -26, 75.901062150385, 1);
-            _ksDocument2D.ksLineSeg(26, 75.901062150385, 54.395689029929, 75.901062150385, 1);
-            _ksDocument2D.ksLineSeg(54.395689029929, 75.901062150385, 54.395689029929, 25.901062150385, 1);
-            _ksDocument2D.ksLineSeg(54.395689029929, 25.901062150385, 26, 75.901062150385, 1);
-
-            iDefinition.EndEdit();
-            CutExtrusion(_part, iSketch, 602.5, 0, true);
-
-            // Срез кабины
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            iDefinition = (ksSketchDefinition)iSketch.GetDefinition();
+            // Срез кабины            
             iCollection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            iCollection.SelectByPoint(-39.913887624665, 76.626534528915, -291.821106431309);
-            iPlane = iCollection.First();
-            iDefinition.SetPlane(iPlane);
-            iSketch.Create();
-
-            _ksDocument2D = (ksDocument2D)iDefinition.BeginEdit();
-            _ksDocument2D.ksLineSeg(-1, 25.901062150385, -1, 75.901062150385, 1);
-            _ksDocument2D.ksLineSeg(-1, 75.901062150385, -605.111616473601, 75.901062150386, 1);
-            _ksDocument2D.ksLineSeg(-605.111616473601, 75.901062150386, -1, 25.901062150385, 1);
-            iDefinition.EndEdit();
-            CutExtrusion(_part, iSketch, 100, 0, true);
-
+            iCollection.SelectByPoint(
+                _xWingConstants.CockpitSideFacePlaneCoordinate[0],
+                _xWingConstants.CockpitSideFacePlaneCoordinate[1],
+                _xWingConstants.CockpitSideFacePlaneCoordinate[2]);
+            basePlane = iCollection.First();
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.CockpitSliceVertexes, _xWingConstants.TriangleVerticesNumber);
+            CutExtrusion(_part, sketch, 100, 0, true);
 
             // Острие носа
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            iDefinition = (ksSketchDefinition)iSketch.GetDefinition();
             iCollection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            iCollection.SelectByPoint(0, 0, 50);
-            iPlane = iCollection.First();
-            iDefinition.SetPlane(iPlane);
-            iSketch.Create();
+            iCollection.SelectByPoint(
+                _xWingConstants.BowBodyFrontPlaneCoordinate[0],
+                _xWingConstants.BowBodyFrontPlaneCoordinate[1],
+                _xWingConstants.BowBodyFrontPlaneCoordinate[2] + bowLength);
+            basePlane = iCollection.First();
+            sketch = BuildPolygonSketch(_part, basePlane,
+                _xWingConstants.TipBowBodyVertexes, _xWingConstants.HexagonVerticesNumber);
+            ExtrudeSketch(_part, sketch, 100, true, -5);
+            ExtrudeSketch(_part, sketch, 35, false, -5);
 
-            _ksDocument2D = (ksDocument2D)iDefinition.BeginEdit();
-            _ksDocument2D.ksLineSeg(-43, 0, -26, 26, 1);
-            _ksDocument2D.ksLineSeg(-26, 26, 25, 26, 1);
-            _ksDocument2D.ksLineSeg(25, 26, 43, 0, 1);
-            _ksDocument2D.ksLineSeg(43, 0, 26, -19, 1);
-            _ksDocument2D.ksLineSeg(26, -19, -26, -19, 1);
-            _ksDocument2D.ksLineSeg(-26, -19, -43, 0, 1);
-            iDefinition.EndEdit();
-            ExtrudeSketch(_part, iSketch, 100, true, -5);
+            // Фаска верхней части острия носовой части
+            MakeChamfer(bowLength, _xWingConstants.BowBodyUpperEdgeChamferDistances,
+                _xWingConstants.BowBodyUpperEdgeCoordinate);
 
-            // Острие носа
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_chamfer);
-            ksChamferDefinition Definition = iSketch.GetDefinition();
+            // Фаска нижней части острия носовой части
+            MakeChamfer(bowLength, _xWingConstants.BowBodyLowerEdgeChamferDistances,
+                _xWingConstants.BowBodyLowerEdgeCoordinate);
 
-            Definition.tangent = true;
-            Definition.SetChamferParam(true, 20, 54.949548389092);
-
-            var iArray = Definition.array();
-
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(-0.425689731596, 17.251133647408, 150);
-            var iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iSketch.Create();
-
-            // Острие носа
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_chamfer);
-            Definition = iSketch.GetDefinition();
-
-            Definition.tangent = true;
-            Definition.SetChamferParam(true, 15, 55.980762113533);
-
-            iArray = Definition.array();
-
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(0, -10.251133647408, 150);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iSketch.Create();
-
-            // Прицеп острия к корпусу
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            iDefinition = (ksSketchDefinition)iSketch.GetDefinition();
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            iCollection.SelectByPoint(-40.42, 3.5, 50);
-            iPlane = iCollection.First();
-            iDefinition.SetPlane(iPlane);
-            iSketch.Create();
-
-            _ksDocument2D = (ksDocument2D)iDefinition.BeginEdit();
-            _ksDocument2D.ksLineSeg(-24.5, 23.3, 24.5, 23.3, 1);
-            _ksDocument2D.ksLineSeg(24.5, 23.3, 39.7, 0.2, 1);
-            _ksDocument2D.ksLineSeg(39.7, 0.2, 24.8, -16.3, 1);
-            _ksDocument2D.ksLineSeg(24.8, -16.3, -24.8, -16.3, 1);
-            _ksDocument2D.ksLineSeg(-24.8, -16.3, -39.7, 0.2, 1);
-            _ksDocument2D.ksLineSeg(-39.7, 0.2, -24.5, 23.3, 1);
-
-            _ksDocument2D.ksLineSeg(-25, 26, -43, 0, 1);
-            _ksDocument2D.ksLineSeg(-43, 0, -26, -19, 1);
-            _ksDocument2D.ksLineSeg(-26, -19, 26, -19, 1);
-            _ksDocument2D.ksLineSeg(26, -19, 43, 0, 1);
-            _ksDocument2D.ksLineSeg(43, 0, 26, 26, 1);
-            _ksDocument2D.ksLineSeg(26, 26, -25, 26, 1);
-
-            iDefinition.EndEdit();
-            ExtrudeSketch(_part, iSketch, 35, true, -5);
-
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_fillet);
-            ksFilletDefinition definition = iSketch.GetDefinition();
-            definition.radius = 5;
-            definition.tangent = false;
-            iArray = definition.array();
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(28.720056217208, -7.259103331883, 116.313406124592);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(-28.755495846165, -7.196422527305, 116.489247908264);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(27.634400064284, 11.74339370277, 117.997602962077);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(-0.113051518725, 1.446485054632, 140.735654691904);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(-28.21381908901, 11.74339370277, 117.997602962077);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iSketch.Create();
+            // Скругление основной части острия
+            MakeFillet(bowLength, _xWingConstants.BowBodyFrontFilletEdgeCoordinates, 5);
 
 
-
-            iSketch = _part.NewEntity((short)Obj3dType.o3d_fillet);
-            definition = iSketch.GetDefinition();
-            definition.radius = 10;
-            definition.tangent = false;
-            iArray = definition.array();
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(-38.479522122003, 0.341549134121, 91.109212708249);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            iCollection.SelectByPoint(38.43038578768, 0.284493891452, 91.092916697691);
-            iEdge = iCollection.Last();
-            iArray.Add(iEdge);
-            iSketch.Create();
-
+            // Скругление боковой части острия
+            MakeFillet(bowLength, _xWingConstants.BowBodySideFilletEdgeCoordinates, 10);
 
         }
 
@@ -1520,6 +1394,82 @@ namespace XWingPluginForCompass3D.Model
             }
             cutExtrusionDefinition.SetSketch(sketch);
             entityCutExtrusion.Create();
+        }
+
+        /// <summary>
+        /// Метод построения эскиза многоугольника.
+        /// </summary>
+        /// <param name="part">Деталь.</param>
+        /// <param name="plane">Плоскость, на которой строится эскиз.</param>
+        /// <param name="polygonVertices">Массив вершин многоугольника.</param>
+        /// <param name="verticesNumber">Количество вершин многоугольника.</param>
+        /// <returns></returns>
+        private ksEntity BuildPolygonSketch(ksPart part, ksEntity plane,
+            double[,] polygonVertices, int verticesNumber)
+        {
+            verticesNumber = verticesNumber - 1;
+            ksEntity sketch = (ksEntity)part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
+            definition.SetPlane(plane);
+            sketch.Create();
+            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
+            for (int i = 0; i < verticesNumber; i++)
+            {
+                sketchEdit.ksLineSeg(polygonVertices[i, 0], polygonVertices[i, 1],
+                polygonVertices[i + 1, 0], polygonVertices[i + 1, 1], 1);
+            }
+            sketchEdit.ksLineSeg(polygonVertices[verticesNumber, 0],
+                polygonVertices[verticesNumber, 1], polygonVertices[0, 0],
+                polygonVertices[0, 1], 1);
+            definition.EndEdit();
+            return sketch;
+        }
+
+        /// <summary>
+        /// Метод создания фаски.
+        /// </summary>
+        /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
+        /// <param name="chamferDiscance">Массив расстояний для создания фаски.</param>
+        /// <param name="edgeCoordinate">Координата ребра, где будет фаска.</param>
+        private void MakeChamfer(double shift, double[] chamferDiscance, double[] edgeCoordinate)
+        {
+            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_chamfer);
+            ksChamferDefinition definition = sketch.GetDefinition();
+            definition.tangent = true;
+            definition.SetChamferParam(true, chamferDiscance[0], chamferDiscance[1]);
+            var array = definition.array();
+            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_edge);
+            collection.SelectByPoint(edgeCoordinate[0], edgeCoordinate[1],
+                edgeCoordinate[2] + shift);
+            var edge = collection.Last();
+            array.Add(edge);
+            sketch.Create();
+        }
+
+        /// <summary>
+        /// Метод создания скругления.
+        /// </summary>
+        /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
+        /// <param name="edgeCoordinatesArray">Массив координат рёбер, где будет скругление.</param>
+        /// <param name="radius">Радиус скругления.</param>
+        private void MakeFillet(double shift, double[,,] edgeCoordinatesArray, double radius)
+        {
+            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_fillet);
+            ksFilletDefinition definition = sketch.GetDefinition();
+            ksEntityCollection iCollection;
+            definition.radius = radius;
+            definition.tangent = false;
+            var iArray = definition.array();
+            for (int i = 0; i < edgeCoordinatesArray.GetLength(0); i++)
+            {
+                iCollection = _part.EntityCollection((short)Obj3dType.o3d_edge);
+                iCollection.SelectByPoint(edgeCoordinatesArray[i, 0, 0],
+                    edgeCoordinatesArray[i, 0, 1],
+                    edgeCoordinatesArray[i, 0, 2] + shift);
+                var iEdge = iCollection.Last();
+                iArray.Add(iEdge);
+            }
+            sketch.Create();
         }
     }
 }
