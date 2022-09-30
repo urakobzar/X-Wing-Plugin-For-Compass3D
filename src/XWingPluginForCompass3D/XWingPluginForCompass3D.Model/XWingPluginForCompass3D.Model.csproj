@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BodyXWingConstants.cs" />
+    <Compile Include="BowBodyXWingConstants.cs" />
     <Compile Include="KompasWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XWingBuilder.cs" />
