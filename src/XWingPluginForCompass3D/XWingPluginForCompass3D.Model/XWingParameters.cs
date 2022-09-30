@@ -11,32 +11,32 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Длина всей втулки
         /// </summary>
-        private double _bodyLength;
+        private double _bodyLength = 300;
 
         /// <summary>
         /// Длина верхней части втулки
         /// </summary>
-        private double _wingWidth;
+        private double _wingWidth = 300;
 
         /// <summary>
         /// Диаметр верхней части втулки
         /// </summary>
-        private double _bowLength;
+        private double _bowLength = 50;
 
         /// <summary>
         /// Внешний диаметр втулки
         /// </summary>
-        private double _weaponBlasterTipLength;
+        private double _weaponBlasterTipLength = 80;
 
         /// <summary>
         /// Внутренний диаметр втулки
         /// </summary>
-        private double _acceleratorTurbineLength;
+        private double _acceleratorTurbineLength = 150;
 
         /// <summary>
         /// Количество отверстий
         /// </summary>
-        private double _acceleratorNozzleLength;
+        private double _acceleratorNozzleLength = 50;
 
         /// <summary>
         /// Возвращает и устанавливает значение длины корпуса звездолёта
