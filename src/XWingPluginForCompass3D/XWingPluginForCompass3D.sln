@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32802.440
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.View", "XWingPluginForCompass3D.View\XWingPluginForCompass3D.View.csproj", "{4CD12DF0-A464-49B5-A4B0-CFBC88502DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Model", "XWingPluginForCompass3D.Model\XWingPluginForCompass3D.Model.csproj", "{1E1B9098-A602-485D-A652-887D2D31447B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CD12DF0-A464-49B5-A4B0-CFBC88502DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD12DF0-A464-49B5-A4B0-CFBC88502DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD12DF0-A464-49B5-A4B0-CFBC88502DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD12DF0-A464-49B5-A4B0-CFBC88502DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1B9098-A602-485D-A652-887D2D31447B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1B9098-A602-485D-A652-887D2D31447B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1B9098-A602-485D-A652-887D2D31447B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1B9098-A602-485D-A652-887D2D31447B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DAE513BC-0903-4F51-91BB-670938662117}
+	EndGlobalSection
+EndGlobal
