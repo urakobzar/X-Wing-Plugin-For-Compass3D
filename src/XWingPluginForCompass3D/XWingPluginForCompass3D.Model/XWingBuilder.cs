@@ -1059,16 +1059,16 @@ namespace XWingPluginForCompass3D.Model
         /// Построение головы робота.
         /// </summary>
         /// <param name="centerPlaneCoordinates">Массив координат центра плоскости.</param>
-        private void BuildDroidHead(double[] centerPlaneCoordinates)
+        private void BuildDroidHead(Point3D centerPlaneCoordinates)
         {
             // Построение эскиза полуокружности с осью вращения.
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
-                centerPlaneCoordinates[0],
-                centerPlaneCoordinates[1],
-                centerPlaneCoordinates[2]);
+                centerPlaneCoordinates.X,
+                centerPlaneCoordinates.Y,
+                centerPlaneCoordinates.Z);
             ksEntity plane = collection.First();
             definition.SetPlane(plane);
             sketch.Create();
@@ -1092,15 +1092,15 @@ namespace XWingPluginForCompass3D.Model
         /// Построение рисунка на задней части корпуса звездолёта.
         /// </summary>
         /// <param name="centerPlaneCoordinates">Массив координат центра плоскости.</param>
-        private void BuildBackDrawing(double[] centerPlaneCoordinates)
+        private void BuildBackDrawing(Point3D centerPlaneCoordinates)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
-                centerPlaneCoordinates[0],
-                centerPlaneCoordinates[1],
-                centerPlaneCoordinates[2]);
+                centerPlaneCoordinates.X,
+                centerPlaneCoordinates.Y,
+                centerPlaneCoordinates.Z);
             ksEntity plane = collection.First();
             definition.SetPlane(plane);
             sketch.Create();
@@ -1199,14 +1199,14 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
         /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
-        private ksEntity CreateSketchByPoint(double[] centerPlaneCoordinates,
-            double[,] polygonVertices, int verticesNumber)
+        private ksEntity CreateSketchByPoint(Point3D centerPlaneCoordinates,
+            Point2D[] polygonVertices, int verticesNumber)
         {
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
-               centerPlaneCoordinates[0],
-               centerPlaneCoordinates[1],
-               centerPlaneCoordinates[2]);
+               centerPlaneCoordinates.X,
+               centerPlaneCoordinates.Y,
+               centerPlaneCoordinates.Z);
             ksEntity basePlane = collection.First();
             ksEntity skecth = CreatePolygonSkecth(basePlane,
                 polygonVertices, verticesNumber);
@@ -1221,7 +1221,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
         private ksEntity CreateSketchByDefaultPlane(Obj3dType planeType,
-            double[,] polygonVertices, int verticesNumber)
+            Point2D[] polygonVertices, int verticesNumber)
         {
             ksEntity basePlane = (ksEntity)_part.GetDefaultEntity((short)planeType);
             ksEntity skecth = CreatePolygonSkecth(basePlane,
@@ -1237,7 +1237,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
         private ksEntity CreatePolygonSkecth(ksEntity plane,
-            double[,] polygonVertices, int verticesNumber)
+            Point2D[] polygonVertices, int verticesNumber)
         {
             verticesNumber = verticesNumber - 1;
             ksEntity sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
@@ -1247,12 +1247,12 @@ namespace XWingPluginForCompass3D.Model
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
             for (int i = 0; i < verticesNumber; i++)
             {
-                sketchEdit.ksLineSeg(polygonVertices[i, 0], polygonVertices[i, 1],
-                polygonVertices[i + 1, 0], polygonVertices[i + 1, 1], 1);
+                sketchEdit.ksLineSeg(polygonVertices[i].X, polygonVertices[i].Y,
+                polygonVertices[i + 1].X, polygonVertices[i + 1].Y, 1);
             }
-            sketchEdit.ksLineSeg(polygonVertices[verticesNumber, 0],
-                polygonVertices[verticesNumber, 1], polygonVertices[0, 0],
-                polygonVertices[0, 1], 1);
+            sketchEdit.ksLineSeg(polygonVertices[verticesNumber].X,
+                polygonVertices[verticesNumber].Y, polygonVertices[0].X,
+                polygonVertices[0].Y, 1);
             definition.EndEdit();
             return sketch;
         }
@@ -1263,15 +1263,15 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
         /// <param name="circleParameters">Параметры окружности, включающие центр и радиус.</param>
         /// <returns></returns>
-        private ksEntity CreateCirclesSketch(double[] centerPlaneCoordinates, double[,] circleParameters)
+        private ksEntity CreateCirclesSketch(Point3D centerPlaneCoordinates, double[,] circleParameters)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
-               centerPlaneCoordinates[0],
-               centerPlaneCoordinates[1],
-               centerPlaneCoordinates[2]);
+               centerPlaneCoordinates.X,
+               centerPlaneCoordinates.Y,
+               centerPlaneCoordinates.Z);
             ksEntity basePlane = collection.First();
             definition.SetPlane(basePlane);
             sketch.Create();
@@ -1292,15 +1292,15 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
         /// <param name="polygonCoordinates">Координаты многоугольника.</param>
         /// <returns></returns>
-        private ksEntity CreatePolygonWithCutout(double[] centerPlaneCoordinates, double[,,] polygonCoordinates)
+        private ksEntity CreatePolygonWithCutout(Point3D centerPlaneCoordinates, double[,,] polygonCoordinates)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
-               centerPlaneCoordinates[0],
-               centerPlaneCoordinates[1],
-               centerPlaneCoordinates[2]);
+               centerPlaneCoordinates.X,
+               centerPlaneCoordinates.Y,
+               centerPlaneCoordinates.Z);
             ksEntity basePlane = collection.First();
             definition.SetPlane(basePlane);
             sketch.Create();
@@ -1326,7 +1326,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
         /// <param name="chamferDiscance">Массив расстояний для создания фаски.</param>
         /// <param name="edgeCoordinate">Координата ребра, где будет фаска.</param>
-        private void CreateChamfer(double shift, double[] chamferDiscance, double[] edgeCoordinate)
+        private void CreateChamfer(double shift, double[] chamferDiscance, Point3D edgeCoordinate)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_chamfer);
             ksChamferDefinition definition = sketch.GetDefinition();
@@ -1334,8 +1334,8 @@ namespace XWingPluginForCompass3D.Model
             definition.SetChamferParam(true, chamferDiscance[0], chamferDiscance[1]);
             var array = definition.array();
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-            collection.SelectByPoint(edgeCoordinate[0], edgeCoordinate[1],
-                edgeCoordinate[2] + shift);
+            collection.SelectByPoint(edgeCoordinate.X, edgeCoordinate.Y,
+                edgeCoordinate.Z + shift);
             ksEntity edge = collection.Last();
             array.Add(edge);
             sketch.Create();
@@ -1347,7 +1347,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
         /// <param name="edgeCoordinatesArray">Массив координат рёбер, где будет скругление.</param>
         /// <param name="radius">Радиус скругления.</param>
-        private void CreateFillet(double shift, double[,,] edgeCoordinatesArray, double radius)
+        private void CreateFillet(double shift, Point3D[] edgeCoordinatesArray, double radius)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_fillet);
             ksFilletDefinition definition = sketch.GetDefinition();
@@ -1358,9 +1358,9 @@ namespace XWingPluginForCompass3D.Model
             for (int i = 0; i < edgeCoordinatesArray.GetLength(0); i++)
             {
                 collection = _part.EntityCollection((short)Obj3dType.o3d_edge);
-                collection.SelectByPoint(edgeCoordinatesArray[i, 0, 0],
-                    edgeCoordinatesArray[i, 0, 1],
-                    edgeCoordinatesArray[i, 0, 2] + shift);
+                collection.SelectByPoint(edgeCoordinatesArray[i].X,
+                    edgeCoordinatesArray[i].Y,
+                    edgeCoordinatesArray[i].Z + shift);
                 ksEntity iEdge = collection.Last();
                 array.Add(iEdge);
             }
