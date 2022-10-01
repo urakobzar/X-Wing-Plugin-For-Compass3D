@@ -9,13 +9,13 @@ namespace XWingPluginForCompass3D.Model
     /// <summary>
     /// Класс констант, необходимых для построения носовой части детали XWing
     /// </summary>
-    public class BowBodyXWingConstants
+    public class BowBodyConstants
     {
         /// <summary>
-        /// 
+        /// Конструктор класса констант для построения носовой части корпуса.
         /// </summary>
         /// <param name="bowLength">Длина носа звездолёта</param>
-        public BowBodyXWingConstants(double bowLength)
+        public BowBodyConstants(double bowLength)
         {
             _tipBasePlaneCoordinate = new Point3D(0, 0, bowLength);
         }

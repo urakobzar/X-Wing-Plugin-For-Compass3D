@@ -32,12 +32,12 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Объект класса констант для построения носовой части детали.
         /// </summary>
-        BowBodyXWingConstants _bowBodyXWingConstants;
+        BowBodyConstants _bowBodyXWingConstants;
 
         /// <summary>
         /// Объект класса констант для построения корпуса детали.
         /// </summary>
-        BodyXWingConstants _bodyXWingConstants;
+        BodyConstants _bodyXWingConstants;
 
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace XWingPluginForCompass3D.Model
             double acceleratorTurbineLength = xwing.AcceleratorTurbineLength;
             double acceleratorNozzleLength = xwing.AcceleratorNozzleLength;
 
-            _bowBodyXWingConstants = new BowBodyXWingConstants(bowLength);
-            _bodyXWingConstants = new BodyXWingConstants(bodyLength);
+            _bowBodyXWingConstants = new BowBodyConstants(bowLength);
+            _bodyXWingConstants = new BodyConstants(bodyLength);
 
             ksDocument3D document = (ksDocument3D)_kompas.ActiveDocument3D();
 
@@ -81,7 +81,7 @@ namespace XWingPluginForCompass3D.Model
 
             BuildBody(bodyLength);
 
-            Wing(wingWidth);
+            BuildWings(wingWidth, bodyLength);
 
             BlasterBody();
 
@@ -96,31 +96,31 @@ namespace XWingPluginForCompass3D.Model
         {
             // Выдавливание основы носовой части корпуса
             ksEntity sketch = CreateSketchByDefaultPlane(Obj3dType.o3d_planeXOY,
-                _bowBodyXWingConstants.UpperBaseVertexes, _xWingConstants.HexagonVerticesNumber);
+                _bowBodyXWingConstants.UpperBaseVertexes);
             ExtrudeSketch(_part, sketch, 600, false, 5, false);
             ExtrudeSketch(_part, sketch, bowLength, true, -3, false);
 
             // Выдавливание кабины            
             sketch = CreateSketchByPoint(_bowBodyXWingConstants.UpperFacePlaneCoordinate,
-                _bowBodyXWingConstants.UpperFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+                _bowBodyXWingConstants.UpperFaceVertexes);
             ExtrudeSketch(_part, sketch, 50, true, 0, false);
 
             // Вырез кабины                        
             sketch = CreateSketchByPoint(_bowBodyXWingConstants.CockpitFrontFacePlaneCoordinate,
-                _bowBodyXWingConstants.FirstCockpitCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bowBodyXWingConstants.FirstCockpitCutoutVertexes);
             CutExtrusion(_part, sketch, 602.5, 0, true);
             sketch = CreateSketchByPoint(_bowBodyXWingConstants.CockpitFrontFacePlaneCoordinate,
-                _bowBodyXWingConstants.SecondCockpitCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bowBodyXWingConstants.SecondCockpitCutoutVertexes);
             CutExtrusion(_part, sketch, 602.5, 0, true);
 
             // Срез кабины
             ksEntity ssketch = CreateSketchByPoint(_bowBodyXWingConstants.CockpitSideFacePlaneCoordinate,
-                _bowBodyXWingConstants.CockpitSliceVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bowBodyXWingConstants.CockpitSliceVertexes);
             CutExtrusion(_part, ssketch, 100, 0, true);
 
             // Острие носа
             sketch = CreateSketchByPoint(_bowBodyXWingConstants.TipBaseFrontPlaneCoordinate,
-                _bowBodyXWingConstants.TipBowBodyVertexes, _xWingConstants.HexagonVerticesNumber);
+                _bowBodyXWingConstants.TipBowBodyVertexes);
             ExtrudeSketch(_part, sketch, 100, true, -5, false);
             ExtrudeSketch(_part, sketch, 35, false, -5, false); ;
 
@@ -147,49 +147,49 @@ namespace XWingPluginForCompass3D.Model
         {
             // Выдавливание основного корпуса на заданную пользователем величину.
             ksEntity sketch = CreateSketchByPoint(_bodyXWingConstants.UpperBasePlaneCoordinate,
-                _bodyXWingConstants.BaseVertexes, _xWingConstants.HexagonVerticesNumber);
+                _bodyXWingConstants.BaseVertexes);
             ExtrudeSketch(_part, sketch, bodyLength, true, 0, false);
 
             // Выдавливание верхней части корпуса.
             sketch = CreateSketchByPoint(_bodyXWingConstants.UpperFacePlaneCoordinate,
-                _bodyXWingConstants.UpperFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+                _bodyXWingConstants.UpperFaceVertexes);
             ExtrudeSketch(_part, sketch, 50, true, 0, false);
 
             // Выдавливание нижней части корпуса.
             sketch = CreateSketchByPoint(_bodyXWingConstants.LowerFacePlaneCoordinate,
-                _bodyXWingConstants.LowerFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+                _bodyXWingConstants.LowerFaceVertexes);
             ExtrudeSketch(_part, sketch, 50, true, 0, false);
 
             // Вырез верхней части корпуса: срезаются углы призмы.
             sketch = CreateSketchByPoint(_bodyXWingConstants.UpperBodyFrontPlaneCoordinate,
-                _bodyXWingConstants.FirstUpperBodyCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bodyXWingConstants.FirstUpperBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
             sketch = CreateSketchByPoint(_bodyXWingConstants.UpperBodyFrontPlaneCoordinate,
-                _bodyXWingConstants.SecondUpperBodyCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bodyXWingConstants.SecondUpperBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
 
             // Срез нижней части корпуса.
             sketch = CreateSketchByPoint(_bodyXWingConstants.LowerSideBackPlaneCoordinate,
-                _bodyXWingConstants.LowerBodySliceVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bodyXWingConstants.LowerBodySliceVertexes);
             CutExtrusion(_part, sketch, 100, 0, true);
 
             // Вырез нижней части корпуса: срезаются углы призмы.
             sketch = CreateSketchByPoint(_bodyXWingConstants.LowerBodyBackPlaneCoordinate,
-                _bodyXWingConstants.FirstLowerBodyCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bodyXWingConstants.FirstLowerBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
             sketch = CreateSketchByPoint(_bodyXWingConstants.LowerBodyBackPlaneCoordinate,
-                _bodyXWingConstants.SecondLowerBodyCutoutVertexes, _xWingConstants.TriangleVerticesNumber);
+                _bodyXWingConstants.SecondLowerBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
 
             // Выдавливание верхней задней грани носовой части корпуса:
             // чтобы не было зазора с основным корпусом.
             sketch = CreateSketchByPoint(_bodyXWingConstants.BowBodyBackPlaneCoordinate,
-                _bodyXWingConstants.BowBodyFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+                _bodyXWingConstants.BowBodyFaceVertexes);
             ExtrudeSketch(_part, sketch, 4.5, true, 0, false);
 
             // Углубление для верхней части корпуса.
             sketch = CreateSketchByPoint(_bodyXWingConstants.UpperBodyPartFacePlaneCoordinate,
-                _bodyXWingConstants.DeepingUpperBodyFaceVertexes, _xWingConstants.QadrangleVerticesNumber);
+                _bodyXWingConstants.DeepingUpperBodyFaceVertexes);
             CutExtrusion(_part, sketch, 5, 0, true);
 
             // Выдавливание окружностей в верхней части корпуса.
@@ -207,7 +207,7 @@ namespace XWingPluginForCompass3D.Model
 
             // Углубление задней части корпуса.
             sketch = CreateSketchByPoint(_bodyXWingConstants.BackBodyPlaneCoordinate,
-                _bodyXWingConstants.BackBodyDeepingVertexes, _xWingConstants.HexagonVerticesNumber);
+                _bodyXWingConstants.BackBodyDeepingVertexes);
             CutExtrusion(_part, sketch, 10, 0, true);
 
             // Первый рисунок задней части корпуса.
@@ -222,66 +222,20 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Построение крыльев.
         /// </summary>
-        private void Wing(double wingWidth)
+        /// <param name="wingsWidth">Ширина крыльев</param>
+        private void BuildWings(double wingsWidth, double bodyLength)
         {
+            WingsConstants wingsConstants = new WingsConstants(wingsWidth, bodyLength);
 
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(0, 0, -600 - 300);
-            ksEntity plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
+            // Выдавливание крыльев, начиная с конца корпуса.
+            ksEntity sketch = CreatePolygonWithCutout(wingsConstants.BackBodyPlane,
+                wingsConstants.BaseVertexes);
+            ExtrudeSketch(_part, sketch, wingsWidth, false, 0, false);
 
-            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksLineSeg(69.173833, 55.779384, 78.023751, 42.034027, 1);
-            sketchEdit.ksLineSeg(78.023751, 42.034027, 632.086192, 150.642161, 1);
-            sketchEdit.ksLineSeg(632.086192, 150.642161, 639.549926, 169.837344, 1);
-            sketchEdit.ksLineSeg(639.549926, 169.837344, 69.173833, 55.779384, 1);
-
-            sketchEdit.ksLineSeg(-69.173833, 55.779384, -78.023751, 42.034027, 1);
-            sketchEdit.ksLineSeg(-78.023751, 42.034027, -632.086192, 150.642161, 1);
-            sketchEdit.ksLineSeg(-632.086192, 150.642161, -639.549926, 169.837344, 1);
-            sketchEdit.ksLineSeg(-639.549926, 169.837344, -69.173833, 55.779384, 1);
-
-            sketchEdit.ksLineSeg(77.853158, -39.308584, 64.171267, -54.321075, 1);
-            sketchEdit.ksLineSeg(64.171267, -54.321075, 646.963505, -163.875661, 1);
-            sketchEdit.ksLineSeg(646.963505, -163.875661, 640.123102, -145.081809, 1);
-            sketchEdit.ksLineSeg(640.123102, -145.081809, 77.853158, -39.308584, 1);
-
-            sketchEdit.ksLineSeg(-77.853158, -39.308584, -64.171267, -54.321075, 1);
-            sketchEdit.ksLineSeg(-64.171267, -54.321075, -646.963505, -163.875661, 1);
-            sketchEdit.ksLineSeg(-646.963505, -163.875661, -640.123102, -145.081809, 1);
-            sketchEdit.ksLineSeg(-640.123102, -145.081809, -77.853158, -39.308584, 1);
-            definition.EndEdit();
-            ExtrudeSketch(_part, sketch, 300, false, 0, false);
-
-            sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
-            plane = (ksEntity)_part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);
-            ksSketchDefinition sketchDefinition = (ksSketchDefinition)sketch.GetDefinition();
-            sketchDefinition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)sketchDefinition.BeginEdit();
-
-            sketchEdit.ksLineSeg(646.963505, 600, 646.963505, 666.419923, 1);
-            sketchEdit.ksLineSeg(646.963505, 666.419923, 128.282347, 600, 1);
-            sketchEdit.ksLineSeg(128.282347, 600, 646.963505, 600, 1);
-
-            sketchEdit.ksLineSeg(646.963505, 600 + 300, 646.963505, 850, 1);
-            sketchEdit.ksLineSeg(646.963505, 600 + 300 - 50, 128.282347, 600 + 300, 1);
-            sketchEdit.ksLineSeg(128.282347, 600 + 300, 646.963505, 600 + 300, 1);
-
-            sketchEdit.ksLineSeg(-646.963505, 600, -646.963505, 666.419923, 1);
-            sketchEdit.ksLineSeg(-646.963505, 666.419923, -128.282347, 600, 1);
-            sketchEdit.ksLineSeg(-128.282347, 600, -646.963505, 600, 1);
-
-            sketchEdit.ksLineSeg(-646.963505, 600 + 300, -646.963505, 850, 1);
-            sketchEdit.ksLineSeg(-646.963505, 850, -128.282347, 600 + 300, 1);
-            sketchEdit.ksLineSeg(-128.282347, 600 + 300, -646.963505, 600 + 300, 1);
-
-            sketchDefinition.EndEdit();
-            CutExtrusion(_part, sketch, 200, 200, true);
+            // Вырезание формы крыла.
+            sketch = CreatePolygonWithCutout(wingsConstants.CuttingPlane,
+                wingsConstants.WingsCutVertexes);
+            CutExtrusion(_part, sketch, 350, 80, true);
         }
 
         /// <summary>
@@ -1197,10 +1151,9 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         /// <param name="centerPlaneCoordinates">Массив координат центра плоскости.</param>
         /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
-        /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
         private ksEntity CreateSketchByPoint(Point3D centerPlaneCoordinates,
-            Point2D[] polygonVertices, int verticesNumber)
+            Point2D[] polygonVertices)
         {
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(
@@ -1209,7 +1162,7 @@ namespace XWingPluginForCompass3D.Model
                centerPlaneCoordinates.Z);
             ksEntity basePlane = collection.First();
             ksEntity skecth = CreatePolygonSkecth(basePlane,
-                polygonVertices, verticesNumber);
+                polygonVertices);
             return skecth;
         }
 
@@ -1218,14 +1171,13 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         /// <param name="planeType">Базовая плоскость.</param>
         /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
-        /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
         private ksEntity CreateSketchByDefaultPlane(Obj3dType planeType,
-            Point2D[] polygonVertices, int verticesNumber)
+            Point2D[] polygonVertices)
         {
             ksEntity basePlane = (ksEntity)_part.GetDefaultEntity((short)planeType);
             ksEntity skecth = CreatePolygonSkecth(basePlane,
-            polygonVertices, verticesNumber);
+            polygonVertices);
             return skecth;
         }
 
@@ -1237,15 +1189,15 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="verticesNumber">Количество вершин многоугольника.</param>
         /// <returns></returns>
         private ksEntity CreatePolygonSkecth(ksEntity plane,
-            Point2D[] polygonVertices, int verticesNumber)
+            Point2D[] polygonVertices)
         {
-            verticesNumber = verticesNumber - 1;
+            int verticesNumber = polygonVertices.GetLength(0) - 1;
             ksEntity sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             definition.SetPlane(plane);
             sketch.Create();
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            for (int i = 0; i < verticesNumber; i++)
+            for (int i = 0; i < polygonVertices.GetLength(0)-1; i++)
             {
                 sketchEdit.ksLineSeg(polygonVertices[i].X, polygonVertices[i].Y,
                 polygonVertices[i + 1].X, polygonVertices[i + 1].Y, 1);
@@ -1292,7 +1244,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
         /// <param name="polygonCoordinates">Координаты многоугольника.</param>
         /// <returns></returns>
-        private ksEntity CreatePolygonWithCutout(Point3D centerPlaneCoordinates, double[,,] polygonCoordinates)
+        private ksEntity CreatePolygonWithCutout(Point3D centerPlaneCoordinates, Point2D[,] polygonCoordinates)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
@@ -1309,12 +1261,12 @@ namespace XWingPluginForCompass3D.Model
             {
                 for (int j = 0; j < polygonCoordinates.GetLength(1) - 1; j++)
                 {
-                    sketchEdit.ksLineSeg(polygonCoordinates[i, j, 0], polygonCoordinates[i, j, 1],
-                        polygonCoordinates[i, j + 1, 0], polygonCoordinates[i, j + 1, 1], 1);
+                    sketchEdit.ksLineSeg(polygonCoordinates[i, j].X, polygonCoordinates[i, j].Y,
+                        polygonCoordinates[i, j + 1].X, polygonCoordinates[i, j + 1].Y, 1);
                 }
-                sketchEdit.ksLineSeg(polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1, 0],
-                    polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1, 1],
-                        polygonCoordinates[i, 0, 0], polygonCoordinates[i, 0, 1], 1);
+                sketchEdit.ksLineSeg(polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].X,
+                    polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].Y,
+                        polygonCoordinates[i, 0].X, polygonCoordinates[i, 0].Y, 1);
             }
             definition.EndEdit();
             return sketch;

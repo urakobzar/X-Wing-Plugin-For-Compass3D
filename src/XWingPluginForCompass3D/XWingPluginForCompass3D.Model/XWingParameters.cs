@@ -137,7 +137,7 @@ namespace XWingPluginForCompass3D.Model
 
 
         /// <summary>
-        /// Конструктор звездолёта
+        /// Конструктор звездолёта.
         /// </summary>
         /// <param name="bodyLength">Длина корпуса звездолёта</param>
         /// <param name="wingWidth">Ширина крыльев звездолёта</param>
