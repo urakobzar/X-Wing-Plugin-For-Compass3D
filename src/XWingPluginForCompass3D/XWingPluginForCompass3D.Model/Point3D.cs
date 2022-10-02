@@ -36,8 +36,6 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="z">Координату по оси Z.</param>
         public Point3D(double x, double y, double z): base (x,y)
         {
-            X = x;
-            Y = y;
             Z = z;
         }
     }

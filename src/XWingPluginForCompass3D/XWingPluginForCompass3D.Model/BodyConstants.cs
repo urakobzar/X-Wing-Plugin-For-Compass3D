@@ -216,13 +216,13 @@ namespace XWingPluginForCompass3D.Model
         /// Первым элементом в массиве является центр окружности по X,
         /// вторым элементом по Y, третий элемент - радиус
         /// </summary>
-        private readonly double[,] _upperBodyPartExtrudingCirclesParameters =
+        private readonly Circle[] _upperBodyPartExtrudingCirclesParameters =
         {
-            {-0.203345439322, 632.637269856963, 25},
-            {-0.203345439322, 750.355637638365, 22},
-            {-0.203345439322, 706.466093921629, 8},
-            {-0.203345439322, 678.848141946151, 8},
-            {-0.203345439322, 750.355637638365, 19}
+            new Circle( new Point2D(-0.203345439322, 632.637269856963), 25),
+            new Circle( new Point2D(-0.203345439322, 750.355637638365), 22),
+            new Circle( new Point2D(-0.203345439322, 706.466093921629), 8),
+            new Circle( new Point2D(-0.203345439322, 678.848141946151), 8),
+            new Circle( new Point2D(-0.203345439322, 750.355637638365), 19)
         };
 
         /// <summary>
@@ -286,9 +286,9 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Массив окружностей для выдавливания в задней части корпуса.
         /// </summary>
-        private readonly double[,] _backBodyPartExtrudingCirclesParameters =
+        private readonly Circle[] _backBodyPartExtrudingCirclesParameters =
         {
-            { 0,0,20 }
+            new Circle(new Point2D(0,0), 20)
         };
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив окружностей для выдавливания в верхней части корпуса.
         /// </summary>
-        public double[,] UpperBodyPartExtrudingCirclesParameters
+        public Circle[] UpperBodyPartExtrudingCirclesParameters
         {
             get
             {
@@ -569,7 +569,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив окружностей для выдавливания в задней части корпуса.
         /// </summary>
-        public double[,] BackBodyPartExtrudingCirclesParameters
+        public Circle[] BackBodyPartExtrudingCirclesParameters
         {
             get
             {
