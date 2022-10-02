@@ -58,7 +58,7 @@ namespace XWingPluginForCompass3D.Model
             try
             {
                 XWingBuilder detail = new XWingBuilder(_kompas);
-                detail.CreateDetail(xWing);
+                detail.BuildDetail(xWing);
             }
             catch
             {
