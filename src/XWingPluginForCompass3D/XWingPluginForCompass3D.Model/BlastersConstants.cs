@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс констант для построения бластерных орудий звездолёта.
@@ -227,15 +221,11 @@ namespace XWingPluginForCompass3D.Model
         {
             {
                 new Circle(new Point2D(-617.468507, -180), 24),
-                new Circle(new Point2D(617.468507, -180), 24),
-                new Circle(new Point2D(-617.468507, 185), 24),
-                new Circle(new Point2D(617.468507, 185), 24)
+                new Circle(new Point2D(-617.468507, 185), 24)
             },
             {
                 new Circle(new Point2D(-617.468507, -180), 15),
-                new Circle(new Point2D(617.468507, -180), 15),
-                new Circle(new Point2D(-617.468507, 185), 15),
-                new Circle(new Point2D(617.468507, 185), 15)
+                new Circle(new Point2D(-617.468507, 185), 15)
             }
         };
 

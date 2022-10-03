@@ -29,7 +29,7 @@ namespace XWingPluginForCompass3D.View
             try
             {
                 XWingParameters xWing = null;
-                xWing = new XWingParameters(300, 300, 50, 80, 150, 50);
+                xWing = new XWingParameters(380, 380, 50, 80, 150, 50);
                 _kompasWrapper.StartKompas();
                 _kompasWrapper.BuildXWing(xWing);
             }
