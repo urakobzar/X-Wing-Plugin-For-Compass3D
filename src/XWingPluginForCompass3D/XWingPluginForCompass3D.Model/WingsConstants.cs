@@ -34,18 +34,6 @@ namespace XWingPluginForCompass3D.Model
                     new Point2D(646.963505, -600 - bodyLength),
                     new Point2D(646.963505, -550 - bodyLength),
                     new Point2D(128.282347, -600 - bodyLength)
-                },
-
-                {
-                    new Point2D(-646.963505, -600 - bodyLength + wingsWidth),
-                    new Point2D(-646.963505, -666.419923 - bodyLength + wingsWidth),
-                    new Point2D(-128.282347, -600 - bodyLength + wingsWidth)
-                },
-
-                {
-                    new Point2D(-646.963505, -600 - bodyLength),
-                    new Point2D(-646.963505, -550 - bodyLength),
-                    new Point2D(-128.282347, -600 - bodyLength)
                 }
             };
         }
@@ -73,24 +61,10 @@ namespace XWingPluginForCompass3D.Model
             },
 
             {
-                new Point2D(-69.173833, 55.779384),
-                new Point2D(-78.023751, 42.034027),
-                new Point2D(-632.086192, 150.642161),
-                new Point2D(-639.549926, 169.837344)
-            },
-
-            {
                 new Point2D(77.853158, -39.308584),
                 new Point2D(64.171267, -54.321075),
                 new Point2D(646.963505, -163.875661),
                 new Point2D(640.123102, -145.081809)
-            },
-
-            {
-                new Point2D(-77.853158, -39.308584),
-                new Point2D(-64.171267, -54.321075),
-                new Point2D(-646.963505, -163.875661),
-                new Point2D(-640.123102, -145.081809)
             }
         };
 

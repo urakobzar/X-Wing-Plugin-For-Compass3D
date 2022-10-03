@@ -1,5 +1,6 @@
 ﻿using Kompas6API5;
 using Kompas6Constants3D;
+using System;
 
 namespace XWingPluginForCompass3D.Model
 {
@@ -39,24 +40,19 @@ namespace XWingPluginForCompass3D.Model
             double wingWidth = xwing.WingWidth;
             double bowLength = xwing.BowLength;
             double weaponBlasterTipLength = xwing.WeaponBlasterTipLength;
-            double acceleratorTurbineLength = xwing.AcceleratorTurbineLength;
-            double acceleratorNozzleLength = xwing.AcceleratorNozzleLength;
+            double turbineLength = xwing.AcceleratorTurbineLength;
+            double nozzleLength = xwing.AcceleratorNozzleLength;
             double bodyAndWingsDifference = bodyLength - wingWidth;
             ksDocument3D document = (ksDocument3D)_kompas.ActiveDocument3D();
             _part = (ksPart)document.GetPart((short)Part_Type.pTop_Part);
             _part.name = "X-Wing";
             _part.SetAdvancedColor(14211288, 0.5, 0.6, 0.8, 0.8, 1, 0.5);
             _part.Update();
-
             BuildBowBody(bowLength);
-
             BuildBody(bodyLength);
-
             BuildWings(wingWidth, bodyLength);
-
             BuildBlasters(weaponBlasterTipLength, bodyAndWingsDifference, wingWidth);
-
-            //Accelerators();
+            BuildAccelerators(turbineLength, nozzleLength, bodyAndWingsDifference);
         }
 
         /// <summary>
@@ -120,80 +116,82 @@ namespace XWingPluginForCompass3D.Model
         private void BuildBody(double bodyLength)
         {            
             // Объект класса констант для построения корпуса детали.            
-            BodyConstants _bodyXWingConstants = new BodyConstants(bodyLength);
+            BodyConstants constants = new BodyConstants(bodyLength);
 
             // Выдавливание основного корпуса на заданную пользователем величину.
-            ksEntity sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.UpperBasePlaneCoordinate,
-                _bodyXWingConstants.BaseVertexes);
+            ksEntity sketch = CreatePolygonSketchByPoint(constants.UpperBasePlaneCoordinate,
+                constants.BaseVertexes);
             ExtrudeSketch(_part, sketch, bodyLength, true, 0, false);
 
             // Выдавливание верхней части корпуса.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.UpperFacePlaneCoordinate,
-                _bodyXWingConstants.UpperFaceVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.UpperFacePlaneCoordinate,
+                constants.UpperFaceVertexes);
             ExtrudeSketch(_part, sketch, 50, true, 0, false);
 
             // Выдавливание нижней части корпуса.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.LowerFacePlaneCoordinate,
-                _bodyXWingConstants.LowerFaceVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.LowerFacePlaneCoordinate,
+                constants.LowerFaceVertexes);
             ExtrudeSketch(_part, sketch, 50, true, 0, false);
 
             // Вырез верхней части корпуса: срезаются углы призмы.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.UpperBodyFrontPlaneCoordinate,
-                _bodyXWingConstants.FirstUpperBodyCutoutVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.UpperBodyFrontPlaneCoordinate,
+                constants.FirstUpperBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.UpperBodyFrontPlaneCoordinate,
-                _bodyXWingConstants.SecondUpperBodyCutoutVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.UpperBodyFrontPlaneCoordinate,
+                constants.SecondUpperBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
 
             // Срез нижней части корпуса.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.LowerSideBackPlaneCoordinate,
-                _bodyXWingConstants.LowerBodySliceVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.LowerSideBackPlaneCoordinate,
+                constants.LowerBodySliceVertexes);
             CutExtrusion(_part, sketch, 100, 0, true);
 
             // Вырез нижней части корпуса: срезаются углы призмы.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.LowerBodyBackPlaneCoordinate,
-                _bodyXWingConstants.FirstLowerBodyCutoutVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.LowerBodyBackPlaneCoordinate,
+                constants.FirstLowerBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.LowerBodyBackPlaneCoordinate,
-                _bodyXWingConstants.SecondLowerBodyCutoutVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.LowerBodyBackPlaneCoordinate,
+                constants.SecondLowerBodyCutoutVertexes);
             CutExtrusion(_part, sketch, bodyLength, 0, true);
 
             // Выдавливание верхней задней грани носовой части корпуса:
             // чтобы не было зазора с основным корпусом.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.BowBodyBackPlaneCoordinate,
-                _bodyXWingConstants.BowBodyFaceVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.BowBodyBackPlaneCoordinate,
+                constants.BowBodyFaceVertexes);
             ExtrudeSketch(_part, sketch, 4.5, true, 0, false);
 
             // Углубление для верхней части корпуса.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.UpperBodyPartFacePlaneCoordinate,
-                _bodyXWingConstants.DeepingUpperBodyFaceVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.UpperBodyPartFacePlaneCoordinate,
+                constants.DeepingUpperBodyFaceVertexes);
             CutExtrusion(_part, sketch, 5, 0, true);
 
             // Выдавливание окружностей в верхней части корпуса.
-            sketch = CreateCirclesSketch(_bodyXWingConstants.DeepingBodyPartFacePlaneCoordinate,
-                _bodyXWingConstants.UpperBodyPartExtrudingCirclesParameters);
+            sketch = CreateCirclesSketch(constants.DeepingBodyPartFacePlaneCoordinate,
+                constants.UpperBodyPartExtrudingCirclesParameters);
             ExtrudeSketch(_part, sketch, 10, true, 0, false);
 
             // Выдавливание прямоугольников с вырезом в верхней части корпуса.
-            sketch = CreatePolygonWithCutout(_bodyXWingConstants.DeepingBodyPartFacePlaneCoordinate,
-                _bodyXWingConstants.UpperBodyPartExtrudingRectanglesCoordinates);
+            sketch = CreateSeveralPolygon(constants.DeepingBodyPartFacePlaneCoordinate,
+                constants.UpperBodyPartExtrudingRectanglesCoordinates, false);
             ExtrudeSketch(_part, sketch, 10, true, 0, false);
 
             // Построение головы дроида в верхней части корпуса.
-            BuildDroidHead(_bodyXWingConstants.BaseDroidHeadPlaneCoordinate);
+            BuildDroidHead(constants.BaseDroidHeadPlaneCoordinate);
 
             // Углубление задней части корпуса.
-            sketch = CreatePolygonSketchByPoint(_bodyXWingConstants.BackBodyPlaneCoordinate,
-                _bodyXWingConstants.BackBodyDeepingVertexes);
+            sketch = CreatePolygonSketchByPoint(constants.BackBodyPlaneCoordinate,
+                constants.BackBodyDeepingVertexes);
             CutExtrusion(_part, sketch, 10, 0, true);
 
             // Первый рисунок задней части корпуса.
-            sketch = CreateCirclesSketch(_bodyXWingConstants.BackDeepingPlaneCoordinate,
-                _bodyXWingConstants.BackBodyPartExtrudingCirclesParameters);
+            sketch = CreateCirclesSketch(constants.BackDeepingPlaneCoordinate,
+                constants.BackBodyPartExtrudingCirclesParameters);
             ExtrudeSketch(_part, sketch, 10, true, 0, false);
 
             // Второй рисунок задней части корпуса.
-            BuildBackDrawing(_bodyXWingConstants.BackDeepingPlaneCoordinate);
+            sketch = BuildBackDrawing(constants.BackDeepingPlaneCoordinate, 
+                constants.BackDrawingSegments);
+            ExtrudeSketch(_part, sketch, 10, true, 0, true);
         }
 
         /// <summary>
@@ -206,13 +204,13 @@ namespace XWingPluginForCompass3D.Model
             WingsConstants wingsConstants = new WingsConstants(wingsWidth, bodyLength);
 
             // Выдавливание крыльев, начиная с конца корпуса.
-            ksEntity sketch = CreatePolygonWithCutout(wingsConstants.BackBodyPlane,
-                wingsConstants.BaseVertexes);
+            ksEntity sketch = CreateSeveralPolygon(wingsConstants.BackBodyPlane,
+                wingsConstants.BaseVertexes, true);
             ExtrudeSketch(_part, sketch, wingsWidth, false, 0, false);
 
             // Вырезание формы крыла.
-            sketch = CreatePolygonWithCutout(wingsConstants.CuttingPlane,
-                wingsConstants.WingsCutVertexes);
+            sketch = CreateSeveralPolygon(wingsConstants.CuttingPlane,
+                wingsConstants.WingsCutVertexes, true);
             CutExtrusion(_part, sketch, 350, 80, true);
         }
 
@@ -263,23 +261,23 @@ namespace XWingPluginForCompass3D.Model
 
             // Построение каждого острия бластера.
             sketch = CreateSegmentsWithArcs(blastersConstants.CurrentPlane, 
-                blastersConstants.TipsBaseSegments, blastersConstants.TipsBaseArcs);
+                blastersConstants.TipsBaseSegments, blastersConstants.TipsBaseArcs, true);
             ExtrudeSketch(_part, sketch, blasterTipLength, true, 0, false);
 
             // Построение антенн на острие бластера.
             sketch = CreateSegmentsWithArcs(blastersConstants.SideRightTipPlane,
-                blastersConstants.RightAntennaSegments, blastersConstants.RightAntennaArcs);
+                blastersConstants.RightAntennaSegments, blastersConstants.RightAntennaArcs, false);
             ExtrudeSketch(_part, sketch, 5, true, 0, false);
             ExtrudeSketch(_part, sketch, 15, false, 0, false);
 
             // Построение антенн на острие бластера.
             sketch = CreateSegmentsWithArcs(blastersConstants.SideLeftTipPlane,
-                blastersConstants.LeftAntennaSegments, blastersConstants.LeftAntennaArcs);
+                blastersConstants.LeftAntennaSegments, blastersConstants.LeftAntennaArcs, false);
             ExtrudeSketch(_part, sketch, 5, true, 0, false);
             ExtrudeSketch(_part, sketch, 15, false, 0, false);
 
             // Построение начальной части батареи бластера.
-            blastersConstants.CurrentPlane.Z = -600 - wingWidth + 30;
+            blastersConstants.CurrentPlane.Z = -600 - difference - wingWidth + 30;
             ChangeCirclesRadius(blastersConstants.CurrentBlasterCircles, 20);
             sketch = CreateCirclesSketch(blastersConstants.CurrentPlane,
                 blastersConstants.CurrentBlasterCircles);
@@ -318,440 +316,90 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Построение ускорителей.
         /// </summary>
-        private void Accelerators()
+        /// <param name="turbineLength">Длина турбины ускорителя.</param>
+        /// <param name="nozzleLength">Длина сопла ускорителя.</param>
+        /// <param name="difference">Разница между длинной корпуса и шириной крыльев в мм.</param>
+        private void BuildAccelerators(double turbineLength, double nozzleLength, double difference)
         {
-            // основание на крыле
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(-98.760456157148, 54.834961060082, -600);
-            ksEntity plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
+            AcceleratorsConstants constants = new AcceleratorsConstants(difference);
 
-            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksLineSeg(-69.238565314295, 55.792328504171, -216.326522495816, 85.20546931176, 1);
-            sketchEdit.ksLineSeg(-69.238565314295, 55.792328504171, -54.395688959911, 78.493198176107, 1);
-            sketchEdit.ksLineSeg(-54.395688959911, 78.493198176107, -39.142134225441, 111.653099683237, 1);
-            sketchEdit.ksLineSeg(-39.142134225441, 111.653099683237, -208.910182359792, 95.073148929672, 1);
-            sketchEdit.ksLineSeg(-208.910182359792, 95.073148929672, -216.326522495816, 85.20546931176, 1);
-
-
-            sketchEdit.ksLineSeg(-64.739253678729, -54.42784643247, -49.470254859108, -71.493198059993, 1);
-            sketchEdit.ksLineSeg(-49.470254859108, -71.493198059993, -34.204924615894, -104.678698835012, 1);
-            sketchEdit.ksLineSeg(-64.739253678729, -54.42784643247, -216.699337266712, -82.993642172126, 1);
-            sketchEdit.ksLineSeg(-216.699337266712, -82.993642172126, -211.874390428137, -90.591002766762, 1);
-            sketchEdit.ksLineSeg(-211.874390428137, -90.591002766762, -34.204924615894, -104.678698835012, 1);
-
-            sketchEdit.ksLineSeg(69.238565314295, 55.792328504171, 216.326522495816, 85.20546931176, 1);
-            sketchEdit.ksLineSeg(69.238565314295, 55.792328504171, 54.395688959911, 78.493198176107, 1);
-            sketchEdit.ksLineSeg(54.395688959911, 78.493198176107, 39.142134225441, 111.653099683237, 1);
-            sketchEdit.ksLineSeg(39.142134225441, 111.653099683237, 208.910182359792, 95.073148929672, 1);
-            sketchEdit.ksLineSeg(208.910182359792, 95.073148929672, 216.326522495816, 85.20546931176, 1);
-
-
-            sketchEdit.ksLineSeg(64.739253678729, -54.42784643247, 49.470254859108, -71.493198059993, 1);
-            sketchEdit.ksLineSeg(49.470254859108, -71.493198059993, 34.204924615894, -104.678698835012, 1);
-            sketchEdit.ksLineSeg(64.739253678729, -54.42784643247, 216.699337266712, -82.993642172126, 1);
-            sketchEdit.ksLineSeg(216.699337266712, -82.993642172126, 211.874390428137, -90.591002766762, 1);
-            sketchEdit.ksLineSeg(211.874390428137, -90.591002766762, 34.204924615894, -104.678698835012, 1);
-
-            definition.EndEdit();
+            // Выдавливанние оснований ускорителей на крыльях.
+            ksEntity sketch = CreateSeveralPolygon(constants.CurrentPlane,
+                constants.AcceleratorsBaseVertexes, true);
             ExtrudeSketch(_part, sketch, 280, false, 0, false);
 
-            // Турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 85.28191092109, -600);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579, 104.472405663619, 40, 1);
-            sketchEdit.ksCircle(105.609456757216, -99.016919293413, 40, 1);
-            sketchEdit.ksCircle(-112.667829571579, 104.472405663619, 40, 1);
-            sketchEdit.ksCircle(-105.609456757216, -99.016919293413, 40, 1);
-            definition.EndEdit();
+            // Выдавливание воздухозаборника ускорителя.
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.AirIntakeCircles);
             ExtrudeSketch(_part, sketch, 200, false, 0, false);
             ExtrudeSketch(_part, sketch, 30, true, 0, false);
 
-            // Основной вырез в Турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(112.667829571579, 104.472405663619, -570);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            // левая верхняя
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 15, 97.673226100878, 104.874732342367, 126.620543976279, 109.978925502944, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 35, 77.805465245013, 101.371510057214, 146.488304832143, 113.482147788097, -1, 1);
-            sketchEdit.ksLineSeg(77.805465245013, 101.371510057214, 97.673226100878, 104.874732342367, 1);
-            sketchEdit.ksLineSeg(126.620543976279, 109.978925502944, 146.488304832143, 113.482147788097, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 35.000000000001, 78.199558216151, 98.394719445276, 147.136100927007, 110.550091881962, 1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 15, 97.895713276396, 101.867682998615, 127.439945866762, 107.077128328623, 1, 1);
-            sketchEdit.ksLineSeg(97.895713276396, 101.867682998615, 78.199558216151, 98.394719445276, 1);
-            sketchEdit.ksLineSeg(127.439945866762, 107.077128328623, 147.136100927007, 110.550091881962, 1);
-            // правая верхняя
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 35, -147.136100927007, 110.550091881962, -78.199558216151, 98.394719445276, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 35, -146.488304832143, 113.482147788097, -77.805465245013, 101.371510057214, -1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 15, -127.439945866762, 107.077128328623, -97.895713276396, 101.867682998615, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 15, -126.620543976279, 109.978925502944, -97.673226100878, 104.874732342367, -1, 1);
-            sketchEdit.ksLineSeg(-146.488304832143, 113.482147788097, -126.620543976279, 109.978925502944, 1);
-            sketchEdit.ksLineSeg(-147.136100927007, 110.550091881962, -127.439945866762, 107.077128328623, 1);
-            sketchEdit.ksLineSeg(-97.673226100878, 104.874732342367, -77.805465245013, 101.371510057214, 1);
-            sketchEdit.ksLineSeg(-97.895713276396, 101.867682998615, -78.199558216151, 98.394719445276, 1);
-
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 35.000000000001, 70.74709243065, -95.916023687008, 139.429932017781, -108.026661417891, 1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 15, 90.614853286515, -99.419245972161, 119.562171161916, -104.523439132739, 1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 35, 71.141185401788, -92.93923307507, 140.077728112644, -105.094605511756, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 15, 90.837340462033, -96.412196628409, 120.381573052399, -101.621641958417, -1, 1);
-            sketchEdit.ksLineSeg(71.141185401788, -92.93923307507, 90.837340462033, -96.412196628409, 1);
-            sketchEdit.ksLineSeg(70.74709243065, -95.916023687008, 90.614853286515, -99.419245972161, 1);
-            sketchEdit.ksLineSeg(120.381573052399, -101.621641958417, 140.077728112644, -105.094605511756, 1);
-            sketchEdit.ksLineSeg(119.562171161916, -104.523439132739, 139.429932017781, -108.026661417891, 1);
-
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 35.000000000001, -140.077728112644, -105.094605511756, -71.141185401788, -92.93923307507, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 35, -139.42993201778, -108.026661417891, -70.74709243065, -95.916023687008, 1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 15, -120.381573052399, -101.621641958417, -90.837340462033, -96.412196628409, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 15, -119.562171161916, -104.523439132738, -90.614853286514, -99.419245972161, 1, 1);
-            sketchEdit.ksLineSeg(-140.077728112644, -105.094605511756, -120.381573052399, -101.621641958417, 1);
-            sketchEdit.ksLineSeg(-90.837340462033, -96.412196628409, -71.141185401788, -92.93923307507, 1);
-            sketchEdit.ksLineSeg(-139.42993201778, -108.026661417891, -119.562171161916, -104.523439132738, 1);
-            sketchEdit.ksLineSeg(-90.614853286514, -99.419245972161, -70.74709243065, -95.916023687008, 1);
-
-            definition.EndEdit();
+            // Построение основного выреза в воздухозаборнике.            
+            sketch = CreateSegmentsWithArcs(constants.AirIntakePlane, 
+                constants.AirIntakeBaseCuttingSegments, constants.AirIntakeBaseCuttingArcs, false);
             CutExtrusion(_part, sketch, 150, 0, true);
 
-
-            // срез нижней части турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(112.667829571579, 104.472405663619, -570);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            //
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 40, 73.275519451091, 97.526478556942, 152.060139692067, 111.418332770296, 1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 35.000000000001, 78.199558216151, 98.394719445276, 147.136100927007, 110.550091881962, 1, 1);
-            sketchEdit.ksLineSeg(78.199558216151, 98.394719445276, 73.275519451091, 97.526478556942, 1);
-            sketchEdit.ksLineSeg(147.136100927007, 110.550091881962, 152.060139692067, 111.418332770296, 1);
-            //
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 40, -152.060139692067, 111.418332770296, -73.275519451091, 97.526478556942, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 35, -147.136100927007, 110.550091881962, -78.199558216151, 98.394719445276, 1, 1);
-            sketchEdit.ksLineSeg(-147.136100927007, 110.550091881962, -152.060139692067, 111.418332770296, 1);
-            sketchEdit.ksLineSeg(-78.199558216151, 98.394719445276, -73.275519451091, 97.526478556942, 1);
-
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 40, 66.217146636728, -92.070992186736, 145.001766877704, -105.96284640009, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 35, 71.141185401788, -92.93923307507, 140.077728112644, -105.094605511756, -1, 1);
-            sketchEdit.ksLineSeg(66.217146636728, -92.070992186736, 71.141185401788, -92.93923307507, 1);
-            sketchEdit.ksLineSeg(140.077728112644, -105.094605511756, 145.001766877704, -105.96284640009, 1);
-
-
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 40, -145.001766877704, -105.96284640009, -66.217146636728, -92.070992186736, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 35.000000000001, -140.077728112644, -105.094605511756, -71.141185401788, -92.93923307507, -1, 1);
-            sketchEdit.ksLineSeg(-140.077728112644, -105.094605511756, -145.001766877704, -105.96284640009, 1);
-            sketchEdit.ksLineSeg(-71.141185401788, -92.93923307507, -66.217146636728, -92.070992186736, 1);
-
-            definition.EndEdit();
+            // Построение среза нижней части воздухозаборника.
+            sketch = CreateSegmentsWithArcs(constants.AirIntakePlane,
+                constants.AirIntakeLowerCuttingSegments, constants.AirIntakeLowerCuttingArcs, false);
             CutExtrusion(_part, sketch, 10, 0, true);
 
-
-            // Срез среднего круга турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(112.667829571579, 104.472405663619, -570);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 15, 97.895713276396, 101.867682998615, 127.439945866762, 107.077128328623, 1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 15, 97.673226100878, 104.874732342367, 126.620543976279, 109.978925502944, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 10, 102.752417824, 105.770330883344, 121.541352253157, 109.083326961967, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 10, 102.819752041457, 102.73592388695, 122.515907101701, 106.208887440288, 1, 1);
-            sketchEdit.ksLineSeg(102.752417824, 105.770330883344, 97.673226100878, 104.874732342367, 1);
-            sketchEdit.ksLineSeg(121.541352253157, 109.083326961967, 126.620543976279, 109.978925502944, 1);
-            sketchEdit.ksLineSeg(127.439945866762, 107.077128328623, 122.515907101701, 106.208887440288, 1);
-            sketchEdit.ksLineSeg(102.819752041457, 102.73592388695, 97.895713276396, 101.867682998615, 1);
-
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 15, -127.439945866762, 107.077128328623, -97.895713276396, 101.867682998615, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 15, -126.620543976279, 109.978925502944, -97.673226100878, 104.874732342367, -1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 10, -122.515907101701, 106.208887440288, -102.819752041457, 102.73592388695, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 10, -121.541352253156, 109.083326961967, -102.752417824001, 105.770330883344, -1, 1);
-            sketchEdit.ksLineSeg(-126.620543976279, 109.978925502944, -121.541352253156, 109.083326961967, 1);
-            sketchEdit.ksLineSeg(-127.439945866762, 107.077128328623, -122.515907101701, 106.208887440288, 1);
-            sketchEdit.ksLineSeg(-102.752417824001, 105.770330883344, -97.673226100878, 104.874732342367, 1);
-            sketchEdit.ksLineSeg(-102.819752041457, 102.73592388695, -97.895713276396, 101.867682998615, 1);
-
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 15, 90.614853286515, -99.419245972161, 119.562171161916, -104.523439132739, 1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 15, 90.837340462033, -96.412196628409, 120.381573052399, -101.621641958417, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 10, 95.761379227093, -97.280437516744, 115.457534287338, -100.753401070082, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 10, 95.694045009638, -100.314844513139, 114.482979438792, -103.627840591761, 1, 1);
-            sketchEdit.ksLineSeg(90.837340462033, -96.412196628409, 95.761379227093, -97.280437516744, 1);
-            sketchEdit.ksLineSeg(90.614853286515, -99.419245972161, 95.694045009638, -100.314844513139, 1);
-            sketchEdit.ksLineSeg(115.457534287338, -100.753401070082, 120.381573052399, -101.621641958417, 1);
-            sketchEdit.ksLineSeg(114.482979438792, -103.627840591761, 119.562171161916, -104.523439132739, 1);
-
-
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 15, -120.381573052399, -101.621641958417, -90.837340462033, -96.412196628409, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 15, -90.614853286514, -99.419245972161, -119.562171161916, -104.523439132738, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 10, -115.457534287338, -100.753401070082, -95.761379227094, -97.280437516744, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 10, -114.482979438792, -103.627840591761, -95.694045009638, -100.314844513138, 1, 1);
-            sketchEdit.ksLineSeg(-120.381573052399, -101.621641958417, -115.457534287338, -100.753401070082, 1);
-            sketchEdit.ksLineSeg(-95.761379227094, -97.280437516744, -90.837340462033, -96.412196628409, 1);
-            sketchEdit.ksLineSeg(-90.614853286514, -99.419245972161, -95.694045009638, -100.314844513138, 1);
-            sketchEdit.ksLineSeg(-114.482979438792, -103.627840591761, -119.562171161916, -104.523439132738, 1);
-
-            definition.EndEdit();
+            // Построение среднего выреза в воздухозаборнике.            
+            sketch = CreateSegmentsWithArcs(constants.AirIntakePlane,
+                constants.AirIntakeMiddleCuttingSegments, constants.AirIntakeMiddleCuttingArcs, false);
             CutExtrusion(_part, sketch, 25, 0, true);
 
-            // Срез малого круга турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(112.667829571579, 104.472405663619, -570);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 9.999999999999, 102.752417824002, 105.770330883345, 121.541352253155, 109.083326961966, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 10, 102.819752041457, 102.73592388695, 122.515907101701, 106.208887440288, 1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 5, 108.20765402653, 106.732236211988, 116.086116050627, 108.121421633323, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 5, 107.743790806518, 103.604164775284, 117.59186833664, 105.340646551954, 1, 1);
-            sketchEdit.ksLineSeg(108.20765402653, 106.732236211988, 102.752417824002, 105.770330883345, 1);
-            sketchEdit.ksLineSeg(116.086116050627, 108.121421633323, 121.541352253155, 109.083326961966, 1);
-            sketchEdit.ksLineSeg(122.515907101701, 106.208887440288, 117.59186833664, 105.340646551954, 1);
-            sketchEdit.ksLineSeg(107.743790806518, 103.604164775284, 102.819752041457, 102.73592388695, 1);
-
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 5, -116.086116050627, 108.121421633323, -108.207654026529, 106.732236211988, -1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 5, -117.59186833664, 105.340646551954, -107.743790806518, 103.604164775284, 1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 10, -121.541352253156, 109.083326961967, -102.752417824001, 105.770330883344, -1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 10, -122.515907101701, 106.208887440288, -102.819752041457, 102.73592388695, 1, 1);
-            sketchEdit.ksLineSeg(-116.086116050627, 108.121421633323, -121.541352253156, 109.083326961967, 1);
-            sketchEdit.ksLineSeg(-108.207654026529, 106.732236211988, -102.752417824001, 105.770330883344, 1);
-            sketchEdit.ksLineSeg(-117.59186833664, 105.340646551954, -122.515907101701, 106.208887440288, 1);
-            sketchEdit.ksLineSeg(-107.743790806518, 103.604164775284, -102.819752041457, 102.73592388695, 1);
-
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 10, 95.761379227093, -97.280437516744, 115.457534287338, -100.753401070082, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 10, 95.694045009638, -100.314844513139, 114.482979438792, -103.627840591761, 1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 5, 100.685417992155, -98.148678405078, 110.533495522277, -99.885160181748, -1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 5, 101.149281212166, -101.276749841782, 109.027743236264, -102.665935263118, 1, 1);
-            sketchEdit.ksLineSeg(95.761379227093, -97.280437516744, 100.685417992155, -98.148678405078, 1);
-            sketchEdit.ksLineSeg(110.533495522277, -99.885160181748, 115.457534287338, -100.753401070082, 1);
-            sketchEdit.ksLineSeg(95.694045009638, -100.314844513139, 101.149281212166, -101.276749841782, 1);
-            sketchEdit.ksLineSeg(109.027743236264, -102.665935263118, 114.482979438792, -103.627840591761, 1);
-
-
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 10, -115.457534287338, -100.753401070082, -95.761379227094, -97.280437516744, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 10, -114.482979438792, -103.627840591761, -95.694045009638, -100.314844513138, 1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 5, -110.533495522277, -99.885160181748, -100.685417992155, -98.148678405078, -1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 5, -109.027743236264, -102.665935263117, -101.149281212166, -101.276749841782, 1, 1);
-            sketchEdit.ksLineSeg(-115.457534287338, -100.753401070082, -110.533495522277, -99.885160181748, 1);
-            sketchEdit.ksLineSeg(-100.685417992155, -98.148678405078, -95.761379227094, -97.280437516744, 1);
-            sketchEdit.ksLineSeg(-95.694045009638, -100.314844513138, -101.149281212166, -101.276749841782, 1);
-            sketchEdit.ksLineSeg(-109.027743236264, -102.665935263117, -114.482979438792, -103.627840591761, 1);
-
-            definition.EndEdit();
+            // Построение малого выреза в воздухозаборнике.            
+            sketch = CreateSegmentsWithArcs(constants.AirIntakePlane,
+                constants.AirIntakeSmallCuttingSegments, constants.AirIntakeSmallCuttingArcs, false);
             CutExtrusion(_part, sketch, 5, 0, true);
 
-
-            //Палка в турбине
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(112.667829571579, 104.472405663619, -570);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksLineSeg(105.607816794944, 138.752957286861, 110.83232295847, 109.123310465185, 1);
-            sketchEdit.ksLineSeg(107.577432300969, 139.100253642195, 112.801938464494, 109.47060682052, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 35, 105.607816794944, 138.752957286861, 107.577432300969, 139.100253642195, -1, 1);
-            sketchEdit.ksArcByPoint(112.667829571579, 104.472405663619, 5, 110.83232295847, 109.123310465185, 112.801938464494, 109.470606820519, -1, 1);
-
-            sketchEdit.ksLineSeg(-112.801938464495, 109.470606820519, -107.577432300971, 139.100253642195, 1);
-            sketchEdit.ksLineSeg(-105.607816794946, 138.752957286862, -110.832322958471, 109.123310465186, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 35, -107.577432300971, 139.100253642195, -105.607816794946, 138.752957286862, -1, 1);
-            sketchEdit.ksArcByPoint(-112.667829571579, 104.472405663619, 5, -112.801938464495, 109.470606820519, -110.832322958471, 109.123310465186, -1, 1);
-
-
-            sketchEdit.ksLineSeg(103.773950144107, -103.66782409498, 98.549443980583, -133.297470916656, 1);
-            sketchEdit.ksLineSeg(100.519059486607, -133.64476727199, 105.743565650132, -104.015120450314, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 5, 103.773950144107, -103.66782409498, 105.743565650132, -104.015120450314, 1, 1);
-            sketchEdit.ksArcByPoint(105.609456757216, -99.016919293413, 35.000000000001, 98.549443980583, -133.297470916656, 100.519059486607, -133.64476727199, 1, 1);
-
-
-            sketchEdit.ksLineSeg(-105.743565650132, -104.015120450313, -100.519059486608, -133.64476727199, 1);
-            sketchEdit.ksLineSeg(-98.549443980583, -133.297470916656, -103.773950144108, -103.667824094979, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 5, -105.743565650132, -104.015120450313, -103.773950144108, -103.667824094979, 1, 1);
-            sketchEdit.ksArcByPoint(-105.609456757216, -99.016919293413, 35, -100.519059486608, -133.64476727199, -98.549443980583, -133.297470916656, 1, 1);
-
-            definition.EndEdit();
+            // Построение перегородки в воздухозаборнике.
+            sketch = CreateSegmentsWithArcs(constants.AirIntakePlane,
+                constants.AirIntakePartitionSegments, constants.AirIntakePartitionArcs, false);
             ExtrudeSketch(_part, sketch, 150, false, 0, false);
 
-            // Задняя часть Турбины
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
+            // Выдавливание турбины ускорителя.
+            sketch = CreateCirclesSketch(constants.TurbinePlane, constants.TurbineCircles);
+            ExtrudeSketch(_part, sketch, turbineLength, true, 0, false);
 
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 33, 1);
-            definition.EndEdit();
-            ExtrudeSketch(_part, sketch, 150, true, 0, false);
+            // Выдавливание верхней части сопла.
+            constants.CurrentPlane = constants.TurbinePlane;
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z - turbineLength;
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.TurbineCircles);
+            ExtrudeSketch(_part, sketch, nozzleLength/2, true, 10, false);
 
+            // Выдавливание нижней части сопла.
+            double angle = 10*Math.PI/180;
+            double radius = constants.TurbineCircles[0].Radius +
+                Math.Tan(angle) * nozzleLength / 2;
+            ChangeCirclesRadius(constants.TurbineCircles, radius);
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.TurbineCircles);
+            ExtrudeSketch(_part, sketch, nozzleLength / 2, true, -5, false);
 
-            // Верхняя часть сопла
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200 - 150);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
+            // Вырезание внешнего отверстия сопла.
+            ChangeCirclesRadius(constants.TurbineCircles, 33);
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.TurbineCircles);
+            CutExtrusion(_part, sketch, nozzleLength / 2, 0, true);
 
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 33, 1);
-            definition.EndEdit();
-            ExtrudeSketch(_part, sketch, 50, true, 10, false);
+            // Выдавливание средней части сопла.
+            ChangeCirclesRadius(constants.TurbineCircles, 15);
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z + nozzleLength / 2;
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.TurbineCircles);
+            ExtrudeSketch(_part, sketch, nozzleLength / 2, true, 0, false);
 
+            // Вырезание внутреннего отверстия сопла.
+            ChangeCirclesRadius(constants.TurbineCircles, 12.5);
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            sketch = CreateCirclesSketch(constants.CurrentPlane, constants.TurbineCircles);
+            CutExtrusion(_part, sketch, nozzleLength / 2, 0, true);
 
-            // Нижняя часть сопла
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200 - 150 - 50);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 41.82, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 41.82, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 41.82, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 41.82, 1);
-            definition.EndEdit();
-            ExtrudeSketch(_part, sketch, 50, true, -5, false);
-
-            // Вырез сопла
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200 - 150 - 50 - 50);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 15, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 15, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 15, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 15, 1);
-            definition.EndEdit();
-            CutExtrusion(_part, sketch, 50, 0, true);
-
-            // Внутренний Вырез сопла
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200 - 150 - 50 - 50);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 12.5, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 12.5, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 12.5, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 12.5, 1);
-            definition.EndEdit();
-            CutExtrusion(_part, sketch, 50, 0, true);
-
-            // Рисунок сопла
-            sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
-            definition = (ksSketchDefinition)sketch.GetDefinition();
-            collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(121.217288365422, 104.472405663619, -600 - 200 - 150 - 50);
-            plane = collection.First();
-            definition.SetPlane(plane);
-            sketch.Create();
-
-            sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 15, 1);
-            sketchEdit.ksCircle(112.667829571579 - 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksLineSeg(-109.667829571579, 140.472405663619, -109.667829571579, 122.472405663619, 1);
-            sketchEdit.ksLineSeg(-133.002353350735, 130.806929442775, -120.274431289377, 118.079007381417, 1);
-            sketchEdit.ksLineSeg(-142.667829571579, 107.472405663619, -124.667829571579, 107.472405663619, 1);
-            sketchEdit.ksLineSeg(-133.002353350735, 84.137881884463, -120.274431289377, 96.865803945821, 1);
-            sketchEdit.ksLineSeg(-109.667829571579, 74.472405663619, -109.667829571579, 92.472405663619, 1);
-            sketchEdit.ksLineSeg(-86.333305792423, 84.137881884463, -99.061227853781, 96.865803945821, 1);
-            sketchEdit.ksLineSeg(-76.667829571579, 107.472405663619, -94.667829571579, 107.472405663619, 1);
-            sketchEdit.ksLineSeg(-86.333305792423, 130.806929442775, -99.061227853781, 118.079007381417, 1);
-
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(105.609456757216 - 3, -99.016919293413 - 3, 15, 1);
-            sketchEdit.ksLineSeg(-79.27493297806, -78.682395514257, -92.002855039418, -91.410317575615, 1);
-            sketchEdit.ksLineSeg(-102.609456757216, -69.016919293413, -102.609456757216, -87.016919293413, 1);
-            sketchEdit.ksLineSeg(-125.943980536372, -78.682395514257, -113.216058475014, -91.410317575615, 1);
-            sketchEdit.ksLineSeg(-135.609456757216, -102.016919293413, -117.609456757216, -102.016919293413, 1);
-            sketchEdit.ksLineSeg(-125.943980536372, -125.351443072569, -113.216058475014, -112.623521011211, 1);
-            sketchEdit.ksLineSeg(-102.609456757216, -135.016919293413, -102.609456757216, -117.016919293413, 1);
-            sketchEdit.ksLineSeg(-79.27493297806, -125.351443072569, -92.002855039418, -112.623521011211, 1);
-            sketchEdit.ksLineSeg(-69.609456757216, -102.016919293413, -87.609456757216, -102.016919293413, 1);
-
-
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 33, 1);
-            sketchEdit.ksCircle(-112.667829571579 + 3, 104.472405663619 + 3, 15, 1);
-            sketchEdit.ksLineSeg(109.667829571579, 140.472405663619, 109.667829571579, 122.472405663619, 1);
-            sketchEdit.ksLineSeg(133.002353350735, 130.806929442775, 120.274431289377, 118.079007381417, 1);
-            sketchEdit.ksLineSeg(142.667829571579, 107.472405663619, 124.667829571579, 107.472405663619, 1);
-            sketchEdit.ksLineSeg(133.002353350735, 84.137881884463, 120.274431289377, 96.865803945821, 1);
-            sketchEdit.ksLineSeg(109.667829571579, 74.472405663619, 109.667829571579, 92.472405663619, 1);
-            sketchEdit.ksLineSeg(86.333305792423, 84.137881884463, 99.061227853781, 96.865803945821, 1);
-            sketchEdit.ksLineSeg(76.667829571579, 107.472405663619, 94.667829571579, 107.472405663619, 1);
-            sketchEdit.ksLineSeg(86.333305792423, 130.806929442775, 99.061227853781, 118.079007381417, 1);
-
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 33, 1);
-            sketchEdit.ksCircle(-105.609456757216 + 3, -99.016919293413 - 3, 15, 1);
-            sketchEdit.ksLineSeg(79.27493297806, -78.682395514257, 92.002855039418, -91.410317575615, 1);
-            sketchEdit.ksLineSeg(102.609456757216, -69.016919293413, 102.609456757216, -87.016919293413, 1);
-            sketchEdit.ksLineSeg(125.943980536372, -78.682395514257, 113.216058475014, -91.410317575615, 1);
-            sketchEdit.ksLineSeg(135.609456757216, -102.016919293413, 117.609456757216, -102.016919293413, 1);
-            sketchEdit.ksLineSeg(125.943980536372, -125.351443072569, 113.216058475014, -112.623521011211, 1);
-            sketchEdit.ksLineSeg(102.609456757216, -135.016919293413, 102.609456757216, -117.016919293413, 1);
-            sketchEdit.ksLineSeg(79.27493297806, -125.351443072569, 92.002855039418, -112.623521011211, 1);
-            sketchEdit.ksLineSeg(69.609456757216, -102.016919293413, 87.609456757216, -102.016919293413, 1);
-
-            definition.EndEdit();
-            ExtrudeSketch(_part, sketch, 50, true, 0, true);
+            // Выдавливание рисунка сопла.
+            constants.CurrentPlane.Z = constants.CurrentPlane.Z + nozzleLength / 2;
+            sketch = CreateSegmentsWithCircles(constants.CurrentPlane, constants.NozzleDrawingSegments,
+                constants.NozzleDrawingCircles);
+            ExtrudeSketch(_part, sketch, nozzleLength / 2, true, 0, true);            
         }
 
         /// <summary>
@@ -790,37 +438,24 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Построение рисунка на задней части корпуса звездолёта.
         /// </summary>
-        /// <param name="centerPlaneCoordinates">Массив координат центра плоскости.</param>
-        private void BuildBackDrawing(Point3D centerPlaneCoordinates)
+        /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
+        /// <param name="point2Ds">Массив отрезков.</param>
+        /// <returns>Сформированный эскиз.</returns>
+        private ksEntity BuildBackDrawing(Point3D centerPlaneCoordinates, Point2D[,] point2Ds)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(
-                centerPlaneCoordinates.X,
-                centerPlaneCoordinates.Y,
-                centerPlaneCoordinates.Z);
-            ksEntity plane = collection.First();
+            ksEntity plane = CreateSketchByPoint(centerPlaneCoordinates);
             definition.SetPlane(plane);
             sketch.Create();
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            sketchEdit.ksLineSeg(-20, 40, -20, -100, 1);
-            sketchEdit.ksLineSeg(20, -100, 20, 40, 1);
-            sketchEdit.ksLineSeg(20, 40, -20, 40, 1);
-            sketchEdit.ksLineSeg(0, 40, 0, 123, 1);
-            sketchEdit.ksLineSeg(0, 75, 49, 75, 1);
-            sketchEdit.ksLineSeg(0, 75, -49, 75, 1);
-            sketchEdit.ksLineSeg(-20, 0, -94, 0, 1);
-            sketchEdit.ksLineSeg(20, 0, 94, 0, 1);
-            sketchEdit.ksLineSeg(-68, -40, -20, -40, 1);
-            sketchEdit.ksLineSeg(68, -40, 20, -40, 1);
-            sketchEdit.ksLineSeg(-20, 25, -79, 25, 1);
-            sketchEdit.ksLineSeg(20, 25, 79, 25, 1);
-            sketchEdit.ksLineSeg(0, -20, 0, -100, 1);
+            for (int i = 0; i < point2Ds.GetLength(0); i++)
+            {
+                sketchEdit.ksLineSeg(point2Ds[i, 0].X, point2Ds[i, 0].Y,
+                    point2Ds[i, 1].X, point2Ds[i, 1].Y, 1);                
+            }            
             definition.EndEdit();
-
-            ExtrudeSketch(_part, sketch, 10, true, 0, true);
-
+            return sketch;
         }
 
         /// <summary>
@@ -894,8 +529,8 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Создание эскиза по точке.
         /// </summary>
-        /// <param name="centerPlaneCoordinates">Массив координат центра плоскости.</param>
-        /// <returns></returns>
+        /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
+        /// <returns>Сформированный эскиз.</returns>
         private ksEntity CreateSketchByPoint(Point3D centerPlaneCoordinates)
         {
             ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
@@ -989,13 +624,13 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Создание эскиза многоугольника с вырезом.
-        /// Вырез - многоугольник с тем же числом вершин.
+        /// Создание нескольких многоугольников по координатам.
         /// </summary>
         /// <param name="centerPlaneCoordinates">Центр плоскости, на которой строится эскиз.</param>
         /// <param name="polygonCoordinates">Координаты многоугольника.</param>
-        /// <returns></returns>
-        private ksEntity CreatePolygonWithCutout(Point3D centerPlaneCoordinates, Point2D[,] polygonCoordinates)
+        /// <returns>Сформированный эскиз.</returns>
+        private ksEntity CreateSeveralPolygon(Point3D centerPlaneCoordinates, 
+            Point2D[,] polygonCoordinates, bool isMirrored)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
@@ -1009,10 +644,21 @@ namespace XWingPluginForCompass3D.Model
                 {
                     sketchEdit.ksLineSeg(polygonCoordinates[i, j].X, polygonCoordinates[i, j].Y,
                         polygonCoordinates[i, j + 1].X, polygonCoordinates[i, j + 1].Y, 1);
+                    if (isMirrored)
+                    {
+                        sketchEdit.ksLineSeg(-polygonCoordinates[i, j].X, polygonCoordinates[i, j].Y,
+                        -polygonCoordinates[i, j + 1].X, polygonCoordinates[i, j + 1].Y, 1);
+                    }
                 }
                 sketchEdit.ksLineSeg(polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].X,
                     polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].Y,
                         polygonCoordinates[i, 0].X, polygonCoordinates[i, 0].Y, 1);
+                if (isMirrored)
+                {
+                    sketchEdit.ksLineSeg(-polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].X,
+                    polygonCoordinates[i, polygonCoordinates.GetLength(1) - 1].Y,
+                        -polygonCoordinates[i, 0].X, polygonCoordinates[i, 0].Y, 1);
+                }
             }
             definition.EndEdit();
             return sketch;
@@ -1085,7 +731,8 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="point2Ds">Массив точек, являющихся концами отрезков.</param>
         /// <param name="arcs">Массив дуг.</param>
         /// <returns></returns>
-        private ksEntity CreateSegmentsWithArcs(Point3D centerPlaneCoordinates, Point2D[,,] point2Ds, Arc[,] arcs)
+        private ksEntity CreateSegmentsWithArcs(Point3D centerPlaneCoordinates, Point2D[,,] point2Ds, 
+            Arc[,] arcs, bool isMirrored)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
@@ -1100,14 +747,16 @@ namespace XWingPluginForCompass3D.Model
                     sketchEdit.ksLineSeg(point2Ds[i, j, 0].X, point2Ds[i, j, 0].Y,
                         point2Ds[i, j, 1].X, point2Ds[i, j, 1].Y, 1);
                     sketchEdit.ksArcByPoint(arcs[i, j].Center.X, arcs[i, j].Center.Y, arcs[i, j].Radius,
-                        arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y, arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
+                        arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y, 
+                        arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
                         arcs[i, j].Direction, 1);
-                    if (arcs.GetLength(1) > 2)
+                    if (isMirrored)
                     {
                         sketchEdit.ksLineSeg(-point2Ds[i, j, 0].X, point2Ds[i, j, 0].Y,
                             -point2Ds[i, j, 1].X, point2Ds[i, j, 1].Y, 1);
                         sketchEdit.ksArcByPoint(-arcs[i, j].Center.X, arcs[i, j].Center.Y, arcs[i, j].Radius,
-                            -arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y, -arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
+                            -arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y, 
+                            -arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
                             (short)-arcs[i, j].Direction, 1);
                     }
                 }
@@ -1123,7 +772,8 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="point2Ds">Массив точек, являющихся концами отрезков.</param>
         /// <param name="circles">Массив кругов.</param>
         /// <returns></returns>
-        private ksEntity CreateSegmentsWithCircles(Point3D centerPlaneCoordinates, Point2D[,,] point2Ds, Circle[,] circles)
+        private ksEntity CreateSegmentsWithCircles(Point3D centerPlaneCoordinates, 
+            Point2D[,,] point2Ds, Circle[,] circles)
         {
             ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceleratorsConstants.cs" />
     <Compile Include="Arc.cs" />
     <Compile Include="BlastersConstants.cs" />
     <Compile Include="BodyConstants.cs" />

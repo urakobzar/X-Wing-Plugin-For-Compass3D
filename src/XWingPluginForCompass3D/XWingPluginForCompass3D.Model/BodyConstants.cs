@@ -292,6 +292,26 @@ namespace XWingPluginForCompass3D.Model
         };
 
         /// <summary>
+        /// Массив точек, используемых для построения отрезков рисунка задней части корпуса.
+        /// </summary>
+        private readonly Point2D[,] _backDrawingSegments = new Point2D[,]
+        {            
+            { new Point2D(-20, 40), new Point2D(-20, -100)},
+            { new Point2D(20, -100), new Point2D(20, 40)},
+            { new Point2D(20, 40), new Point2D(-20, 40)},
+            { new Point2D(0, 40), new Point2D(0, 123)},
+            { new Point2D(0, 75), new Point2D(49, 75)},
+            { new Point2D(0, 75), new Point2D(-49, 75)},
+            { new Point2D(-20, 0), new Point2D(-94, 0)},
+            { new Point2D(20, 0), new Point2D(94, 0)},             
+            { new Point2D(-68, -40), new Point2D(-20, -40)},
+            { new Point2D(68, -40), new Point2D(20, -40)},
+            { new Point2D(-20, 25), new Point2D(-79, 25)},
+            { new Point2D(20, 25), new Point2D(79, 25)},
+            { new Point2D(0, -20), new Point2D(0, -100)}            
+        };
+
+        /// <summary>
         /// Возвращает координату центра плоскости верхнего основания корпуса звездолёта. 
         /// </summary>
         public Point3D UpperBasePlaneCoordinate
@@ -577,6 +597,15 @@ namespace XWingPluginForCompass3D.Model
             }
         }
 
-
+        /// <summary>
+        /// Возвращает массив точек, используемых для построения отрезков рисунка задней части корпуса.
+        /// </summary>
+        public Point2D[,] BackDrawingSegments
+        {
+            get
+            {
+                return _backDrawingSegments;
+            }
+        }
     }
 }
