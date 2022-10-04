@@ -34,7 +34,7 @@ namespace XWingPluginForCompass3D.Model
         /// Построение детали по заданным параметрам.
         /// </summary>
         /// <param name="xwing">Объект заданных параметров X-Wing.</param>
-        public void BuildDetail(XWingParameters xwing)
+        public void BuildDetail(XWing xwing)
         {
             // Разница между длиной корпуса и шириной крыльев.
             double bodyAndWingsDifference = xwing.BodyLength - xwing.WingWidth;
@@ -133,7 +133,7 @@ namespace XWingPluginForCompass3D.Model
             CutExtrusion(sketch, 100, true);
 
             // Вырез нижней части корпуса: срезаются углы призмы.
-            sketch = CreatePolygonSketchByPoint(constants.BodyBackPlane,
+            sketch = CreatePolygonSketchByPoint(constants.BackBodyPlane,
                 constants.BodyCutoutVertexes, true);
             CutExtrusion(sketch, bodyLength, true);
 
@@ -162,7 +162,7 @@ namespace XWingPluginForCompass3D.Model
             BuildDroidHead(constants.BaseDroidHeadPlane, constants.DroidHeadArc);
 
             // Углубление задней части корпуса.
-            sketch = CreatePolygonSketchByPoint(constants.BackBodyPlaneCoordinate,
+            sketch = CreatePolygonSketchByPoint(constants.BackBodyPlane,
                 constants.BackBodyDeepingVertexes, false);
             CutExtrusion(sketch, 10, true);
 
