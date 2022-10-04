@@ -33,15 +33,9 @@
                     new Point2D(-49.470255, -600)
                 }                
             };
-            _lowerBodyBackPlane 
-                = new Point3D(0, -96.493198, -600 - bodyLength);
             _lowerBodySidePlane 
                 = new Point3D(-49.470255, -96.493198, -600 - (bodyLength / 2));
-            _upperBodyPartFacePlane 
-                = new Point3D(0, 128.493198, -600 - (bodyLength / 2));
-            _deepingBodyPartFacePlane 
-                = new Point3D(0, 123.493198, -600 - (bodyLength / 2));
-            _backBodyPlaneCoordinate 
+            _backBodyPlane 
                 = new Point3D(0, 0, -600 - bodyLength);
             _backDeepingPlane 
                 = new Point3D(87.3, 11.5, -590 - bodyLength);
@@ -64,11 +58,6 @@
         private readonly Point3D _lowerFacePlane;
 
         /// <summary>
-        /// Координата центра плоскости задней грани нижней части корпуса звездолёта.
-        /// </summary>
-        private readonly Point3D _lowerBodyBackPlane;
-
-        /// <summary>
         /// Координата центра плоскости боковой грани нижней части корпуса звездолёта.
         /// </summary>
         private readonly Point3D _lowerBodySidePlane;
@@ -82,12 +71,14 @@
         /// <summary>
         /// Координата центра плоскости верхней выпуклой части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _upperBodyPartFacePlane;
+        private readonly Point3D _upperBodyPartFacePlane = 
+            new Point3D(0, 128.493198, -660);
 
         /// <summary>
-        /// Координата центра плоскости углубления верхней выпуклой части корпуса звездолёта.
+        /// Координата плоскости углубления верхней выпуклой части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _deepingBodyPartFacePlane;
+        private readonly Point3D _deepingBodyPartFacePlane = 
+            new Point3D(0, 123.493198, -660);
 
         /// <summary>
         /// Координата центра плоскости основания головы дроида звездолёта.
@@ -98,7 +89,7 @@
         /// <summary>
         /// Координата центра плоскости задней части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _backBodyPlaneCoordinate;
+        private readonly Point3D _backBodyPlane;
 
         /// <summary>
         /// Координата центра плоскости углубления задней части корпуса звездолёта.
@@ -327,17 +318,6 @@
         }
 
         /// <summary>
-        /// Возвращает координату центра задней грани корпуса звездолёта. 
-        /// </summary>
-        public Point3D BodyBackPlane
-        {
-            get
-            {
-                return _lowerBodyBackPlane;
-            }
-        }
-
-        /// <summary>
         /// Возвращает координату центра боковой грани нижней части корпуса звездолёта. 
         /// </summary>
         public Point3D LowerSideBackPlane
@@ -395,11 +375,11 @@
         /// <summary>
         /// Возвращает координату центра плоскости задней части корпуса звездолёта.
         /// </summary>
-        public Point3D BackBodyPlaneCoordinate
+        public Point3D BackBodyPlane
         {
             get
             {
-                return _backBodyPlaneCoordinate;
+                return _backBodyPlane;
             }
         }
 
