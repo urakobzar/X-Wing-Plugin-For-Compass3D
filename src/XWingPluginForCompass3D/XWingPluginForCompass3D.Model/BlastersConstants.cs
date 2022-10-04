@@ -6,7 +6,7 @@
     public class BlastersConstants
     {
         /// <summary>
-        /// Параметризированный конструктор.
+        /// Создаёт экземпляр класса констант для построения бластерных орудий.
         /// </summary>
         /// <param name="difference">Разница между шириной крыльев и длиной корпуса в мм.</param>
         public BlastersConstants(double difference)

@@ -1,59 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
-    /// Класс констант, необходимых для построения носовой части детали XWing
+    /// Класс констант, необходимых для построения носовой части детали XWing.
     /// </summary>
     public class BowBodyConstants
     {
         /// <summary>
-        /// Конструктор класса констант для построения носовой части корпуса.
+        /// Создаёт экземпляр класса констант для построения носовой части.
         /// </summary>
         /// <param name="bowLength">Длина носа звездолёта</param>
         public BowBodyConstants(double bowLength)
         {
-            _tipBasePlaneCoordinate = new Point3D(0, 0, bowLength);
+            _tipFrontBasePlane = new Point3D(0, 0, bowLength);
         }
 
         /// <summary>
         /// Координата центра плоскости верхней грани носовой части звездолёта.
         /// </summary>
-        private readonly Point3D _upperFacePlaneCoordinate = 
-            new Point3D(0, 52.246599057777, -300);
+        private readonly Point3D _upperFacePlane = 
+            new Point3D(0, 52.2465990, -300);
 
         /// <summary>
         /// Координата центра плоскости передней грани кокпита.
         /// </summary>
-        private readonly Point3D _cockpitFrontFacePlaneCoordinate =
-            new Point3D(0, 50.904867452294, 2.178893568691);
+        private readonly Point3D _cockpitFrontFacePlane =
+            new Point3D(0, 50.9048674, 2.1788935);
 
         /// <summary>
         /// Координата центра плоскости боковой грани кокпита.
         /// </summary>
-        private readonly Point3D _cockpitSideFacePlaneCoordinate =
-            new Point3D(-39.913887624665, 76.626534528915, -291.821106431309);
+        private readonly Point3D _cockpitSideFacePlane =
+            new Point3D(-39.9138876, 76.6265345, -291.8211064);
 
         /// <summary>
         /// Координата центра плоскости основания острия носовой части звездолёта.
         /// </summary>
-        private readonly Point3D _tipBasePlaneCoordinate;
+        private readonly Point3D _tipFrontBasePlane;
 
         /// <summary>
         /// Координата центра верхнего ребра острия носовой части звездолёта.
         /// </summary>
-        private readonly Point3D _tipUpperEdgeCoordinate =
-            new Point3D(-0.425689731596, 17.251133647408, 100);
+        private readonly Point3D _tipUpperEdge =
+            new Point3D(-0.4256897, 17.2511336, 100);
 
         /// <summary>
         /// Координата центра нижнего ребра острия носовой части звездолёта.
         /// </summary>
-        private readonly Point3D _tipLowerEdgeCoordinate =
-            new Point3D(0, -10.251133647408, 100);
+        private readonly Point3D _tipLowerEdge =
+            new Point3D(0, -10.2511336, 100);
 
         /// <summary>
         /// Расстояния фаски верхнего ребра острия носовой части звездолёта.
@@ -61,7 +55,7 @@ namespace XWingPluginForCompass3D.Model
         /// Второй элемент массива - это гипотенуза.
         /// </summary>
         private readonly double[] _tipUpperEdgeChamferDistances =
-            {20, 54.949548389092};
+            {20, 54.9495483};
 
         /// <summary>
         /// Расстояния фаски нижнего ребра острия носовой части звездолёта.
@@ -69,100 +63,101 @@ namespace XWingPluginForCompass3D.Model
         /// Второй элемент массива - это гипотенуза.
         /// </summary>
         private readonly double[] _tipLowerEdgeChamferDistances =
-            {15, 55.980762113533};
+            {15, 55.9807621};
 
         /// <summary>
         /// Массив координат вершин в верхнем основании носовой части звездолёта.
         /// </summary>
-        private readonly Point2D[] _upperBaseVertexes =
+        private readonly Point2D[,] _upperBaseVertexes =
         {
-            new Point2D(-43, 0),
-            new Point2D(-26, 26),
-            new Point2D(26, 26),
-            new Point2D(43, 0),
-            new Point2D(26, -19),
-            new Point2D(-26, -19)
+            {
+                new Point2D(-43, 0),
+                new Point2D(-26, 26),
+                new Point2D(26, 26),
+                new Point2D(43, 0),
+                new Point2D(26, -19),
+                new Point2D(-26, -19)
+            }            
         };
 
         /// <summary>
         /// Массив координат вершин грани носовой части звездолёта.
         /// </summary>
-        private readonly Point2D[] _upperFaceVertexes =
+        private readonly Point2D[,] _upperFaceVertexes =
         {
-            new Point2D(54.395689029929, 604.557951837448),
-            new Point2D(-54.395689029929, 604.557951837448),
-            new Point2D(-26, 2.266049311439),
-            new Point2D(26, 2.266049311439)
+            {
+                new Point2D(54.3956890, 604.5579518),
+                new Point2D(-54.3956890, 604.5579518),
+                new Point2D(-26, 2.2660493),
+                new Point2D(26, 2.2660493)
+            }            
         };
 
         /// <summary>
-        /// Массив координат вершин первого выреза кокпита звездолёта.
+        /// Массив координат вершин выреза кокпита звездолёта.
+        /// В ходе программы координаты отзеркалятся.
         /// </summary>
-        private readonly Point2D[] _firstCockpitCutoutVertexes =
+        private readonly Point2D[,] _cockpitCutoutVertexes =
         {
-            new Point2D(-26, 75.901062150385),
-            new Point2D(-54.395689029929, 75.901062150385),
-            new Point2D(-54.395689029929, 25.901062150385)
+            {
+                new Point2D(-26, 75.9010621),
+                new Point2D(-54.3956890, 75.9010621),
+                new Point2D(-54.3956890, 25.9010621)
+            }
         };
 
         /// <summary>
-        /// Массив координат вершин второго выреза кокпита звездолёта.
+        /// Массив координат вершин второго выреза кокпита.
         /// </summary>
-        private readonly Point2D[] _secondCockpitCutoutVertexes =
+        private readonly Point2D[,] _cockpitSliceVertexes =
         {
-            new Point2D(26, 75.901062150385),
-            new Point2D(54.395689029929, 75.901062150385),
-            new Point2D(54.395689029929, 25.901062150385)
+            {
+                new Point2D(-1, 25.9010621),
+                new Point2D(-1, 75.9010621),
+                new Point2D(-605.1116164, 75.9010621)
+            }            
         };
 
         /// <summary>
-        /// Массив координат вершин второго выреза кокпита звездолёта.
+        /// Массив координат вершин основания острия носовой части.
         /// </summary>
-        private readonly Point2D[] _cockpitSliceVertexes =
+        private readonly Point2D[,] _tipBowBodyVertexes =
         {
-            new Point2D(-1, 25.901062150385),
-            new Point2D(-1, 75.901062150385),
-            new Point2D(-605.111616473601, 75.901062150386)
+            {
+                new Point2D(-43, 0),
+                new Point2D(-26, 26),
+                new Point2D(25, 26),
+                new Point2D(43, 0),
+                new Point2D(26, -19),
+                new Point2D(-26, -19)
+            }            
         };
 
         /// <summary>
-        /// Массив координат вершин основания острия носовой части звездолёта.
-        /// </summary>
-        private readonly Point2D[] _tipBowBodyVertexes =
-        {
-            new Point2D(-43, 0),
-            new Point2D(-26, 26),
-            new Point2D(25, 26),
-            new Point2D(43, 0),
-            new Point2D(26, -19),
-            new Point2D(-26, -19)
-        };
-
-        /// <summary>
-        /// Массив координат центра ребер скругления передней носовой части звездолёта.
+        /// Массив координат центра ребер скругления передней носовой части.
         /// </summary>
         private readonly Point3D[] _tipFrontFilletEdgeCoordinates =
         {
-            new Point3D(28.720056217208, -7.259103331883, 66.313406124592),
-            new Point3D(-28.755495846165, -7.196422527305, 66.489247908264),
-            new Point3D(27.634400064284, 11.74339370277, 67.997602962077),
-            new Point3D(-0.113051518725, 1.446485054632, 90.735654691904),
-            new Point3D(-28.21381908901, 11.74339370277, 67.997602962077)
+            new Point3D(28.7200562, -7.2591033, 66.3134061),
+            new Point3D(-28.7554958, -7.1964225, 66.4892479),
+            new Point3D(27.6344000, 11.7433937, 67.9976029),
+            new Point3D(-0.1130515, 1.4464850, 90.7356546),
+            new Point3D(-28.2138190, 11.7433937, 67.9976029)
         };
 
         /// <summary>
-        /// Массив координат центра ребер скругления боковой носовой части звездолёта.
+        /// Массив координат центра ребер скругления боковой носовой части.
         /// </summary>
         private readonly Point3D[] _tipSideFilletEdgeCoordinates =
         {
-            new Point3D(-38.479522122003, 0.341549134121, 41.109212708249),
-            new Point3D(38.43038578768, 0.284493891452, 41.092916697691)
+            new Point3D(-38.4795221, 0.3415491, 41.1092127),
+            new Point3D(38.4303857, 0.2844938, 41.0929166)
         };
 
         /// <summary>
-        /// Возвращает массив координат вершин в верхнем основании носовой части звездолёта. 
+        /// Возвращает массив координат вершин в верхнем основании носовой части. 
         /// </summary>
-        public Point2D[] UpperBaseVertexes
+        public Point2D[,] UpperBaseVertexes
         {
             get
             {
@@ -171,9 +166,9 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив координат верхней грани носовой части звездолёта. 
+        /// Возвращает массив координат верхней грани носовой части. 
         /// </summary>
-        public Point2D[] UpperFaceVertexes
+        public Point2D[,] UpperFaceVertexes
         {
             get
             {
@@ -184,29 +179,18 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив координат вершин первого выреза кокпита звездолёта. 
         /// </summary>
-        public Point2D[] FirstCockpitCutoutVertexes
+        public Point2D[,] CockpitCutoutVertexes
         {
             get
             {
-                return _firstCockpitCutoutVertexes;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат вершин второго выреза кокпита звездолёта. 
-        /// </summary>
-        public Point2D[] SecondCockpitCutoutVertexes
-        {
-            get
-            {
-                return _secondCockpitCutoutVertexes;
+                return _cockpitCutoutVertexes;
             }
         }
 
         /// <summary>
         /// Возвращает массив координат вершин среза кокпита звездолёта. 
         /// </summary>
-        public Point2D[] CockpitSliceVertexes
+        public Point2D[,] CockpitSliceVertexes
         {
             get
             {
@@ -215,9 +199,9 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив координат вершин основания острия носовой части звездолёта.
+        /// Возвращает массив координат вершин основания острия носовой части.
         /// </summary>
-        public Point2D[] TipBowBodyVertexes
+        public Point2D[,] TipBowBodyVertexes
         {
             get
             {
@@ -226,7 +210,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив координат центра ребер скругления передней носовой части звездолёта.
+        /// Возвращает массив координат центра ребер скругления передней носовой части.
         /// </summary>
         public Point3D[] TipFrontFilletEdgeCoordinates
         {
@@ -237,7 +221,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив координат центра ребер скругления боковой носовой части звездолёта.
+        /// Возвращает массив координат центра ребер скругления боковой носовой части.
         /// </summary>
         public Point3D[] TipSideFilletEdgeCoordinates
         {
@@ -248,73 +232,73 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает координату центра плоскости верхней грани носовой части звездолёта. 
+        /// Возвращает координату центра плоскости верхней грани носовой части. 
         /// </summary>
-        public Point3D UpperFacePlaneCoordinate
+        public Point3D UpperFacePlane
         {
             get
             {
-                return _upperFacePlaneCoordinate;
+                return _upperFacePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра плоскости передней грани кокпита. 
         /// </summary>
-        public Point3D CockpitFrontFacePlaneCoordinate
+        public Point3D CockpitFrontFacePlane
         {
             get
             {
-                return _cockpitFrontFacePlaneCoordinate;
+                return _cockpitFrontFacePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра плоскости боковой грани кокпита. 
         /// </summary>
-        public Point3D CockpitSideFacePlaneCoordinate
+        public Point3D CockpitSideFacePlane
         {
             get
             {
-                return _cockpitSideFacePlaneCoordinate;
+                return _cockpitSideFacePlane;
             }
         }
 
         /// <summary>
-        /// Возвращает координату центра плоскости основания острия носовой части звездолёта. 
+        /// Возвращает координату центра плоскости основания острия носовой части. 
         /// </summary>
-        public Point3D TipBaseFrontPlaneCoordinate
+        public Point3D TipFrontBasePlane
         {
             get
             {
-                return _tipBasePlaneCoordinate;
+                return _tipFrontBasePlane;
             }
         }
 
         /// <summary>
-        /// Возвращает координату центра верхнего ребра острия носовой части звездолёта.  
+        /// Возвращает координату центра верхнего ребра острия носовой части.  
         /// </summary>
-        public Point3D TipUpperEdgeCoordinate
+        public Point3D TipUpperEdge
         {
             get
             {
-                return _tipUpperEdgeCoordinate;
+                return _tipUpperEdge;
             }
         }
 
         /// <summary>
-        /// Возвращает координату центра нижнего ребра острия носовой части звездолёта. 
+        /// Возвращает координату центра нижнего ребра острия носовой части. 
         /// </summary>
-        public Point3D TipLowerEdgeCoordinate
+        public Point3D TipLowerEdge
         {
             get
             {
-                return _tipLowerEdgeCoordinate;
+                return _tipLowerEdge;
             }
         }
 
         /// <summary>
-        /// Возвращает расстояния фаски нижнего ребра острия носовой части звездолёта.  
+        /// Возвращает расстояния фаски верхнего ребра острия носовой части.  
         /// </summary>
         public double[] TipUpperEdgeChamferDistances
         {
@@ -325,7 +309,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает расстояния фаски нижнего ребра острия носовой части звездолёта. 
+        /// Возвращает расстояния фаски нижнего ребра острия носовой части. 
         /// </summary>
         public double[] TipLowerEdgeChamferDistances
         {

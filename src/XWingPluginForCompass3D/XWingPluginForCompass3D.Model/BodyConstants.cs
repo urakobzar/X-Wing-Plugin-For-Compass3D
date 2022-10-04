@@ -1,110 +1,99 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс констант для построения основного корпуса звездолёта.
     /// </summary>
     public class BodyConstants
     {
-
         /// <summary>
-        /// Конструктор класса констант для построения корпуса.
+        /// Создаёт экземпляр класса констант для построения корпуса.
         /// </summary>
         /// <param name="bodyLength">Длина корпуса звездолёта.</param>
         public BodyConstants(double bodyLength)
         {
-            _upperFacePlaneCoordinate = new Point3D(0, 78.493198, -600 - (bodyLength / 2));
-
-            _upperFaceVertexes = new Point2D[]
+            _upperFacePlane 
+                = new Point3D(0, 78.493198, -600 - (bodyLength / 2));
+            _upperFaceVertexes = new Point2D[,]
             {
-                new Point2D(-54.395689, 600 + bodyLength),
-                new Point2D(54.395689, 600 + bodyLength),
-                new Point2D(54.395689, 600),
-                new Point2D(-54.395689, 600)
+                {
+                    new Point2D(-54.395689, 600 + bodyLength),
+                    new Point2D(54.395689, 600 + bodyLength),
+                    new Point2D(54.395689, 600),
+                    new Point2D(-54.395689, 600)
+                }                
             };
-
-            _lowerFacePlaneCoordinate = new Point3D(0, -71.493198, -600 - (bodyLength / 2));
-
-            _lowerFaceVertexes = new Point2D[]
+            _lowerFacePlane 
+                = new Point3D(0, -71.493198, -600 - (bodyLength / 2));
+            _lowerFaceVertexes = new Point2D[,]
             {
-                new Point2D(-49.470255, -600-bodyLength),
-                new Point2D(49.470255, -600-bodyLength),
-                new Point2D(49.470255, -600),
-                new Point2D(-49.470255, -600)
+                {
+                    new Point2D(-49.470255, -600-bodyLength),
+                    new Point2D(49.470255, -600-bodyLength),
+                    new Point2D(49.470255, -600),
+                    new Point2D(-49.470255, -600)
+                }                
             };
-
-            _lowerBodyBackPlaneCoordinate = new Point3D(0, -96.493198, -600 - bodyLength);
-
-            _lowerBodySidePlaneCoordinate = new Point3D(-49.470255, -96.493198, -600 - (bodyLength / 2));
-
-            _upperBodyPartFacePlaneCoordinate = new Point3D(0, 128.493198, -600 - (bodyLength / 2));
-
-            _deepingBodyPartFacePlaneCoordinate = new Point3D(0, 123.493198, -600 - (bodyLength / 2));
-
-            _backBodyPlaneCoordinate = new Point3D(0, 0, -600 - bodyLength);
-
-            _backDeepingPlaneCoordinate = new Point3D(87.3, 11.5, -590 - bodyLength);
+            _lowerBodyBackPlane 
+                = new Point3D(0, -96.493198, -600 - bodyLength);
+            _lowerBodySidePlane 
+                = new Point3D(-49.470255, -96.493198, -600 - (bodyLength / 2));
+            _upperBodyPartFacePlane 
+                = new Point3D(0, 128.493198, -600 - (bodyLength / 2));
+            _deepingBodyPartFacePlane 
+                = new Point3D(0, 123.493198, -600 - (bodyLength / 2));
+            _backBodyPlaneCoordinate 
+                = new Point3D(0, 0, -600 - bodyLength);
+            _backDeepingPlane 
+                = new Point3D(87.3, 11.5, -590 - bodyLength);
         }
 
         /// <summary>
         /// Координата центра плоскости верхнего основания корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _upperBasePlaneCoordinate =
+        private readonly Point3D _upperBasePlane = 
             new Point3D(0, 0, -600);
 
         /// <summary>
         /// Координата центра плоскости верхней грани звездолёта.
         /// </summary>
-        private readonly Point3D _upperFacePlaneCoordinate;
-
+        private readonly Point3D _upperFacePlane;
 
         /// <summary>
         /// Координата центра плоскости нижней грани звездолёта.
         /// </summary>
-        private readonly Point3D _lowerFacePlaneCoordinate;
-
-        /// <summary>
-        /// Координата центра плоскости передней грани верхней части корпуса звездолёта.
-        /// </summary>
-        private readonly Point3D _upperBodyFrontPlaneCoordinate =
-            new Point3D(0, 103.493198, -600);
+        private readonly Point3D _lowerFacePlane;
 
         /// <summary>
         /// Координата центра плоскости задней грани нижней части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _lowerBodyBackPlaneCoordinate;
+        private readonly Point3D _lowerBodyBackPlane;
 
         /// <summary>
         /// Координата центра плоскости боковой грани нижней части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _lowerBodySidePlaneCoordinate;
+        private readonly Point3D _lowerBodySidePlane;
 
         /// <summary>
         /// Координата центра задней плоскости носовой части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _bowBodyBackPlaneCoordinate =
-            new Point3D(0, 103.398065567848, -597.821106431309);
+        private readonly Point3D _bowBodyBackPlane = 
+            new Point3D(0, 103.3980655, -597.8211064);
 
         /// <summary>
         /// Координата центра плоскости верхней выпуклой части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _upperBodyPartFacePlaneCoordinate;
+        private readonly Point3D _upperBodyPartFacePlane;
 
         /// <summary>
         /// Координата центра плоскости углубления верхней выпуклой части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _deepingBodyPartFacePlaneCoordinate;
+        private readonly Point3D _deepingBodyPartFacePlane;
 
         /// <summary>
         /// Координата центра плоскости основания головы дроида звездолёта.
         /// </summary>
-        private readonly Point3D _baseDroidHeadPlaneCoordinate =
-            new Point3D(-0.203345439322, 133.493198, -632.637269856963);
+        private readonly Point3D _baseDroidHeadPlane =
+            new Point3D(-0.2033454, 133.493198, -632.6372698);
 
         /// <summary>
         /// Координата центра плоскости задней части корпуса звездолёта.
@@ -112,183 +101,176 @@ namespace XWingPluginForCompass3D.Model
         private readonly Point3D _backBodyPlaneCoordinate;
 
         /// <summary>
-        /// Координата центра плоскости задней части корпуса звездолёта.
+        /// Координата центра плоскости углубления задней части корпуса звездолёта.
         /// </summary>
-        private readonly Point3D _backDeepingPlaneCoordinate;
+        private readonly Point3D _backDeepingPlane;
 
         /// <summary>
         /// Массив координат вершин верхнего основания корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _baseVertexes =
+        private readonly Point2D[,] _baseVertexes =
         {
-            new Point2D(108.977589, -4.985001),
-            new Point2D(54.395689, 78.493198),
-            new Point2D(-54.395689, 78.493198),
-            new Point2D(-108.977589, -4.985001),
-            new Point2D(-49.470255, -71.493198),
-            new Point2D(49.470255, -71.493198)
+            {
+                new Point2D(108.977589, -4.985001),
+                new Point2D(54.395689, 78.493198),
+                new Point2D(-54.395689, 78.493198),
+                new Point2D(-108.977589, -4.985001),
+                new Point2D(-49.470255, -71.493198),
+                new Point2D(49.470255, -71.493198)
+            }            
         };
 
         /// <summary>
         /// Массив координат вершин верхней грани корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _upperFaceVertexes;
+        private readonly Point2D[,] _upperFaceVertexes;
 
         /// <summary>
         /// Массив координат вершин нижней грани корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _lowerFaceVertexes;
+        private readonly Point2D[,] _lowerFaceVertexes;
 
         /// <summary>
-        /// Массив координат вершин первого выреза верхней части корпуса звездолёта.
+        /// Массив координат вершин выреза выдавленных частей корпуса звездолёта.
+        /// В ходе программы координаты отзеркалятся.
         /// </summary>
-        private readonly Point2D[] _firstUpperBodyCutoutVertexes =
+        private readonly Point2D[,] _BodyCutoutVertexes =
         {
-            new Point2D(-54.395689, 128.493198),
-            new Point2D(-54.395689, 78.493198),
-            new Point2D(-31.395689, 128.493198)
-        };
-
-        /// <summary>
-        /// Массив координат вершин второго выреза верхней части корпуса звездолёта.
-        /// </summary>
-        private readonly Point2D[] _secondUpperBodyCutoutVertexes =
-        {
-            new Point2D(54.395689, 128.493198),
-            new Point2D(54.395689, 78.493198),
-            new Point2D(31.395689, 128.493198)
-        };
-
-        /// <summary>
-        /// Массив координат вершин первого выреза нижней части корпуса звездолёта.
-        /// </summary>
-        private readonly Point2D[] _firstLowerBodyCutoutVertexes =
-        {
-            new Point2D(-49.470255, -121.493198),
-            new Point2D(-49.470255, -71.493198),
-            new Point2D(-26.470255, -121.493198)
-        };
-
-        /// <summary>
-        /// Массив координат вершин второго выреза нижней части корпуса звездолёта.
-        /// </summary>
-        private readonly Point2D[] _secondLowerBodyCutoutVertexes =
-        {
-            new Point2D(49.470255, -121.493198),
-            new Point2D(49.470255, -71.493198),
-            new Point2D(26.470255, -121.493198)
+            {
+                new Point2D (-49.470255, -121.493198),
+                new Point2D (-49.470255, -71.493198),
+                new Point2D (-26.470255, -121.493198)
+            },
+            {
+                new Point2D(-54.395689, 128.493198),
+                new Point2D(-54.395689, 78.493198),
+                new Point2D(-31.395689, 128.493198)
+            }
         };
 
         /// <summary>
         /// Массив координат вершин среза нижней части корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _lowerBodySliceVertexes =
+        private readonly Point2D[,] _lowerBodySliceVertexes =
         {
-            new Point2D(600, 71.493198),
-            new Point2D(600, 121.493198),
-            new Point2D(650, 121.493198)
+            {
+                new Point2D (600, 71.493198),
+                new Point2D (600, 121.493198),
+                new Point2D (650, 121.493198)
+            }            
         };
 
         /// <summary>
         /// Массив координат вершин задней плоскости носовой части корпуса звездолёта.
+        /// (Поле необходимо для того, чтобы убрать зазор между носом и корпусом)
         /// </summary>
-        private readonly Point2D[] _bowBodyFaceVertexes =
+        private readonly Point2D[,] _bowBodyFaceVertexes =
         {
-            new Point2D(54.395689, 25.901062),
-            new Point2D(26.115362, 75.697928),
-            new Point2D(-26, 75.901062150386),
-            new Point2D(-54.395689, 25.901062)
+            {
+                new Point2D (54.395689, 25.901062),
+                new Point2D (26.115362, 75.697928),
+                new Point2D (-26, 75.901062150386),
+                new Point2D (-54.395689, 25.901062)
+            }            
         };
 
         /// <summary>
         /// Массив координат вершин углубления верхней части корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _deepingUpperBodyFaceVertexes =
+        private readonly Point2D[,] _deepingUpperBodyFaceVertexes =
         {
-            new Point2D(-25, 607.659914486825),
-            new Point2D(25, 607.659914486825),
-            new Point2D(25, 892.659914486825),
-            new Point2D(-25, 892.659914486825)
+            {
+                new Point2D (-25, 607.659914486825),
+                new Point2D (25, 607.659914486825),
+                new Point2D (25, 892.659914486825),
+                new Point2D (-25, 892.659914486825)
+            }            
         };
 
         /// <summary>
         /// Массив окружностей для выдавливания в верхней части корпуса.
-        /// Первым элементом в массиве является центр окружности по X,
-        /// вторым элементом по Y, третий элемент - радиус
         /// </summary>
-        private readonly Circle[] _upperBodyPartExtrudingCirclesParameters =
+        private readonly Circle[] _upperBodyExtrudingCircles =
         {
-            new Circle( new Point2D(-0.203345439322, 632.637269856963), 25),
-            new Circle( new Point2D(-0.203345439322, 750.355637638365), 22),
-            new Circle( new Point2D(-0.203345439322, 706.466093921629), 8),
-            new Circle( new Point2D(-0.203345439322, 678.848141946151), 8),
-            new Circle( new Point2D(-0.203345439322, 750.355637638365), 19)
+            new Circle (new Point2D (-0.2033454, 632.6372698), 25),
+            new Circle (new Point2D (-0.2033454, 750.3556376), 22),
+            new Circle (new Point2D (-0.2033454, 706.4660939), 8),
+            new Circle (new Point2D (-0.2033454, 678.8481419), 8),
+            new Circle (new Point2D (-0.2033454, 750.3556376), 19)
         };
 
         /// <summary>
         /// Массив координат вершин выреза задней части корпуса звездолёта.
         /// </summary>
-        private readonly Point2D[] _backBodyDeepingVertexes =
+        private readonly Point2D[,] _backBodyDeepingVertexes =
         {
-            new Point2D(-97, -4),
-            new Point2D(-20, 123),
-            new Point2D(20, 123),
-            new Point2D(97, -4),
-            new Point2D(20, -100),
-            new Point2D(-20, -100)
+            {
+                new Point2D (-97, -4),
+                new Point2D (-20, 123),
+                new Point2D (20, 123),
+                new Point2D (97, -4),
+                new Point2D (20, -100),
+                new Point2D (-20, -100)
+            }            
         };
 
         /// <summary>
         /// Массив прямоугольников для выдавливания в верхней части корпуса.
-        /// Первым элементом в массиве является центр окружности по X,
-        /// вторым элементом по Y.
         /// </summary>
-        private readonly Point2D[,] _upperBodyPartExtrudingRectanglesCoordinates = new Point2D[,]
+        private readonly Point2D[,] _upperBodyExtrudingRectangles = new Point2D[,]
         {
             {
-                new Point2D (-19.203345439322, 663.772206526744),
-                new Point2D (18.796654560678, 663.772206526744),
-                new Point2D (18.796654560678, 721.772206526744),
-                new Point2D (-19.203345439322, 721.772206526744)
+                new Point2D (-19.2033454, 663.7722065),
+                new Point2D (18.7966545, 663.7722065),
+                new Point2D (18.7966545, 721.7722065),
+                new Point2D (-19.2033454, 721.7722065)
             },
             {
-                new Point2D (-19.203345439322, 858.526455211801),
-                new Point2D (18.796654560678, 858.526455211801),
-                new Point2D(18.796654560678, 878.526455211801),
-                new Point2D(-19.203345439322, 878.526455211801)
+                new Point2D (-19.2033454, 858.5264552),
+                new Point2D (18.7966545, 858.5264552),
+                new Point2D (18.7966545, 878.5264552),
+                new Point2D (-19.2033454, 878.5264552)
             },
             {
-                new Point2D(-22.203345439322, 784.715832632264),
-                new Point2D(21.796654560678, 784.715832632264),
-                new Point2D(21.796654560678, 842.715832632264),
-                new Point2D(-22.203345439322, 842.715832632264)
+                new Point2D (-22.2033454, 784.7158326),
+                new Point2D (21.7966545, 784.7158326),
+                new Point2D (21.7966545, 842.7158326),
+                new Point2D (-22.2033454, 842.7158326)
             },
             {
-                new Point2D(-15.203345439322, 669.272206526744),
-                new Point2D(14.796654560678, 669.272206526744),
-                new Point2D(14.796654560678, 716.272206526744),
-                new Point2D(-15.203345439322, 716.272206526744)
+                new Point2D (-15.2033454, 669.2722065),
+                new Point2D (14.7966545, 669.2722065),
+                new Point2D (14.7966545, 716.2722065),
+                new Point2D (-15.2033454, 716.2722065)
             },
             {
-                new Point2D(-15.203345439322, 861.526455211801),
-                new Point2D(14.796654560678, 861.526455211801),
-                new Point2D(14.796654560678, 875.526455211801),
-                new Point2D(-15.203345439322, 875.526455211801)
+                new Point2D (-15.2033454, 861.5264552),
+                new Point2D (14.7966545, 861.5264552),
+                new Point2D (14.7966545, 875.5264552),
+                new Point2D (-15.2033454, 875.5264552)
             },
             {
-                new Point2D(-19.203345439322, 788.215832632264),
-                new Point2D(18.796654560678, 788.215832632264),
-                new Point2D(18.796654560678, 839.215832632264),
-                new Point2D(-19.203345439322, 839.215832632264)
+                new Point2D (-19.2033454, 788.2158326),
+                new Point2D (18.7966545, 788.2158326),
+                new Point2D (18.7966545, 839.2158326),
+                new Point2D (-19.2033454, 839.2158326)
             }
         };
 
         /// <summary>
+        /// Дуга для построения головы дроида.
+        /// </summary>
+        private readonly Arc _droidHeadArc = new Arc(
+            new Point2D(0.2033454, 632.6372698), 25,
+            new Point2D(-0.2463156, 657.6332256), 
+            new Point2D(-0.2463156, 607.6413140), 1);
+
+        /// <summary>
         /// Массив окружностей для выдавливания в задней части корпуса.
         /// </summary>
-        private readonly Circle[] _backBodyPartExtrudingCirclesParameters =
+        private readonly Circle[] _backDrawingCircles =
         {
-            new Circle(new Point2D(0,0), 20)
+            new Circle (new Point2D (0, 0), 20)
         };
 
         /// <summary>
@@ -314,110 +296,99 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает координату центра плоскости верхнего основания корпуса звездолёта. 
         /// </summary>
-        public Point3D UpperBasePlaneCoordinate
+        public Point3D UpperBasePlane
         {
             get
             {
-                return _upperBasePlaneCoordinate;
+                return _upperBasePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра верхней грани корпуса звездолёта. 
         /// </summary>
-        public Point3D UpperFacePlaneCoordinate
+        public Point3D UpperFacePlane
         {
             get
             {
-                return _upperFacePlaneCoordinate;
+                return _upperFacePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра нижней грани корпуса звездолёта. 
         /// </summary>
-        public Point3D LowerFacePlaneCoordinate
+        public Point3D LowerFacePlane
         {
             get
             {
-                return _lowerFacePlaneCoordinate;
+                return _lowerFacePlane;
             }
         }
 
         /// <summary>
-        /// Возвращает координату центра передней грани верхней части корпуса звездолёта. 
+        /// Возвращает координату центра задней грани корпуса звездолёта. 
         /// </summary>
-        public Point3D UpperBodyFrontPlaneCoordinate
+        public Point3D BodyBackPlane
         {
             get
             {
-                return _upperBodyFrontPlaneCoordinate;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает координату центра задней грани нижней части корпуса звездолёта. 
-        /// </summary>
-        public Point3D LowerBodyBackPlaneCoordinate
-        {
-            get
-            {
-                return _lowerBodyBackPlaneCoordinate;
+                return _lowerBodyBackPlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра боковой грани нижней части корпуса звездолёта. 
         /// </summary>
-        public Point3D LowerSideBackPlaneCoordinate
+        public Point3D LowerSideBackPlane
         {
             get
             {
-                return _lowerBodySidePlaneCoordinate;
+                return _lowerBodySidePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра задней плоскости носовой части корпуса звездолёта. 
         /// </summary>
-        public Point3D BowBodyBackPlaneCoordinate
+        public Point3D BowBodyBackPlane
         {
             get
             {
-                return _bowBodyBackPlaneCoordinate;
+                return _bowBodyBackPlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра плоскости верхней выпуклой части корпуса звездолёта. 
         /// </summary>
-        public Point3D UpperBodyPartFacePlaneCoordinate
+        public Point3D UpperBodyPartFacePlane
         {
             get
             {
-                return _upperBodyPartFacePlaneCoordinate;
+                return _upperBodyPartFacePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра плоскости углубления верхней выпуклой части корпуса звездолёта. 
         /// </summary>
-        public Point3D DeepingBodyPartFacePlaneCoordinate
+        public Point3D DeepingBodyPartFacePlane
         {
             get
             {
-                return _deepingBodyPartFacePlaneCoordinate;
+                return _deepingBodyPartFacePlane;
             }
         }
 
         /// <summary>
         /// Возвращает координату центра плоскости углубления верхней выпуклой части корпуса звездолёта. 
         /// </summary>
-        public Point3D BaseDroidHeadPlaneCoordinate
+        public Point3D BaseDroidHeadPlane
         {
             get
             {
-                return _baseDroidHeadPlaneCoordinate;
+                return _baseDroidHeadPlane;
             }
         }
 
@@ -435,18 +406,18 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает координату центра плоскости углубления задней части корпуса звездолёта.
         /// </summary>
-        public Point3D BackDeepingPlaneCoordinate
+        public Point3D BackDeepingPlane
         {
             get
             {
-                return _backDeepingPlaneCoordinate;
+                return _backDeepingPlane;
             }
         }
 
         /// <summary>
         /// Возвращает массив координат верхнего основания корпуса звездолёта. 
         /// </summary>
-        public Point2D[] BaseVertexes
+        public Point2D[,] BaseVertexes
         {
             get
             {
@@ -457,7 +428,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив координат верхней грани корпуса звездолёта. 
         /// </summary>
-        public Point2D[] UpperFaceVertexes
+        public Point2D[,] UpperFaceVertexes
         {
             get
             {
@@ -468,7 +439,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив координат нижней грани корпуса звездолёта. 
         /// </summary>
-        public Point2D[] LowerFaceVertexes
+        public Point2D[,] LowerFaceVertexes
         {
             get
             {
@@ -477,53 +448,20 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив координат вершин первого выреза верхней части корпуса звездолёта. 
+        /// Возвращает массив координат вершин выреза нижней части корпуса звездолёта. 
         /// </summary>
-        public Point2D[] FirstUpperBodyCutoutVertexes
+        public Point2D[,] BodyCutoutVertexes
         {
             get
             {
-                return _firstUpperBodyCutoutVertexes;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат вершин второго выреза верхней части корпуса звездолёта. 
-        /// </summary>
-        public Point2D[] SecondUpperBodyCutoutVertexes
-        {
-            get
-            {
-                return _secondUpperBodyCutoutVertexes;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат вершин первого выреза нижней части корпуса звездолёта. 
-        /// </summary>
-        public Point2D[] FirstLowerBodyCutoutVertexes
-        {
-            get
-            {
-                return _firstLowerBodyCutoutVertexes;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат вершин второго выреза нижней части корпуса звездолёта. 
-        /// </summary>
-        public Point2D[] SecondLowerBodyCutoutVertexes
-        {
-            get
-            {
-                return _secondLowerBodyCutoutVertexes;
+                return _BodyCutoutVertexes;
             }
         }
 
         /// <summary>
         /// Возвращает массив координат вершин среза нижней части корпуса звездолёта. 
         /// </summary>
-        public Point2D[] LowerBodySliceVertexes
+        public Point2D[,] LowerBodySliceVertexes
         {
             get
             {
@@ -534,7 +472,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив координат вершин задней плоскости носовой части корпуса звездолёта.
         /// </summary>
-        public Point2D[] BowBodyFaceVertexes
+        public Point2D[,] BowBodyFaceVertexes
         {
             get
             {
@@ -545,7 +483,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив координат задней плоскости носовой части корпуса звездолёта.
         /// </summary>
-        public Point2D[] DeepingUpperBodyFaceVertexes
+        public Point2D[,] DeepingUpperBodyFaceVertexes
         {
             get
             {
@@ -556,29 +494,29 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает массив окружностей для выдавливания в верхней части корпуса.
         /// </summary>
-        public Circle[] UpperBodyPartExtrudingCirclesParameters
+        public Circle[] UpperBodyExtrudingCircles
         {
             get
             {
-                return _upperBodyPartExtrudingCirclesParameters;
+                return _upperBodyExtrudingCircles;
             }
         }
 
         /// <summary>
         /// Возвращает массив прямоугольников для выдавливания в верхней части корпуса.
         /// </summary>
-        public Point2D[,] UpperBodyPartExtrudingRectanglesCoordinates
+        public Point2D[,] UpperBodyExtrudingRectangles
         {
             get
             {
-                return _upperBodyPartExtrudingRectanglesCoordinates;
+                return _upperBodyExtrudingRectangles;
             }
         }
 
         /// <summary>
         /// Возвращает массив координат углубления задней части корпуса.
         /// </summary>
-        public Point2D[] BackBodyDeepingVertexes
+        public Point2D[,] BackBodyDeepingVertexes
         {
             get
             {
@@ -587,13 +525,24 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Возвращает массив окружностей для выдавливания в задней части корпуса.
+        /// Возвращает дугу для построения головы дроида.
         /// </summary>
-        public Circle[] BackBodyPartExtrudingCirclesParameters
+        public Arc DroidHeadArc
         {
             get
             {
-                return _backBodyPartExtrudingCirclesParameters;
+                return _droidHeadArc;
+            }
+        }
+
+        /// <summary>
+        /// Возвращает массив окружностей для выдавливания в задней части корпуса.
+        /// </summary>
+        public Circle[] BackDrawingCircles
+        {
+            get
+            {
+                return _backDrawingCircles;
             }
         }
 
