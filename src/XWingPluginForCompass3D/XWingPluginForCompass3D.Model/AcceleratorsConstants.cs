@@ -6,7 +6,7 @@
     public class AcceleratorsConstants
     {
         /// <summary>
-        /// Параметризированный конструктор.
+        /// Создаёт экземпляр класса констант для построения ускорителей.
         /// </summary>
         /// <param name="difference">Разница между шириной крыльев и длиной корпуса в мм.</param>
         public AcceleratorsConstants(double difference)

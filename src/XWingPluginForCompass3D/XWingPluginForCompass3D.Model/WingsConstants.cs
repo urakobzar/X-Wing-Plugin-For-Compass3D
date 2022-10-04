@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс констант, необходимый для построения крыльев звездолёта.
@@ -12,7 +6,7 @@ namespace XWingPluginForCompass3D.Model
     public class WingsConstants
     {
         /// <summary>
-        /// Конструктор класса констант для построения крыльев.
+        /// Создаёт экземпляр класса констант для построения крыльев.
         /// </summary>
         /// <param name="wingsWidth">Ширина крыльев.</param>
         /// <param name="bodyLength">Длина корпуса.</param>
@@ -50,6 +44,7 @@ namespace XWingPluginForCompass3D.Model
 
         /// <summary>
         /// Массив координат для построения эскиза каждого крыла.
+        /// В ходе программы координаты будут отзеркалены.
         /// </summary>
         private readonly Point2D[,] _baseVertexes = new Point2D[,]
         {
@@ -59,7 +54,6 @@ namespace XWingPluginForCompass3D.Model
                 new Point2D(632.086192, 150.642161),
                 new Point2D(639.549926, 169.837344)
             },
-
             {
                 new Point2D(77.853158, -39.308584),
                 new Point2D(64.171267, -54.321075),
@@ -70,11 +64,12 @@ namespace XWingPluginForCompass3D.Model
 
         /// <summary>
         /// Массив координат для построение выреза на крыльях.
+        /// В ходе программы координаты будут отзеркалены.
         /// </summary>
         private readonly Point2D[,] _wingsCutVertexes;
 
         /// <summary>
-        /// 
+        /// Возвращает координату центра задней плоскости корпуса.
         /// </summary>
         public Point3D BackBodyPlane
         {
@@ -85,7 +80,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// 
+        /// Возвращает координату плоскости выреза у крыльев.
         /// </summary>
         public Point3D CuttingPlane
         {
@@ -96,7 +91,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// 
+        /// Возвращает массив координат для построения каждого крыла.
         /// </summary>
         public Point2D[,] BaseVertexes
         {
@@ -107,7 +102,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// 
+        /// Возвращает массив координат для построения выреза крыльев.
         /// </summary>
         public Point2D[,] WingsCutVertexes
         {
@@ -116,6 +111,5 @@ namespace XWingPluginForCompass3D.Model
                 return _wingsCutVertexes;
             }
         }
-
     }
 }

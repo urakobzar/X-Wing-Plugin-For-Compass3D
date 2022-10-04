@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс точки в двухмерном пространстве.
@@ -52,7 +46,7 @@ namespace XWingPluginForCompass3D.Model
         }
 
         /// <summary>
-        /// Параметризированный конструктор класса.
+        /// Создаёт экземпляр класса для создания 2D-точки.
         /// </summary>
         /// <param name="x">Координату по оси X.</param>
         /// <param name="y">Координату по оси Y.</param>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XWingPluginForCompass3D.Model
+﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс дуги.
@@ -12,15 +6,15 @@ namespace XWingPluginForCompass3D.Model
     public class Arc: Circle
     {
         /// <summary>
-        /// Параметризированный конструктор.
+        /// Создаёт экземпляр класса для построения дуги.
         /// </summary>
-        /// <param name="point2D">Центр окружности дуги.</param>
+        /// <param name="center">Центр окружности дуги.</param>
         /// <param name="radius">Радиус окружности дуги.</param>
         /// <param name="startPoint">Начальная точка дуги.</param>
         /// <param name="endPoint">Конечная точка дуги.</param>
         /// <param name="direction">Направление обхода.</param>
-        public Arc (Point2D point2D, double radius, Point2D startPoint, Point2D endPoint,
-            short direction): base(point2D, radius)
+        public Arc (Point2D center, double radius, Point2D startPoint, Point2D endPoint,
+            short direction): base(center, radius)
         {
             StartPoint = startPoint;
             EndPoint = endPoint;
@@ -86,6 +80,5 @@ namespace XWingPluginForCompass3D.Model
                 return _direction;
             }
         }
-
     }
 }

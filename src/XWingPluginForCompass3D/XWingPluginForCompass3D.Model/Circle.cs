@@ -50,12 +50,12 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Параметризированный конструктор.
         /// </summary>
-        /// <param name="point2D"></param>
+        /// <param name="center"></param>
         /// <param name="radius"></param>
-        public Circle (Point2D point2D, double radius)
+        public Circle (Point2D center, double radius)
         {
             Radius = radius;
-            _center = point2D;
+            _center = center;
         }
     }
 }
