@@ -15,9 +15,39 @@ namespace XWingPluginForCompass3D.Model
         private KompasObject _kompas;
 
         /// <summary>
+        /// Устанавливает и возвращает объект Компас API.
+        /// </summary>
+        public KompasObject Kompas
+        {
+            set
+            {
+                _kompas = value;
+            }
+            get
+            {
+                return _kompas;
+            }
+        }
+
+        /// <summary>
         /// Деталь X-Wing.
         /// </summary>
         private ksPart _part;
+
+        /// <summary>
+        /// Утсанавливает и возвращает деталь X-Wing.
+        /// </summary>
+        public ksPart Part
+        {
+            set
+            {
+                _part = value;
+            }
+            get
+            {
+                return _part;
+            }
+        }        
 
         /// <summary>
         /// Создаёт экземпляр класса для построения детали.
@@ -25,7 +55,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="kompas">Объект Компас API.</param>
         public XWingBuilder(KompasObject kompas)
         {
-            _kompas = kompas;
+            Kompas = kompas;
             ksDocument3D document = (ksDocument3D)kompas.Document3D();
             document.Create();
         }
@@ -38,11 +68,11 @@ namespace XWingPluginForCompass3D.Model
         {
             // Разница между длиной корпуса и шириной крыльев.
             double bodyAndWingsDifference = xwing.BodyLength - xwing.WingWidth;
-            ksDocument3D document = (ksDocument3D)_kompas.ActiveDocument3D();
-            _part = (ksPart)document.GetPart((short)Part_Type.pTop_Part);
-            _part.name = "X-Wing";
-            _part.SetAdvancedColor(14211288, 0.5, 0.6, 0.8, 0.8, 1, 0.5);
-            _part.Update();
+            ksDocument3D document = (ksDocument3D)Kompas.ActiveDocument3D();
+            Part = (ksPart)document.GetPart((short)Part_Type.pTop_Part);
+            Part.name = "X-Wing";
+            Part.SetAdvancedColor(14211288, 0.5, 0.6, 0.8, 0.8, 1, 0.5);
+            Part.Update();
             BuildBowBody(xwing.BowLength);
             BuildBody(xwing.BodyLength);
             BuildWings(xwing.WingWidth, xwing.BodyLength);
@@ -395,7 +425,7 @@ namespace XWingPluginForCompass3D.Model
         {
             // Построение эскиза полуокружности с осью вращения.
 
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntity plane = CreatePlaneByPoint(planePoint);
             definition.SetPlane(plane);
@@ -409,7 +439,7 @@ namespace XWingPluginForCompass3D.Model
 
             // Выдавливание вращением.
 
-            ksEntity bossRotated = _part.NewEntity((short)Obj3dType.o3d_bossRotated);
+            ksEntity bossRotated = Part.NewEntity((short)Obj3dType.o3d_bossRotated);
             ksBossRotatedDefinition bossRotatedDef = bossRotated.GetDefinition();
             bossRotatedDef.directionType = (short)Direction_Type.dtNormal;
             bossRotatedDef.SetSketch(sketch);
@@ -425,7 +455,7 @@ namespace XWingPluginForCompass3D.Model
         /// <returns>Сформированный эскиз.</returns>
         private ksEntity BuildBackDrawing(Point3D planePoint, Point2D[,] point2Ds)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntity plane = CreatePlaneByPoint(planePoint);
             definition.SetPlane(plane);
@@ -451,7 +481,7 @@ namespace XWingPluginForCompass3D.Model
         private void ExtrudeSketch(ksEntity sketch, double height, bool direction,
             double draftValue, bool isThin)
         {
-            ksEntity entity = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
             ksBaseExtrusionDefinition definition = 
                 (ksBaseExtrusionDefinition)entity.GetDefinition();
             if (direction)
@@ -480,7 +510,7 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="direction">Направление: true - прямое, false - обратное.</param>
         private void CutExtrusion(ksEntity sketch, double height, bool direction)
         {
-            ksEntity entity = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
             ksCutExtrusionDefinition definition =(ksCutExtrusionDefinition)entity.GetDefinition();
             if (direction)
             {
@@ -503,7 +533,7 @@ namespace XWingPluginForCompass3D.Model
         /// <returns>Сформированная плоскость эскиз.</returns>
         private ksEntity CreatePlaneByPoint(Point3D planePoint)
         {
-            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_face);
+            ksEntityCollection collection = Part.EntityCollection((short)Obj3dType.o3d_face);
             collection.SelectByPoint(planePoint.X, planePoint.Y, planePoint.Z);
             ksEntity plane = collection.First();
             return plane;
@@ -518,7 +548,7 @@ namespace XWingPluginForCompass3D.Model
         private ksEntity CreatePolygonByDefaultPlane(Obj3dType planeType,
             Point2D[,] polygonVertices, bool isMirrored)
         {
-            ksEntity plane = (ksEntity)_part.GetDefaultEntity((short)planeType);
+            ksEntity plane = (ksEntity)Part.GetDefaultEntity((short)planeType);
             ksEntity skecth = CreatePolygons(plane, polygonVertices, isMirrored);
             return skecth;
         }
@@ -546,7 +576,7 @@ namespace XWingPluginForCompass3D.Model
         /// <returns>Сформированный эскиз.</returns>
         private ksEntity CreatePolygons(ksEntity plane, Point2D[,] vertices, bool isMirrored)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             definition.SetPlane(plane);
             sketch.Create();
@@ -585,7 +615,7 @@ namespace XWingPluginForCompass3D.Model
         /// <returns>Сформированный эскиз.</returns>
         private ksEntity CreateCirclesSketch(Point3D planePoint, Circle[] circles)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntity basePlane = CreatePlaneByPoint(planePoint);
             definition.SetPlane(basePlane);
@@ -608,12 +638,12 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="edgeCoordinate">Координата ребра, где будет фаска.</param>
         private void CreateChamfer(double shift, double[] chamferDistance, Point3D edgeCoordinate)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_chamfer);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_chamfer);
             ksChamferDefinition definition = sketch.GetDefinition();
             definition.tangent = true;
             definition.SetChamferParam(true, chamferDistance[0], chamferDistance[1]);
-            var array = definition.array();
-            ksEntityCollection collection = _part.EntityCollection((short)Obj3dType.o3d_edge);
+            ksEntityCollection array = definition.array();
+            ksEntityCollection collection = Part.EntityCollection((short)Obj3dType.o3d_edge);
             collection.SelectByPoint(edgeCoordinate.X, edgeCoordinate.Y,
                 edgeCoordinate.Z + shift);
             ksEntity edge = collection.Last();
@@ -629,15 +659,15 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="radius">Радиус скругления.</param>
         private void CreateFillet(double shift, Point3D[] edgeCoordinatesArray, double radius)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_fillet);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_fillet);
             ksFilletDefinition definition = sketch.GetDefinition();
             ksEntityCollection collection;
             definition.radius = radius;
             definition.tangent = false;
-            var array = definition.array();
+            ksEntityCollection array = definition.array();
             for (int i = 0; i < edgeCoordinatesArray.GetLength(0); i++)
             {
-                collection = _part.EntityCollection((short)Obj3dType.o3d_edge);
+                collection = Part.EntityCollection((short)Obj3dType.o3d_edge);
                 collection.SelectByPoint(edgeCoordinatesArray[i].X,
                     edgeCoordinatesArray[i].Y,
                     edgeCoordinatesArray[i].Z + shift);
@@ -670,7 +700,7 @@ namespace XWingPluginForCompass3D.Model
         private ksEntity CreateSegmentsWithArcs(Point3D planePoint, Point2D[,,] segmentPoints, 
             Arc[,] arcs, bool isMirrored)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntity plane = CreatePlaneByPoint(planePoint);
             definition.SetPlane(plane);
@@ -713,7 +743,7 @@ namespace XWingPluginForCompass3D.Model
         private ksEntity CreateSegmentsWithCircles(Point3D planePoint, 
             Point2D[,,] segmentPoints, Circle[,] circles)
         {
-            ksEntity sketch = _part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
             ksEntity plane = CreatePlaneByPoint(planePoint);
             definition.SetPlane(plane);
