@@ -87,6 +87,10 @@
       <Project>{1e1b9098-a602-485d-a652-887d2d31447b}</Project>
       <Name>XWingPluginForCompass3D.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XWingPluginForCompass3D.Wrapper\XWingPluginForCompass3D.Wrapper.csproj">
+      <Project>{f304a9e1-4f9d-40da-b7f8-165aa1ef1ff2}</Project>
+      <Name>XWingPluginForCompass3D.Wrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Everaldo-Starwars-X-Wing.ico" />

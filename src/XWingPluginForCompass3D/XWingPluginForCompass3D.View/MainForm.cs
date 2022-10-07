@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using XWingPluginForCompass3D.Model;
+using XWingPluginForCompass3D.Wrapper;
 
 namespace XWingPluginForCompass3D.View
 {
@@ -12,9 +13,9 @@ namespace XWingPluginForCompass3D.View
     public partial class MainForm : Form
     {
         /// <summary>
-        /// Объект связи с Компас-3D.
+        /// Объект класса построения детали.
         /// </summary>
-        private KompasWrapper _kompasWrapper;
+        private XWingBuilder _xWingBuilder;
 
         /// <summary>
         /// Словарь, где ключ: параметр звездолёта, значение: соотвествующий тексбокс.
@@ -22,17 +23,17 @@ namespace XWingPluginForCompass3D.View
         private Dictionary <XWingParameters, TextBox> _parameterToTextBox;
 
         /// <summary>
-        /// Устанавливает и возвращает объект связи с Компас-3D.
+        /// Устанавливает и возвращает объект класса построения детали.
         /// </summary>
-        public KompasWrapper KompasWrapper
+        public XWingBuilder XWingBuilder
         {
             set
             {
-                _kompasWrapper = value;
+                _xWingBuilder = value;
             }
             get
             {
-                return _kompasWrapper;
+                return _xWingBuilder;
             }
         }
 
@@ -57,7 +58,7 @@ namespace XWingPluginForCompass3D.View
         public MainForm()
         {
             InitializeComponent();
-            KompasWrapper = new KompasWrapper();
+            XWingBuilder = new XWingBuilder();
             ParameterToTextBox = new Dictionary <XWingParameters, TextBox>();
             ParameterToTextBox.Add(XWingParameters.BodyLength, BodyLengthTextBox);
             ParameterToTextBox.Add(XWingParameters.WingWidth, WingWidthTextBox);
@@ -113,8 +114,7 @@ namespace XWingPluginForCompass3D.View
                 }
                 else
                 {
-                    KompasWrapper.StartKompas();
-                    KompasWrapper.BuildXWing(xWing);
+                    XWingBuilder.BuildDetail(xWing);
                 }
             }
             catch
