@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Vie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Model", "XWingPluginForCompass3D.Model\XWingPluginForCompass3D.Model.csproj", "{1E1B9098-A602-485D-A652-887D2D31447B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Wrapper", "XWingPluginForCompass3D.Wrapper\XWingPluginForCompass3D.Wrapper.csproj", "{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1E1B9098-A602-485D-A652-887D2D31447B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1B9098-A602-485D-A652-887D2D31447B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1B9098-A602-485D-A652-887D2D31447B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
