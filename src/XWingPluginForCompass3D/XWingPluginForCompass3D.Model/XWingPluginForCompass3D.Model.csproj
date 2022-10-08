@@ -55,9 +55,11 @@
     <Compile Include="BodyConstants.cs" />
     <Compile Include="BowBodyConstants.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="Parameter.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="Point3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ErrorList.cs" />
     <Compile Include="WingsConstants.cs" />
     <Compile Include="XWing.cs" />
     <Compile Include="XWingParameters.cs" />

@@ -37,15 +37,27 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.StartKompas();
             Wrapper.CreateDocument();
             Wrapper.SetDetailProperties();
+            double bowBodyLength = 
+                xwing.Parameters[XWingParameters.BowLength].Value;
+            double bodyLength = 
+                xwing.Parameters[XWingParameters.BodyLength].Value;
+            double wingWidth = 
+                xwing.Parameters[XWingParameters.WingWidth].Value;
+            double blasterTipLength = 
+                xwing.Parameters[XWingParameters.WeaponBlasterTipLength].Value;
+            double turbineLength = 
+                xwing.Parameters[XWingParameters.AcceleratorTurbineLength].Value;
+            double nozzleLength = 
+                xwing.Parameters[XWingParameters.AcceleratorNozzleLength].Value;
             // Разница между длиной корпуса и шириной крыльев.
-            double bodyAndWingsDifference = xwing.BodyLength - xwing.WingWidth;
-            BuildBowBody(xwing.BowLength);
-            BuildBody(xwing.BodyLength);
-            BuildWings(xwing.WingWidth, xwing.BodyLength);
-            BuildBlasters(xwing.WeaponBlasterTipLength,
-                bodyAndWingsDifference, xwing.WingWidth);
-            BuildAccelerators(xwing.AcceleratorTurbineLength,
-                xwing.AcceleratorNozzleLength, bodyAndWingsDifference);
+            double bodyAndWingsDifference = bodyLength - wingWidth;
+            BuildBowBody(bowBodyLength);
+            BuildBody(bodyLength);
+            BuildWings(wingWidth, bodyLength);
+            BuildBlasters(blasterTipLength,
+                bodyAndWingsDifference, wingWidth);
+            BuildAccelerators(turbineLength,
+                nozzleLength, bodyAndWingsDifference);
         }
 
         /// <summary>
@@ -391,7 +403,6 @@ namespace XWingPluginForCompass3D.Wrapper
                 constants.NozzleDrawingCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength / 2, true, 0, true);            
         }
-
 
         /// <summary>
         /// Изменение радиуса у массива кругов.
