@@ -108,9 +108,9 @@ namespace XWingPluginForCompass3D.View
                     double.Parse(AcceleratorNozzleLengthTextBox.Text);
                 xWing = new XWing(bodyLength, wingWidth, bowLength,weaponBlasterTipLength,
                     acceleratorTurbineLength, acceleratorNozzleLength);
-                if (ErrorList.Errors.Count > 0)
+                if (xWing.ErrorList.Count > 0)
                 {
-                    ShowErrorList(ErrorList.Errors);
+                    ShowErrorList(xWing.ErrorList);
                 }
                 else
                 {

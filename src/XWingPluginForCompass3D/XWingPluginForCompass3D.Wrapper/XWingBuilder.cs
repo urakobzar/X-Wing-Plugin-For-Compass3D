@@ -11,12 +11,12 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <summary>
         /// Связь с Компас-3D.
         /// </summary>
-        private KompasWrapper _wrapper = new KompasWrapper();     
+        private KompasWrapper _wrapper = new KompasWrapper();
 
         /// <summary>
         /// Устанавливает и возвращает связь с Компас-3D.
         /// </summary>
-        public KompasWrapper Wrapper
+        private KompasWrapper Wrapper
         {
             set
             {
@@ -409,7 +409,7 @@ namespace XWingPluginForCompass3D.Wrapper
         /// </summary>
         /// <param name="circles">Массив кругов.</param>
         /// <param name="radius">Новый радиус.</param>
-        public void ChangeCirclesRadius(Circle[] circles, double radius)
+        private void ChangeCirclesRadius(Circle[] circles, double radius)
         {
             for (int i = 0; i < circles.GetLength(0); i++)
             {

@@ -1,4 +1,6 @@
-﻿namespace XWingPluginForCompass3D.Model
+﻿using System.Collections.Generic;
+
+namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс параметра.
@@ -36,6 +38,11 @@
         private XWingParameters _parameterType;
 
         /// <summary>
+        /// Список ошибок введенного параметра.
+        /// </summary>
+        private Dictionary<XWingParameters, string> _errorList;
+
+        /// <summary>
         /// Устанавливает и возвращает значение параметра.
         /// </summary>
         public double Value
@@ -57,7 +64,7 @@
         /// <summary>
         /// Устанавливает и возвращает минимальное допустимое значение параметра.
         /// </summary>
-        public int MinValue
+        private int MinValue
         {
             set
             {
@@ -72,7 +79,7 @@
         /// <summary>
         /// Устанавливает и возвращает максимальное допустимое значение параметра.
         /// </summary>
-        public int MaxValue
+        private int MaxValue
         {
             set
             {
@@ -87,7 +94,7 @@
         /// <summary>
         /// Устанавливает и возвращает сообщение о несоблюдении границы минимума.
         /// </summary>
-        public string MinErrorMessage
+        private string MinErrorMessage
         {
             set
             {
@@ -103,7 +110,7 @@
         /// <summary>
         /// Устанавливает и возвращает сообщение о несоблюдении границы максимума.
         /// </summary>
-        public string MaxErrorMessage
+        private string MaxErrorMessage
         {
             set
             {
@@ -119,7 +126,7 @@
         /// <summary>
         /// Устанавливает и возвращает тип параметра.
         /// </summary>
-        public XWingParameters ParameterType
+        private XWingParameters ParameterType
         {
             set
             {
@@ -132,6 +139,21 @@
         }
 
         /// <summary>
+        /// Устанавливает и возвращает список ошибок параметра.
+        /// </summary>
+        private Dictionary<XWingParameters, string> ErrorList
+        {
+            set
+            {
+                _errorList = value;
+            }
+            get
+            {
+                return _errorList;
+            }
+        }
+
+        /// <summary>
         /// Создает объект класса параметра.
         /// </summary>
         /// <param name="value">Введеное значение параметра.</param>
@@ -140,8 +162,10 @@
         /// <param name="errorMessage">Сообщение о том, какой это параметр.</param>
         /// <param name="parameterType">Тип параметра.</param>
         public Parameter(double value, int minValue, int maxValue, 
-            string errorMessage, XWingParameters parameterType)
+            string errorMessage, XWingParameters parameterType,
+            Dictionary<XWingParameters, string> errorList)
         {
+            ErrorList = errorList;
             MinValue = minValue;
             MaxValue = maxValue;
             MinErrorMessage = errorMessage;
@@ -165,12 +189,12 @@
         {
             if (value < minValue)
             {
-                ErrorList.Errors.Add(parameter, minMessage);
+                ErrorList.Add(parameter, minMessage);
                 return false;
             }
             else if (value > maxValue)
             {
-                ErrorList.Errors.Add(parameter, maxMessage);
+                ErrorList.Add(parameter, maxMessage);
                 return false;
             }
             else
