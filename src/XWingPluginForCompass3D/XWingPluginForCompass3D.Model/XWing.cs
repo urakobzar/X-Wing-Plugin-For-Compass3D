@@ -64,6 +64,7 @@ namespace XWingPluginForCompass3D.Model
             ErrorList = new Dictionary<XWingParameters, string>();
             Parameters.Add(XWingParameters.BodyLength, 
                 new Parameter(bodyLength, 300, 400, "Длина корпуса", XWingParameters.BodyLength, ErrorList));
+	        // TODO: вынести конструкции if
             if (wingWidth < bodyLength - 20)
             {
                 ErrorList.Add(XWingParameters.WingWidth,
@@ -98,6 +99,7 @@ namespace XWingPluginForCompass3D.Model
             }
             else
             {
+                // TODO: Не создавать каждый раз новый параметр, а присваивать значения
                 Parameters.Add(XWingParameters.WeaponBlasterTipLength, 
                     new Parameter(weaponBlasterTipLength, 80, 130,
                 "Длина острия бластера", XWingParameters.WeaponBlasterTipLength, ErrorList));

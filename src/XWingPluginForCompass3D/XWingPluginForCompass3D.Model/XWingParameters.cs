@@ -1,9 +1,10 @@
 ﻿namespace XWingPluginForCompass3D.Model
 {
-    /// <summary>
-    /// Перечисление параметров XWing.
-    /// </summary>
-    public enum XWingParameters
+	/// <summary>
+	/// Перечисление параметров XWing.
+	/// </summary>
+	// TODO: XWingParameterType?
+	public enum XWingParameters
     {
         /// <summary>
         /// Длина корпуса звездолёта.

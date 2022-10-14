@@ -11,12 +11,7 @@ namespace XWingPluginForCompass3D.Model
     /// </summary>
     public class Circle
     {
-        /// <summary>
-        /// Точка, являющаяся центром круга.
-        /// </summary>
-        private readonly Point2D _center;
-
-        /// <summary>
+	    /// <summary>
         /// Радиус круга.
         /// </summary>
         private double _radius;
@@ -24,13 +19,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Возвращает точку центра круга.
         /// </summary>
-        public Point2D Center
-        {
-            get
-            {
-                return _center;
-            }
-        }
+        public Point2D Center { get; }
 
         /// <summary>
         /// Устанавливает и возвращает радиус круга.
@@ -55,7 +44,7 @@ namespace XWingPluginForCompass3D.Model
         public Circle (Point2D center, double radius)
         {
             Radius = radius;
-            _center = center;
+            Center = center;
         }
     }
 }

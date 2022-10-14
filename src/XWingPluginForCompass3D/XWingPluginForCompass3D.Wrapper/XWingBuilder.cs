@@ -73,12 +73,14 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.Sketch = Wrapper.CreatePolygonByDefaultPlane(Wrapper.PlaneXOY,
                 constants.UpperBaseVertexes, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 600, false, 5, false);
-            Wrapper.ExtrudeSketch(Wrapper.Sketch, bowLength, true, -3, false);
+            Wrapper.ExtrudeSketch(Wrapper.Sketch, bowLength,
+	            true, -3, false);
 
             // Выдавливание кабины            
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.UpperFacePlane,
                 constants.UpperFaceVertexes, false);
-            Wrapper.ExtrudeSketch(Wrapper.Sketch, 50, true, 0, false);
+            Wrapper.ExtrudeSketch(Wrapper.Sketch, 50,
+	            true, 0, false);
 
             // Вырез кабины                        
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.CockpitFrontFacePlane,
@@ -231,8 +233,9 @@ namespace XWingPluginForCompass3D.Wrapper
             constants.CurrentPlane.Y = constants.CurrentBlasterCircles[0].Center.Y;
             constants.CurrentPlane.Z = constants.CurrentPlane.Z + 200;
 
-            // Построение перехода на вторую основу бластера.
-            ChangeCirclesRadius(constants.CurrentBlasterCircles, 11);
+            // TODO: дубль
+			// Построение перехода на вторую основу бластера.
+			ChangeCirclesRadius(constants.CurrentBlasterCircles, 11);
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 5, true, 0, false);
@@ -257,8 +260,9 @@ namespace XWingPluginForCompass3D.Wrapper
                 constants.TipsBaseSegments, constants.TipsBaseArcs, true);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, blasterTipLength, true, 0, false);
 
+			// TODO: дубль
             // Построение антенн на острие бластера.
-            Wrapper.Sketch = Wrapper.CreateSegmentsWithArcs(constants.SideRightTipPlane,
+			Wrapper.Sketch = Wrapper.CreateSegmentsWithArcs(constants.SideRightTipPlane,
                 constants.RightAntennaSegments, constants.RightAntennaArcs, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 5, true, 0, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 15, false, 0, false);
@@ -366,7 +370,8 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength/2, true, 10, false);
 
             // Выдавливание нижней части сопла.
-            double angle = 10*Math.PI/180;
+            // TODO: именование градусы радианы?
+            double angle = 10 * Math.PI / 180;
             double radius = constants.TurbineCircles[0].Radius +
                 Math.Tan(angle) * nozzleLength / 2;
             ChangeCirclesRadius(constants.TurbineCircles, radius);

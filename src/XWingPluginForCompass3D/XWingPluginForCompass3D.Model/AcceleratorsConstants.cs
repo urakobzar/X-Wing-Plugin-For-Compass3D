@@ -527,6 +527,7 @@
         /// </summary>
         public Point3D AirIntakePlane
         {
+	        // TODO: Уменьшить до одной строки
             get
             {
                 return _airIntakePlane;
@@ -536,13 +537,7 @@
         /// <summary>
         /// Возвращает координату передней плоскости турбины звездолёта.
         /// </summary>
-        public Point3D TurbinePlane
-        {
-            get
-            {
-                return _turbinePlane;
-            }
-        }
+        public Point3D TurbinePlane => _turbinePlane;
 
         /// <summary>
         /// Возвращает массив координат вершин основания ускорителя звездолёта.

@@ -187,7 +187,7 @@ namespace XWingPluginForCompass3D.Model
             double maxValue, XWingParameters parameter,
             string minMessage, string maxMessage)
         {
-            if (value < minValue)
+	        if (value < minValue)
             {
                 ErrorList.Add(parameter, minMessage);
                 return false;

@@ -218,20 +218,22 @@ namespace XWingPluginForCompass3D.Wrapper
             return sketch;
         }
 
-        /// <summary>
-        /// Выдавливание эскиза на определенное расстояние.
-        /// </summary>
-        /// <param name="sketch">Эскиз.</param>
-        /// <param name="height">Высота выдавливания.</param>
-        /// <param name="direction">Направление: true - прямое, false - обратное.</param>
-        /// <param name="draftValue">Угол, на который изменяется проекция эскиза.</param>
-        /// <param name="isThin">Толщина стенок: true - выдавливается контур, false - эскиз.</param>
-        public void ExtrudeSketch(ksEntity sketch, double height, bool direction,
+		/// <summary>
+		/// Выдавливание эскиза на определенное расстояние.
+		/// </summary>
+		/// <param name="sketch">Эскиз.</param>
+		/// <param name="height">Высота выдавливания.</param>
+		/// <param name="direction">Направление: true - прямое, false - обратное.</param>
+		/// <param name="draftValue">Угол, на который изменяется проекция эскиза.</param>
+		// TODO: переименовать параметр isThin
+		/// <param name="isThin">Толщина стенок: true - выдавливается контур, false - эскиз.</param>
+		public void ExtrudeSketch(ksEntity sketch, double height, bool direction,
             double draftValue, bool isThin)
         {
             ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
             ksBaseExtrusionDefinition definition =
                 (ksBaseExtrusionDefinition)entity.GetDefinition();
+	        // TODO: дубль
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -260,6 +262,7 @@ namespace XWingPluginForCompass3D.Wrapper
         {
             ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
             ksCutExtrusionDefinition definition = (ksCutExtrusionDefinition)entity.GetDefinition();
+			// TODO: дубль
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -445,6 +448,7 @@ namespace XWingPluginForCompass3D.Wrapper
             {
                 for (int j = 0; j < arcs.GetLength(1); j++)
                 {
+					// TODO: дубль
                     sketchEdit.ksLineSeg(segmentPoints[i, j, 0].X, segmentPoints[i, j, 0].Y,
                         segmentPoints[i, j, 1].X, segmentPoints[i, j, 1].Y, 1);
                     sketchEdit.ksArcByPoint(arcs[i, j].Center.X, arcs[i, j].Center.Y,
@@ -494,6 +498,7 @@ namespace XWingPluginForCompass3D.Wrapper
                         -segmentPoints[i, j, 1].X, segmentPoints[i, j, 1].Y, 1);
                 }
             }
+
             for (int i = 0; i < circles.GetLength(0); i++)
             {
                 for (int j = 0; j < circles.GetLength(1); j++)
@@ -504,6 +509,7 @@ namespace XWingPluginForCompass3D.Wrapper
                         circles[i, j].Radius, 1);
                 }
             }
+
             definition.EndEdit();
             return sketch;
         }

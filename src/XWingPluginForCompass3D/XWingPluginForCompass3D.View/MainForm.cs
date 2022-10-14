@@ -25,6 +25,7 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Устанавливает и возвращает объект класса построения детали.
         /// </summary>
+        // TODO: private
         public XWingBuilder XWingBuilder
         {
             set
@@ -40,6 +41,7 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Устанавливает и возвращает словарь параметров-текстбоксов.
         /// </summary>
+        // TODO: private
         public Dictionary <XWingParameters, TextBox> ParameterToTextBox
         {
             set
@@ -59,21 +61,20 @@ namespace XWingPluginForCompass3D.View
         {
             InitializeComponent();
             XWingBuilder = new XWingBuilder();
-            ParameterToTextBox = new Dictionary <XWingParameters, TextBox>();
-            ParameterToTextBox.Add(XWingParameters.BodyLength, BodyLengthTextBox);
-            ParameterToTextBox.Add(XWingParameters.WingWidth, WingWidthTextBox);
-            ParameterToTextBox.Add(XWingParameters.BowLength, BowLengthTextBox);
-            ParameterToTextBox.Add(XWingParameters.WeaponBlasterTipLength, 
-                WeaponBlasterTipLengthTextBox);
-            ParameterToTextBox.Add(XWingParameters.AcceleratorTurbineLength, 
-                AcceleratorTurbineLengthTextBox);
-            ParameterToTextBox.Add(XWingParameters.AcceleratorNozzleLength, 
-                AcceleratorNozzleLengthTextBox);
+            ParameterToTextBox = new Dictionary <XWingParameters, TextBox>
+            {
+	            { XWingParameters.BodyLength, BodyLengthTextBox },
+	            { XWingParameters.WingWidth, WingWidthTextBox },
+	            { XWingParameters.BowLength, BowLengthTextBox },
+	            { XWingParameters.WeaponBlasterTipLength, WeaponBlasterTipLengthTextBox },
+	            { XWingParameters.AcceleratorTurbineLength, AcceleratorTurbineLengthTextBox },
+	            { XWingParameters.AcceleratorNozzleLength, AcceleratorNozzleLengthTextBox }
+            };
 
             // Добавления всем тексбоксам события, когда пользователь вводит символ.
 
-            BodyLengthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
+            BodyLengthTextBox.KeyPress += BanCharacterInput;
+            // TODO:
             WingWidthTextBox.KeyPress += 
                 new KeyPressEventHandler(BanCharacterInput);
             BowLengthTextBox.KeyPress += 
@@ -97,7 +98,8 @@ namespace XWingPluginForCompass3D.View
             try
             {
                 XWing xWing = null;
-                double bodyLength = double.Parse(BodyLengthTextBox.Text);
+                var bodyLength = double.Parse(BodyLengthTextBox.Text);
+                // TODO: var
                 double wingWidth = double.Parse(WingWidthTextBox.Text);
                 double bowLength = double.Parse(BowLengthTextBox.Text);
                 double weaponBlasterTipLength = 
@@ -120,7 +122,8 @@ namespace XWingPluginForCompass3D.View
             catch
             {
                 FindEmptyTextBox();
-                MessageBox.Show("Ошибка при построении! Проверьте введенные данные.", 
+                MessageBox.Show(
+	                "Ошибка при построении! Проверьте введенные данные.", 
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -132,7 +135,7 @@ namespace XWingPluginForCompass3D.View
         /// <param name="e">Нажатие на клавишу клавиатуры.</param>
         private void BanCharacterInput(object sender, KeyPressEventArgs e)
         {
-            if (!Char.IsControl(e.KeyChar) && !Char.IsDigit(e.KeyChar)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)
                 && !((e.KeyChar == ',') && 
                 (((TextBox)sender).Text.IndexOf(",") == -1)))
             {
@@ -145,8 +148,7 @@ namespace XWingPluginForCompass3D.View
         /// </summary>
         private void SetWhiteColor()
         {
-            foreach (KeyValuePair <XWingParameters, TextBox> 
-                keyValue in ParameterToTextBox)
+            foreach (var keyValue in ParameterToTextBox)
             {
                 keyValue.Value.BackColor = Color.White;
             }
@@ -158,6 +160,7 @@ namespace XWingPluginForCompass3D.View
         /// <param name="errorList">Список выявленных ошибок</param>
         private void ShowErrorList(Dictionary <XWingParameters, string> errorList)
         {
+            // TODO: string.Empty
             string message = "";
             foreach (KeyValuePair <XWingParameters, string> keyValue in errorList)
             {

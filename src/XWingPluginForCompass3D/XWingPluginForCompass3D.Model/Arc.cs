@@ -56,6 +56,7 @@
         /// </summary>
         public Point2D EndPoint
         {
+            // TODO: можно просто set get
             set
             {
                 _endPoint = value;
