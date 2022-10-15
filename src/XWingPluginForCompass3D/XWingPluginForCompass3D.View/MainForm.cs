@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using XWingPluginForCompass3D.Model;
 using XWingPluginForCompass3D.Wrapper;
@@ -15,44 +16,19 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Объект класса построения детали.
         /// </summary>
-        private XWingBuilder _xWingBuilder;
+        // TODO: private ИСПРАВИЛ
+        private XWingBuilder XWingBuilder { get; }
 
         /// <summary>
-        /// Словарь, где ключ: параметр звездолёта, значение: соотвествующий тексбокс.
+        /// Словарь Тип параметра-TextBox.
         /// </summary>
-        private Dictionary <XWingParameters, TextBox> _parameterToTextBox;
+        // TODO: private ИСПРАВИЛ
+        private Dictionary <XWingParameterType, TextBox> ParameterToTextBox { get; }
 
         /// <summary>
-        /// Устанавливает и возвращает объект класса построения детали.
+        /// Объект параметров X-Wing.
         /// </summary>
-        // TODO: private
-        public XWingBuilder XWingBuilder
-        {
-            set
-            {
-                _xWingBuilder = value;
-            }
-            get
-            {
-                return _xWingBuilder;
-            }
-        }
-
-        /// <summary>
-        /// Устанавливает и возвращает словарь параметров-текстбоксов.
-        /// </summary>
-        // TODO: private
-        public Dictionary <XWingParameters, TextBox> ParameterToTextBox
-        {
-            set
-            {
-                _parameterToTextBox = value;
-            }
-            get
-            {
-                return _parameterToTextBox;
-            }            
-        }
+        private XWing XWingObject { get; }
 
         /// <summary>
         /// Конструктор основной формы.
@@ -60,35 +36,34 @@ namespace XWingPluginForCompass3D.View
         public MainForm()
         {
             InitializeComponent();
+            XWingObject = new XWing();
             XWingBuilder = new XWingBuilder();
-            ParameterToTextBox = new Dictionary <XWingParameters, TextBox>
+            ParameterToTextBox = new Dictionary <XWingParameterType, TextBox>
             {
-	            { XWingParameters.BodyLength, BodyLengthTextBox },
-	            { XWingParameters.WingWidth, WingWidthTextBox },
-	            { XWingParameters.BowLength, BowLengthTextBox },
-	            { XWingParameters.WeaponBlasterTipLength, WeaponBlasterTipLengthTextBox },
-	            { XWingParameters.AcceleratorTurbineLength, AcceleratorTurbineLengthTextBox },
-	            { XWingParameters.AcceleratorNozzleLength, AcceleratorNozzleLengthTextBox }
+	            { XWingParameterType.BodyLength, BodyLengthTextBox },
+	            { XWingParameterType.WingWidth, WingWidthTextBox },
+	            { XWingParameterType.BowLength, BowLengthTextBox },
+	            { XWingParameterType.WeaponBlasterTipLength, 
+                    WeaponBlasterTipLengthTextBox },
+	            { XWingParameterType.AcceleratorTurbineLength, 
+                    AcceleratorTurbineLengthTextBox },
+	            { XWingParameterType.AcceleratorNozzleLength, 
+                    AcceleratorNozzleLengthTextBox }
             };
 
-            // Добавления всем тексбоксам события, когда пользователь вводит символ.
+            // Добавления всем TextBox события, когда пользователь вводит символ.
 
             BodyLengthTextBox.KeyPress += BanCharacterInput;
-            // TODO:
-            WingWidthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
-            BowLengthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
-            WeaponBlasterTipLengthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
-            AcceleratorTurbineLengthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
-            AcceleratorNozzleLengthTextBox.KeyPress += 
-                new KeyPressEventHandler(BanCharacterInput);
+            // TODO: ИСПРАВИЛ
+            WingWidthTextBox.KeyPress += BanCharacterInput;
+            BowLengthTextBox.KeyPress += BanCharacterInput;
+            WeaponBlasterTipLengthTextBox.KeyPress += BanCharacterInput;
+            AcceleratorTurbineLengthTextBox.KeyPress += BanCharacterInput;
+            AcceleratorNozzleLengthTextBox.KeyPress += BanCharacterInput;
         }
 
         /// <summary>
-        /// Построение по введённым параметрам звездолёт.
+        /// Построение по введенным параметрам звездолет.
         /// </summary>
         /// <param name="sender">Кнопка.</param>
         /// <param name="e">Нажатие на кнопку.</param>
@@ -97,54 +72,55 @@ namespace XWingPluginForCompass3D.View
             SetWhiteColor();
             try
             {
-                XWing xWing = null;
                 var bodyLength = double.Parse(BodyLengthTextBox.Text);
-                // TODO: var
-                double wingWidth = double.Parse(WingWidthTextBox.Text);
-                double bowLength = double.Parse(BowLengthTextBox.Text);
-                double weaponBlasterTipLength = 
+                // TODO: var ИСПРАВИЛ
+                var wingWidth = double.Parse(WingWidthTextBox.Text);
+                var bowLength = double.Parse(BowLengthTextBox.Text);
+                var weaponBlasterTipLength = 
                     double.Parse(WeaponBlasterTipLengthTextBox.Text);
-                double acceleratorTurbineLength = 
+                var acceleratorTurbineLength = 
                     double.Parse(AcceleratorTurbineLengthTextBox.Text);
-                double acceleratorNozzleLength = 
+                var acceleratorNozzleLength = 
                     double.Parse(AcceleratorNozzleLengthTextBox.Text);
-                xWing = new XWing(bodyLength, wingWidth, bowLength,weaponBlasterTipLength,
+                XWingObject.SetParameters(bodyLength, wingWidth, 
+                    bowLength,weaponBlasterTipLength,
                     acceleratorTurbineLength, acceleratorNozzleLength);
-                if (xWing.ErrorList.Count > 0)
+                if (XWingObject.ErrorList.Count > 0)
                 {
-                    ShowErrorList(xWing.ErrorList);
+                    ShowErrorList(XWingObject.ErrorList);
                 }
                 else
                 {
-                    XWingBuilder.BuildDetail(xWing);
+                    XWingBuilder.BuildDetail(XWingObject);
                 }
             }
             catch
             {
                 FindEmptyTextBox();
                 MessageBox.Show(
-	                "Ошибка при построении! Проверьте введенные данные.", 
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+	                @"Ошибка при построении! Проверьте введенные данные.", 
+                    @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
         ///  Запрет ввода символов и больше одной точки в число.
         /// </summary>
-        /// <param name="sender">Текстбокс.</param>
+        /// <param name="sender">TextBox.</param>
         /// <param name="e">Нажатие на клавишу клавиатуры.</param>
-        private void BanCharacterInput(object sender, KeyPressEventArgs e)
+        private static void BanCharacterInput(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)
                 && !((e.KeyChar == ',') && 
-                (((TextBox)sender).Text.IndexOf(",") == -1)))
+                (((TextBox)sender).Text.IndexOf
+                    (",", StringComparison.Ordinal) == -1)))
             {
                 e.Handled = true;
             }
         }
 
         /// <summary>
-        /// Установка белого цвета тексбоксов.
+        /// Установка белого цвета TextBox.
         /// </summary>
         private void SetWhiteColor()
         {
@@ -155,37 +131,33 @@ namespace XWingPluginForCompass3D.View
         }
 
         /// <summary>
-        /// Демонстрация неправильно введённых параметров.
+        /// Демонстрация неправильно введенных параметров.
         /// </summary>
         /// <param name="errorList">Список выявленных ошибок</param>
-        private void ShowErrorList(Dictionary <XWingParameters, string> errorList)
+        private void ShowErrorList(Dictionary <XWingParameterType, string> errorList)
         {
-            // TODO: string.Empty
-            string message = "";
-            foreach (KeyValuePair <XWingParameters, string> keyValue in errorList)
+            // TODO: string.Empty ИСПРАВИЛ
+            var message = string.Empty;
+            foreach (var keyValue in errorList)
             {
-                if (ParameterToTextBox.TryGetValue(keyValue.Key, out TextBox textBox))
-                {
-                    textBox.BackColor = Color.LightPink;
-                    message += "• " + keyValue.Value + "\n" + "\n";
-                }
+                if (!ParameterToTextBox.TryGetValue(keyValue.Key, out var textBox)) 
+                    continue;
+                textBox.BackColor = Color.LightPink;
+                message += "• " + keyValue.Value + "\n" + "\n";
             }
-            MessageBox.Show(message, "Неверно введены данные!", 
+            MessageBox.Show(message, @"Неверно введены данные!", 
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
-        /// Поиск пустых тексбоксов.
+        /// Поиск пустых TextBox.
         /// </summary>
         private void FindEmptyTextBox()
         {
-            foreach (KeyValuePair<XWingParameters, TextBox>
-                keyValue in ParameterToTextBox)
+            foreach (var keyValue in ParameterToTextBox.Where
+                         (keyValue => keyValue.Value.Text == ""))
             {
-                if (keyValue.Value.Text == "")
-                {
-                    keyValue.Value.BackColor = Color.LightPink;
-                }
+                keyValue.Value.BackColor = Color.LightPink;
             }
         }
     }

@@ -32,11 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kompas6API5">
-      <HintPath>..\XWingPluginForCompass3D.Model\KompasLibraries\Kompas6API5.dll</HintPath>
+      <HintPath>KompasLibraries\Kompas6API5.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6Constants3D">
-      <HintPath>..\XWingPluginForCompass3D.Model\KompasLibraries\Kompas6Constants3D.dll</HintPath>
+      <HintPath>KompasLibraries\Kompas6Constants3D.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

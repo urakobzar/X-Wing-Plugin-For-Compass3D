@@ -1,22 +1,22 @@
 ﻿namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
-    /// Класс констант, необходимый для построения крыльев звездолёта.
+    /// Класс констант, необходимый для построения крыльев звездолета.
     /// </summary>
     public class WingsConstants
     {
         /// <summary>
-        /// Создаёт экземпляр класса констант для построения крыльев.
+        /// Создает экземпляр класса констант для построения крыльев.
         /// </summary>
         /// <param name="wingsWidth">Ширина крыльев.</param>
         /// <param name="bodyLength">Длина корпуса.</param>
         public WingsConstants(double wingsWidth, double bodyLength)
         {
-            _backBodyPlane = new Point3D(0, 0, -600 - bodyLength);
+            BackBodyPlane = new Point3D(0, 0, -600 - bodyLength);
 
-            _cuttingPlane = new Point3D(0, -121.493198, -600 - bodyLength);
+            CuttingPlane = new Point3D(0, -121.493198, -600 - bodyLength);
 
-            _wingsCutVertexes = new Point2D[,]
+            WingsCutVertexes = new[,]
             {
                 {
                     new Point2D(646.963505, -600 - bodyLength + wingsWidth),
@@ -35,18 +35,18 @@
         /// <summary>
         /// Координата центра плоскости задней части корпуса.
         /// </summary>
-        private readonly Point3D _backBodyPlane;
+        public Point3D BackBodyPlane { get; }
 
         /// <summary>
         /// Координата центра плоскости выреза у крыльев.
         /// </summary>
-        private readonly Point3D _cuttingPlane;
+        public Point3D CuttingPlane { get; }
 
         /// <summary>
         /// Массив координат для построения эскиза каждого крыла.
-        /// В ходе программы координаты будут отзеркалены.
+        /// В ходе программы координаты будут отражены.
         /// </summary>
-        private readonly Point2D[,] _baseVertexes = new Point2D[,]
+        public Point2D[,] BaseVertexes { get; } =
         {
             {
                 new Point2D(69.173833, 55.779384),
@@ -64,52 +64,8 @@
 
         /// <summary>
         /// Массив координат для построение выреза на крыльях.
-        /// В ходе программы координаты будут отзеркалены.
+        /// В ходе программы координаты будут отражены.
         /// </summary>
-        private readonly Point2D[,] _wingsCutVertexes;
-
-        /// <summary>
-        /// Возвращает координату центра задней плоскости корпуса.
-        /// </summary>
-        public Point3D BackBodyPlane
-        {
-            get
-            {
-                return _backBodyPlane;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает координату плоскости выреза у крыльев.
-        /// </summary>
-        public Point3D CuttingPlane
-        {
-            get
-            {
-                return _cuttingPlane;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат для построения каждого крыла.
-        /// </summary>
-        public Point2D[,] BaseVertexes
-        {
-            get
-            {
-                return _baseVertexes;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает массив координат для построения выреза крыльев.
-        /// </summary>
-        public Point2D[,] WingsCutVertexes
-        {
-            get
-            {
-                return _wingsCutVertexes;
-            }
-        }
+        public Point2D[,] WingsCutVertexes { get; }
     }
 }

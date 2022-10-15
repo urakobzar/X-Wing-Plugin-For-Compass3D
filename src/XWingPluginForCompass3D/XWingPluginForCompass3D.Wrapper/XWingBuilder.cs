@@ -4,29 +4,14 @@ using XWingPluginForCompass3D.Model;
 namespace XWingPluginForCompass3D.Wrapper
 {
     /// <summary>
-    /// Класс построения 3D-модели звёздного истребителя X-Wing.
+    /// Класс построения 3D-модели звездного истребителя X-Wing.
     /// </summary>
     public class XWingBuilder
     {
         /// <summary>
         /// Связь с Компас-3D.
         /// </summary>
-        private KompasWrapper _wrapper = new KompasWrapper();
-
-        /// <summary>
-        /// Устанавливает и возвращает связь с Компас-3D.
-        /// </summary>
-        private KompasWrapper Wrapper
-        {
-            set
-            {
-                _wrapper = value;
-            }
-            get
-            {
-                return _wrapper;
-            }
-        }
+        private KompasWrapper Wrapper { get; } = new KompasWrapper();
 
         /// <summary>
         /// Построение детали по заданным параметрам.
@@ -37,20 +22,20 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.StartKompas();
             Wrapper.CreateDocument();
             Wrapper.SetDetailProperties();
-            double bowBodyLength = 
-                xwing.Parameters[XWingParameters.BowLength].Value;
-            double bodyLength = 
-                xwing.Parameters[XWingParameters.BodyLength].Value;
-            double wingWidth = 
-                xwing.Parameters[XWingParameters.WingWidth].Value;
-            double blasterTipLength = 
-                xwing.Parameters[XWingParameters.WeaponBlasterTipLength].Value;
-            double turbineLength = 
-                xwing.Parameters[XWingParameters.AcceleratorTurbineLength].Value;
-            double nozzleLength = 
-                xwing.Parameters[XWingParameters.AcceleratorNozzleLength].Value;
+            var bowBodyLength = 
+                xwing.Parameters[XWingParameterType.BowLength].Value;
+            var bodyLength = 
+                xwing.Parameters[XWingParameterType.BodyLength].Value;
+            var wingWidth = 
+                xwing.Parameters[XWingParameterType.WingWidth].Value;
+            var blasterTipLength = 
+                xwing.Parameters[XWingParameterType.WeaponBlasterTipLength].Value;
+            var turbineLength = 
+                xwing.Parameters[XWingParameterType.AcceleratorTurbineLength].Value;
+            var nozzleLength = 
+                xwing.Parameters[XWingParameterType.AcceleratorNozzleLength].Value;
             // Разница между длиной корпуса и шириной крыльев.
-            double bodyAndWingsDifference = bodyLength - wingWidth;
+            var bodyAndWingsDifference = bodyLength - wingWidth;
             BuildBowBody(bowBodyLength);
             BuildBody(bodyLength);
             BuildWings(wingWidth, bodyLength);
@@ -67,10 +52,10 @@ namespace XWingPluginForCompass3D.Wrapper
         private void BuildBowBody(double bowLength)
         {
             // Объект класса констант для построения носовой части детали.            
-            BowBodyConstants constants = new BowBodyConstants(bowLength);
+            var constants = new BowBodyConstants(bowLength);
 
             // Выдавливание основы носовой части корпуса
-            Wrapper.Sketch = Wrapper.CreatePolygonByDefaultPlane(Wrapper.PlaneXOY,
+            Wrapper.Sketch = Wrapper.CreatePolygonByDefaultPlane(Wrapper.DefaultPlaneXoY,
                 constants.UpperBaseVertexes, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 600, false, 5, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, bowLength,
@@ -99,11 +84,11 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 35, false, -5, false);
 
             // Фаска верхней части острия носовой части
-            Wrapper.CreateChamfer(bowLength, constants.TipUpperEdgeChamferDistances,
+            Wrapper.CreateChamfer(bowLength, constants.TipUpperChamferDistances,
                 constants.TipUpperEdge);
 
             // Фаска нижней части острия носовой части
-            Wrapper.CreateChamfer(bowLength, constants.TipLowerEdgeChamferDistances,
+            Wrapper.CreateChamfer(bowLength, constants.TipLowerChamferDistances,
                 constants.TipLowerEdge);
 
             // Скругление основной части острия
@@ -120,7 +105,7 @@ namespace XWingPluginForCompass3D.Wrapper
         private void BuildBody(double bodyLength)
         {            
             // Объект класса констант для построения корпуса детали.            
-            BodyConstants constants = new BodyConstants(bodyLength);
+            var constants = new BodyConstants(bodyLength);
 
             // Выдавливание основного корпуса на заданную пользователем величину.
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.UpperBasePlane,
@@ -155,46 +140,47 @@ namespace XWingPluginForCompass3D.Wrapper
 
             // Углубление для верхней части корпуса.
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.UpperBodyPartFacePlane,
-                constants.DeepingUpperBodyFaceVertexes, false);
+                constants.DeepUpperBodyFaceVertexes, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 5, true);
 
             // Выдавливание окружностей в верхней части корпуса.
-            Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.DeepingBodyPartFacePlane,
+            Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.DeepBodyPartFacePlane,
                 constants.UpperBodyExtrudingCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, true, 0, false);
 
             // Выдавливание прямоугольников с вырезом в верхней части корпуса.
-            Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.DeepingBodyPartFacePlane,
+            Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.DeepBodyPartFacePlane,
                 constants.UpperBodyExtrudingRectangles, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, true, 0, false);
 
-            // Построение головы дроида в верхней части корпуса.
+            // Построение головы робота в верхней части корпуса.
             Wrapper.BuildHemisphere(constants.BaseDroidHeadPlane, constants.DroidHeadArc);
 
             // Углубление задней части корпуса.
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.BackBodyPlane,
-                constants.BackBodyDeepingVertexes, false);
+                constants.BackBodyDeepVertexes, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 10, true);
 
             // Первый рисунок задней части корпуса.
-            Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.BackDeepingPlane,
+            Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.BackDeepPlane,
                 constants.BackDrawingCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, true, 0, false);
 
             // Второй рисунок задней части корпуса.
-            Wrapper.Sketch = Wrapper.BuildSetSegments(constants.BackDeepingPlane, 
-                constants.BackDrawingSegments);
+            Wrapper.Sketch = Wrapper.BuildSetSegments(constants.BackDeepPlane, 
+                constants.BackDrawingSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, true, 0, true);
         }
 
         /// <summary>
         /// Построение крыльев.
         /// </summary>
-        /// <param name="wingsWidth">Ширина крыльев</param>
+        /// <param name="wingsWidth">Ширина крыльев.</param>
+        /// <param name="bodyLength">Длина корпуса.</param>
         private void BuildWings(double wingsWidth, double bodyLength)
         {
             // Объект класса констант для построения крыльев.
-            WingsConstants wingsConstants = new WingsConstants(wingsWidth, bodyLength);
+            var wingsConstants = new WingsConstants(wingsWidth, bodyLength);
 
             // Выдавливание крыльев, начиная с конца корпуса.
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(wingsConstants.BackBodyPlane,
@@ -209,15 +195,15 @@ namespace XWingPluginForCompass3D.Wrapper
         }
 
         /// <summary>
-        /// Построение бластерного оружия.
+        /// Построение бластеров.
         /// </summary>
         /// <param name="blasterTipLength">Длина острия оружейного бластера.</param>
         /// <param name="difference">Разница между шириной крыльев и длиной корпуса в мм.</param>
-        /// <param name="wingWidth">Ширина крыльев звездолёта.</param>
+        /// <param name="wingWidth">Ширина крыльев звездолета.</param>
         private void BuildBlasters(double blasterTipLength, double difference, double wingWidth)
         {
-            // Объект класса констант для построения бластерных оружий.
-            BlastersConstants constants = new BlastersConstants(difference);
+            // Объект класса констант для построения бластеров.
+            var constants = new BlastersConstants(difference);
 
             // Построение основания тела бластера.
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
@@ -229,9 +215,9 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 200, true, 0, false);
-            constants.CurrentPlane.X = constants.CurrentBlasterCircles[0].Center.X;
-            constants.CurrentPlane.Y = constants.CurrentBlasterCircles[0].Center.Y;
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + 200;
+            constants.CurrentPlane.X = constants.CurrentBlasterCircles[0,0].Center.X;
+            constants.CurrentPlane.Y = constants.CurrentBlasterCircles[0,0].Center.Y;
+            constants.CurrentPlane.Z += 200;
 
             // TODO: дубль
 			// Построение перехода на вторую основу бластера.
@@ -239,21 +225,21 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 5, true, 0, false);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + 5;
+            constants.CurrentPlane.Z += 5;
 
             // Построение второй основы бластера.
             ChangeCirclesRadius(constants.CurrentBlasterCircles, 9);
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 150, true, 0, false);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + 150;
+            constants.CurrentPlane.Z += 150;
 
             // Построение перехода на острие бластера.
             ChangeCirclesRadius(constants.CurrentBlasterCircles, 15);
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 5, true, 0, false);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + 5;
+            constants.CurrentPlane.Z += 5;
 
             // Построение каждого острия бластера.
             Wrapper.Sketch = Wrapper.CreateSegmentsWithArcs(constants.CurrentPlane, 
@@ -281,14 +267,14 @@ namespace XWingPluginForCompass3D.Wrapper
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 15, true, -5, false);
 
             // Построение средней части батареи бластера.
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - 15;
+            constants.CurrentPlane.Z -= 15;
             ChangeCirclesRadius(constants.CurrentBlasterCircles, 18.5);
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane,
                 constants.CurrentBlasterCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, true, 15, false);
 
             // Построение конечной части батареи бластера.
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - 10;
+            constants.CurrentPlane.Z -= 10;
             ChangeCirclesRadius(constants.CurrentBlasterCircles, 21);
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane,
                 constants.CurrentBlasterCircles);
@@ -319,9 +305,9 @@ namespace XWingPluginForCompass3D.Wrapper
         private void BuildAccelerators(double turbineLength, double nozzleLength, double difference)
         {
             // Объект класса констант для построения ускорителей.
-            AcceleratorsConstants constants = new AcceleratorsConstants(difference);
+            var constants = new AcceleratorsConstants(difference);
 
-            // Выдавливанние оснований ускорителей на крыльях.            
+            // Выдавливание оснований ускорителей на крыльях.            
             Wrapper.Sketch = Wrapper.CreatePolygonSketchByPoint(constants.CurrentPlane,
                 constants.AcceleratorsBaseVertexes, true);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 280, false, 0, false);
@@ -364,49 +350,50 @@ namespace XWingPluginForCompass3D.Wrapper
 
             // Выдавливание верхней части сопла.
             constants.CurrentPlane = constants.TurbinePlane;
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - turbineLength;
+            constants.CurrentPlane.Z -= turbineLength;
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.TurbineCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength/2, true, 10, false);
 
             // Выдавливание нижней части сопла.
-            // TODO: именование градусы радианы?
-            double angle = 10 * Math.PI / 180;
-            double radius = constants.TurbineCircles[0].Radius +
-                Math.Tan(angle) * nozzleLength / 2;
+            // TODO: именование градусы радианы? ИСПРАВИЛ
+            var angleInRadians = 10 * Math.PI / 180;
+            var radius = constants.TurbineCircles[0,0].Radius +
+                         Math.Tan(angleInRadians) * nozzleLength / 2;
             ChangeCirclesRadius(constants.TurbineCircles, radius);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            constants.CurrentPlane.Z -= nozzleLength / 2;
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.TurbineCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength / 2, true, -5, false);
 
             // Вырезание внешнего отверстия сопла.
            ChangeCirclesRadius(constants.TurbineCircles, 33);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            constants.CurrentPlane.Z -= nozzleLength / 2;
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.TurbineCircles);
             Wrapper.CutExtrusion(Wrapper.Sketch, nozzleLength / 2, true);
 
             // Выдавливание средней части сопла.
             ChangeCirclesRadius(constants.TurbineCircles, 15);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + nozzleLength / 2;
+            constants.CurrentPlane.Z += nozzleLength / 2;
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.TurbineCircles);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength / 2, true, 0, false);
 
             // Вырезание внутреннего отверстия сопла.
             ChangeCirclesRadius(constants.TurbineCircles, 12.5);
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z - nozzleLength / 2;
+            constants.CurrentPlane.Z -= nozzleLength / 2;
             Wrapper.Sketch = Wrapper.CreateCirclesSketch(constants.CurrentPlane, 
                 constants.TurbineCircles);
             Wrapper.CutExtrusion(Wrapper.Sketch, nozzleLength / 2, true);
 
             // Выдавливание рисунка сопла.
-            constants.CurrentPlane.Z = constants.CurrentPlane.Z + nozzleLength / 2;
+            constants.CurrentPlane.Z += nozzleLength / 2;
             Wrapper.Sketch = Wrapper.CreateSegmentsWithCircles(constants.CurrentPlane, 
                 constants.NozzleDrawingSegments,
                 constants.NozzleDrawingCircles);
-            Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength / 2, true, 0, true);            
+            Wrapper.ExtrudeSketch(Wrapper.Sketch, nozzleLength / 2, 
+                true, 0, true);            
         }
 
         /// <summary>
@@ -414,11 +401,14 @@ namespace XWingPluginForCompass3D.Wrapper
         /// </summary>
         /// <param name="circles">Массив кругов.</param>
         /// <param name="radius">Новый радиус.</param>
-        private void ChangeCirclesRadius(Circle[] circles, double radius)
+        private static void ChangeCirclesRadius(Circle[,] circles, double radius)
         {
-            for (int i = 0; i < circles.GetLength(0); i++)
+            for (var i = 0; i < circles.GetLength(0); i++)
             {
-                circles[i].Radius = radius;
+                for (var j = 0; j < circles.GetLength(1); j++)
+                {
+                    circles[i,j].Radius = radius;
+                }
             }
         }
     }

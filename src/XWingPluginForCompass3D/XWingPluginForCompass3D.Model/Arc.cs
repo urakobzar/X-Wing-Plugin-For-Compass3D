@@ -6,7 +6,7 @@
     public class Arc: Circle
     {
         /// <summary>
-        /// Создаёт экземпляр класса для построения дуги.
+        /// Создает экземпляр класса для построения дуги.
         /// </summary>
         /// <param name="center">Центр окружности дуги.</param>
         /// <param name="radius">Радиус окружности дуги.</param>
@@ -19,67 +19,22 @@
             StartPoint = startPoint;
             EndPoint = endPoint;
             Direction = direction;
-        }        
+        }
 
         /// <summary>
         /// Начальная точка дуги.
         /// </summary>
-        private Point2D _startPoint;
+        public Point2D StartPoint { set; get; }
 
         /// <summary>
         /// Конечная точка дуги.
         /// </summary>
-        private Point2D _endPoint;
+        // TODO: можно просто set get ИСПРАВИЛ
+        public Point2D EndPoint { set; get; }
 
         /// <summary>
         /// Направление дуги.
         /// </summary>
-        private short _direction;
-
-        /// <summary>
-        /// Устанавливает и возвращает начальную точку дуги.
-        /// </summary>
-        public Point2D StartPoint
-        {
-            set
-            {
-                _startPoint = value;
-            }
-            get
-            {
-                return _startPoint;
-            }
-        }
-
-        /// <summary>
-        /// Устанавливает и возвращает конечную точку дуги.
-        /// </summary>
-        public Point2D EndPoint
-        {
-            // TODO: можно просто set get
-            set
-            {
-                _endPoint = value;
-            }
-            get
-            {
-                return _endPoint;
-            }
-        }
-
-        /// <summary>
-        /// Устанавливает и возвращает направление обхода дуги.
-        /// </summary>
-        public short Direction
-        {
-            set
-            {
-                _direction = value;
-            }
-            get
-            {
-                return _direction;
-            }
-        }
+        public short Direction { set; get; }
     }
 }

@@ -8,45 +8,15 @@
         /// <summary>
         /// Координата по оси X.
         /// </summary>
-        private double _x;
+        public double X { set; get; }
 
         /// <summary>
         /// Координата по оси Y.
         /// </summary>
-        private double _y;
+        public double Y { set; get; }
 
         /// <summary>
-        /// Устанавливает и возвращает координату по оси X.
-        /// </summary>
-        public double X
-        {
-            set
-            {
-                _x = value;
-            }
-            get
-            {
-                return _x;
-            }
-        }
-
-        /// <summary>
-        /// Устанавливает и возвращает координату по оси Y.
-        /// </summary>
-        public double Y
-        {
-            set
-            {
-                _y = value;
-            }
-            get
-            {
-                return _y;
-            }
-        }
-
-        /// <summary>
-        /// Создаёт экземпляр класса для создания 2D-точки.
+        /// Создает экземпляр класса для создания 2D-точки.
         /// </summary>
         /// <param name="x">Координату по оси X.</param>
         /// <param name="y">Координату по оси Y.</param>
