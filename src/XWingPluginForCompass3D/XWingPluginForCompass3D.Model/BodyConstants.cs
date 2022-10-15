@@ -13,24 +13,32 @@
         {
             UpperFacePlane 
                 = new Point3D(0, 78.493198, -600 - (bodyLength / 2));
-            UpperFaceVertexes = new[,]
+            UpperFaceVertexes = new[,,]
             {
                 {
-                    new Point2D(-54.395689, 600 + bodyLength),
-                    new Point2D(54.395689, 600 + bodyLength),
-                    new Point2D(54.395689, 600),
-                    new Point2D(-54.395689, 600)
+                    { new Point2D(-54.395689, 600 + bodyLength), 
+                        new Point2D(54.395689, 600 + bodyLength) },
+                    { new Point2D(54.395689, 600 + bodyLength), 
+                        new Point2D(54.395689, 600) },
+                    { new Point2D(54.395689, 600), 
+                        new Point2D(-54.395689, 600) },
+                    {new Point2D(-54.395689, 600), 
+                        new Point2D(-54.395689, 600 + bodyLength)}
                 }                
             };
             LowerFacePlane 
                 = new Point3D(0, -71.493198, -600 - (bodyLength / 2));
-            LowerFaceVertexes = new[,]
+            LowerFaceVertexes = new[,,]
             {
                 {
-                    new Point2D(-49.470255, -600-bodyLength),
-                    new Point2D(49.470255, -600-bodyLength),
-                    new Point2D(49.470255, -600),
-                    new Point2D(-49.470255, -600)
+                    { new Point2D(-49.470255, -600 - bodyLength), 
+                        new Point2D(49.470255, -600 - bodyLength) },
+                    { new Point2D(49.470255, -600 - bodyLength), 
+                        new Point2D(49.470255, -600) },
+                    { new Point2D(49.470255, -600), 
+                        new Point2D(-49.470255, -600) },
+                    { new Point2D(-49.470255, -600), 
+                        new Point2D(-49.470255, -600 - bodyLength) }
                 }                
             };
             LowerSideBackPlane 
@@ -96,84 +104,109 @@
         public Point3D BackDeepPlane { get; }
 
         /// <summary>
-        /// Массив координат вершин верхнего основания корпуса звездолета.
+        /// Массив точек для построения отрезков верхнего основания корпуса звездолета.
         /// </summary>
-        public Point2D[,] BaseVertexes { get; } =
+        public Point2D[,,] BaseVertexes { get; } =
         {
             {
-                new Point2D(108.977589, -4.985001),
-                new Point2D(54.395689, 78.493198),
-                new Point2D(-54.395689, 78.493198),
-                new Point2D(-108.977589, -4.985001),
-                new Point2D(-49.470255, -71.493198),
-                new Point2D(49.470255, -71.493198)
+                { new Point2D(108.977589, -4.985001), 
+                    new Point2D(54.395689, 78.493198) },
+                { new Point2D(54.395689, 78.493198), 
+                    new Point2D(-54.395689, 78.493198) },
+                { new Point2D(-54.395689, 78.493198), 
+                    new Point2D(-108.977589, -4.985001) },
+                { new Point2D(-108.977589, -4.985001), 
+                    new Point2D(-49.470255, -71.493198) },
+                { new Point2D(-49.470255, -71.493198), 
+                    new Point2D(49.470255, -71.493198) },
+                { new Point2D(49.470255, -71.493198), 
+                    new Point2D(108.977589, -4.985001) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин верхней грани корпуса звездолета.
+        /// Массив точек для построения отрезков верхней грани корпуса звездолета.
         /// </summary>
-        public Point2D[,] UpperFaceVertexes { get; }
+        public Point2D[,,] UpperFaceVertexes { get; }
 
         /// <summary>
-        /// Массив координат вершин нижней грани корпуса звездолета.
+        /// Массив точек для построения отрезков нижней грани корпуса звездолета.
         /// </summary>
-        public Point2D[,] LowerFaceVertexes { get; }
+        public Point2D[,,] LowerFaceVertexes { get; }
 
         /// <summary>
-        /// Массив координат вершин выреза выдавленных частей корпуса звездолета.
-        /// В ходе программы координаты отразятся.
+        /// Массив точек для построения отрезков выреза выдавленных частей
+        /// корпуса звездолета. В ходе программы координаты отразятся.
         /// </summary>
-        public Point2D[,] BodyCutoutVertexes { get; } =
+        public Point2D[,,] BodyCutoutVertexes { get; } =
         {
             {
-                new Point2D (-49.470255, -121.493198),
-                new Point2D (-49.470255, -71.493198),
-                new Point2D (-26.470255, -121.493198)
+                { new Point2D(-49.470255, -121.493198), 
+                    new Point2D(-49.470255, -71.493198) },
+                { new Point2D (-49.470255, -71.493198), 
+                    new Point2D(-26.470255, -121.493198) },
+                { new Point2D(-26.470255, -121.493198), 
+                    new Point2D(-49.470255, -121.493198) }
             },
             {
-                new Point2D(-54.395689, 128.493198),
-                new Point2D(-54.395689, 78.493198),
-                new Point2D(-31.395689, 128.493198)
+                { new Point2D(-54.395689, 128.493198), 
+                    new Point2D(-54.395689, 78.493198) },
+                { new Point2D(-54.395689, 78.493198), 
+                    new Point2D(-31.395689, 128.493198) },
+                { new Point2D(-31.395689, 128.493198), 
+                    new Point2D(-54.395689, 128.493198) }
             }
         };
 
         /// <summary>
-        /// Массив координат вершин среза нижней части корпуса звездолета.
+        /// Массив точек для построения отрезков среза нижней части корпуса звездолета.
         /// </summary>
-        public Point2D[,] LowerBodySliceVertexes { get; } =
+        public Point2D[,,] LowerBodySliceVertexes { get; } =
         {
             {
-                new Point2D (600, 71.493198),
-                new Point2D (600, 121.493198),
-                new Point2D (650, 121.493198)
+                { new Point2D(600, 71.493198), 
+                    new Point2D(600, 121.493198) },
+                { new Point2D (600, 121.493198), 
+                    new Point2D(650, 121.493198)},
+                { new Point2D(650, 121.493198), 
+                    new Point2D(600, 71.493198) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин задней плоскости носовой части корпуса звездолета.
-        /// (Поле необходимо для того, чтобы убрать зазор между носом и корпусом)
+        /// Массив точек для построения отрезков задней плоскости носовой
+        /// части корпуса звездолета. Поле необходимо для того, чтобы убрать
+        /// зазор между носом и корпусом.
         /// </summary>
-        public Point2D[,] BowBodyFaceVertexes { get; } =
+        public Point2D[,,] BowBodyFaceVertexes { get; } =
         {
             {
-                new Point2D (54.395689, 25.901062),
-                new Point2D (26.115362, 75.697928),
-                new Point2D (-26, 75.901062150386),
-                new Point2D (-54.395689, 25.901062)
+                { new Point2D(54.395689, 25.901062), 
+                    new Point2D(26.115362, 75.697928) },
+                { new Point2D (26.115362, 75.697928), 
+                    new Point2D(-26, 75.901062150386) },
+                { new Point2D(-26, 75.901062150386), 
+                    new Point2D(-54.395689, 25.901062) },
+                { new Point2D (-54.395689, 25.901062), 
+                    new Point2D(54.395689, 25.901062) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин углубления верхней части корпуса звездолета.
+        /// Массив точек для построения отрезков углубления
+        /// верхней части корпуса звездолета.
         /// </summary>
-        public Point2D[,] DeepUpperBodyFaceVertexes { get; } =
+        public Point2D[,,] DeepUpperBodyFaceVertexes { get; } =
         {
             {
-                new Point2D (-25, 607.659914486825),
-                new Point2D (25, 607.659914486825),
-                new Point2D (25, 892.659914486825),
-                new Point2D (-25, 892.659914486825)
+                { new Point2D(-25, 607.6599144), 
+                    new Point2D(25, 607.6599144) },
+                { new Point2D (25, 607.6599144), 
+                    new Point2D(25, 892.6599144) },
+                { new Point2D(25, 892.6599144), 
+                    new Point2D(-25, 892.6599144) },
+                { new Point2D (-25, 892.6599144), 
+                    new Point2D(-25, 607.6599144) }
             }            
         };
 
@@ -192,60 +225,86 @@
         };
 
         /// <summary>
-        /// Массив прямоугольников для выдавливания в верхней части корпуса.
+        /// Массив точек для построения отрезков прямоугольников
+        /// для выдавливания в верхней части корпуса.
         /// </summary>
-        public Point2D[,] UpperBodyExtrudingRectangles { get; } =
+        public Point2D[,,] UpperBodyExtrudingRectangles { get; } =
         {
             {
-                new Point2D (-19.2033454, 663.7722065),
-                new Point2D (18.7966545, 663.7722065),
-                new Point2D (18.7966545, 721.7722065),
-                new Point2D (-19.2033454, 721.7722065)
+                { new Point2D(-19.2033454, 663.7722065), 
+                    new Point2D(18.7966545, 663.7722065) },
+                { new Point2D(18.7966545, 663.7722065), 
+                    new Point2D(18.7966545, 721.7722065) },
+                { new Point2D(18.7966545, 721.7722065), 
+                    new Point2D(-19.2033454, 721.7722065) },
+                { new Point2D(-19.2033454, 721.7722065), 
+                    new Point2D(-19.2033454, 663.7722065) }
             },
             {
-                new Point2D (-19.2033454, 858.5264552),
-                new Point2D (18.7966545, 858.5264552),
-                new Point2D (18.7966545, 878.5264552),
-                new Point2D (-19.2033454, 878.5264552)
+                { new Point2D(-19.2033454, 858.5264552), 
+                    new Point2D(18.7966545, 858.5264552) },
+                { new Point2D (18.7966545, 858.5264552), 
+                    new Point2D(18.7966545, 878.5264552) },
+                { new Point2D(18.7966545, 878.5264552), 
+                    new Point2D(-19.2033454, 878.5264552) },
+                { new Point2D (-19.2033454, 878.5264552),
+                    new Point2D(-19.2033454, 858.5264552) }
             },
             {
-                new Point2D (-22.2033454, 784.7158326),
-                new Point2D (21.7966545, 784.7158326),
-                new Point2D (21.7966545, 842.7158326),
-                new Point2D (-22.2033454, 842.7158326)
+                { new Point2D(-22.2033454, 784.7158326), 
+                    new Point2D(21.7966545, 784.7158326) },
+                { new Point2D(21.7966545, 784.7158326),
+                    new Point2D(21.7966545, 842.7158326) },
+                { new Point2D(21.7966545, 842.7158326), 
+                    new Point2D(-22.2033454, 842.7158326) },
+                { new Point2D (-22.2033454, 842.7158326), 
+                    new Point2D(-22.2033454, 784.7158326) }
             },
             {
-                new Point2D (-15.2033454, 669.2722065),
-                new Point2D (14.7966545, 669.2722065),
-                new Point2D (14.7966545, 716.2722065),
-                new Point2D (-15.2033454, 716.2722065)
+                { new Point2D(-15.2033454, 669.2722065), 
+                    new Point2D(14.7966545, 669.2722065) },
+                { new Point2D(14.7966545, 669.2722065), 
+                    new Point2D(14.7966545, 716.2722065) },
+                { new Point2D(14.7966545, 716.2722065), 
+                    new Point2D(-15.2033454, 716.2722065) },
+                {new Point2D (-15.2033454, 716.2722065), 
+                    new Point2D(-15.2033454, 669.2722065)}
             },
             {
-                new Point2D (-15.2033454, 861.5264552),
-                new Point2D (14.7966545, 861.5264552),
-                new Point2D (14.7966545, 875.5264552),
-                new Point2D (-15.2033454, 875.5264552)
+                { new Point2D(-15.2033454, 861.5264552), 
+                    new Point2D(14.7966545, 861.5264552) },
+                { new Point2D(14.7966545, 861.5264552), 
+                    new Point2D(14.7966545, 875.5264552) },
+                { new Point2D(14.7966545, 875.5264552), 
+                    new Point2D(-15.2033454, 875.5264552) },
+                { new Point2D(-15.2033454, 875.5264552), 
+                    new Point2D(-15.2033454, 861.5264552) }
             },
             {
-                new Point2D (-19.2033454, 788.2158326),
-                new Point2D (18.7966545, 788.2158326),
-                new Point2D (18.7966545, 839.2158326),
-                new Point2D (-19.2033454, 839.2158326)
+                { new Point2D(-19.2033454, 788.2158326), 
+                    new Point2D(18.7966545, 788.2158326) },
+                { new Point2D(18.7966545, 788.2158326), 
+                    new Point2D(18.7966545, 839.2158326) },
+                { new Point2D(18.7966545, 839.2158326), 
+                    new Point2D(-19.2033454, 839.2158326) },
+                { new Point2D(-19.2033454, 839.2158326), 
+                    new Point2D(-19.2033454, 788.2158326) }
             }
         };
 
         /// <summary>
-        /// Массив координат вершин выреза задней части корпуса звездолета.
+        /// Массив точек для построения отрезков выреза
+        /// задней части корпуса звездолета.
         /// </summary>
-        public Point2D[,] BackBodyDeepVertexes { get; } =
+        public Point2D[,,] BackBodyDeepVertexes { get; } =
         {
             {
-                new Point2D (-97, -4),
-                new Point2D (-20, 123),
-                new Point2D (20, 123),
-                new Point2D (97, -4),
-                new Point2D (20, -100),
-                new Point2D (-20, -100)
+                { new Point2D(-97, -4), new Point2D(-20, 123) },
+                { new Point2D(-20, 123), new Point2D(20, 123) },
+                { new Point2D(20, 123), new Point2D(97, -4) },
+                { new Point2D(97, -4), new Point2D(20, -100) },
+                { new Point2D(20, -100), new Point2D(-20, -100) },
+                { new Point2D(-20, -100), new Point2D(-97, -4) }
             }            
         };
 

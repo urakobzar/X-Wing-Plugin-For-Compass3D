@@ -15,70 +15,82 @@
         }
 
         /// <summary>
-        /// Массив координат вершин в верхнем основании носовой части звездолета.
+        /// Массив точек для построения отрезков верхнего основания
+        /// носовой части звездолета.
         /// </summary>
-        public Point2D[,] UpperBaseVertexes { get; } =
+        public Point2D[,,] UpperBaseVertexes { get; } =
         {
             {
-                new Point2D(-43, 0),
-                new Point2D(-26, 26),
-                new Point2D(26, 26),
-                new Point2D(43, 0),
-                new Point2D(26, -19),
-                new Point2D(-26, -19)
+                { new Point2D(-43, 0), new Point2D(-26, 26) },
+                { new Point2D(-26, 26), new Point2D(26, 26) },
+                { new Point2D(26, 26), new Point2D(43, 0) },
+                { new Point2D(43, 0), new Point2D(26, -19) },
+                { new Point2D(26, -19), new Point2D(-26, -19) },
+                { new Point2D(-26, -19), new Point2D(-43, 0) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин грани носовой части звездолета.
+        /// Массив точек для построения отрезков
+        /// грани носовой части звездолета.
         /// </summary>
-        public Point2D[,] UpperFaceVertexes { get; } =
+        public Point2D[,,] UpperFaceVertexes { get; } =
         {
             {
-                new Point2D(54.3956890, 604.5579518),
-                new Point2D(-54.3956890, 604.5579518),
-                new Point2D(-26, 2.2660493),
-                new Point2D(26, 2.2660493)
+                { new Point2D(54.3956890, 604.5579518), 
+                    new Point2D(-54.3956890, 604.5579518) },
+                { new Point2D(-54.3956890, 604.5579518), 
+                    new Point2D(-26, 2.2660493) },
+                { new Point2D(-26, 2.2660493), 
+                    new Point2D(26, 2.2660493) },
+                { new Point2D(26, 2.2660493), 
+                    new Point2D(54.3956890, 604.5579518) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин выреза кокпита звездолета.
+        /// Массив точек для построения отрезков выреза кокпита звездолета.
         /// В ходе программы координаты отразятся.
         /// </summary>
-        public Point2D[,] CockpitCutoutVertexes { get; } =
+        public Point2D[,,] CockpitCutoutVertexes { get; } =
         {
             {
-                new Point2D(-26, 75.9010621),
-                new Point2D(-54.3956890, 75.9010621),
-                new Point2D(-54.3956890, 25.9010621)
+                { new Point2D(-26, 75.9010621), 
+                    new Point2D(-54.3956890, 75.9010621) },
+                {new Point2D(-54.3956890, 75.9010621), 
+                    new Point2D(-54.3956890, 25.9010621)},
+                { new Point2D(-54.3956890, 25.9010621), 
+                    new Point2D(-26, 75.9010621) }
             }
         };
 
         /// <summary>
-        /// Массив координат вершин второго выреза кокпита.
+        /// Массив точек для построения отрезков среза кокпита.
         /// </summary>
-        public Point2D[,] CockpitSliceVertexes { get; } =
+        public Point2D[,,] CockpitSliceVertexes { get; } =
         {
             {
-                new Point2D(-1, 25.9010621),
-                new Point2D(-1, 75.9010621),
-                new Point2D(-605.1116164, 75.9010621)
+                { new Point2D(-1, 25.9010621), 
+                    new Point2D(-1, 75.9010621) },
+                { new Point2D(-1, 75.9010621), 
+                    new Point2D(-605.1116164, 75.9010621) },
+                { new Point2D(-605.1116164, 75.9010621), 
+                    new Point2D(-1, 25.9010621) }
             }            
         };
 
         /// <summary>
-        /// Массив координат вершин основания острия носовой части.
+        /// Массив точек для построения отрезков основания острия носовой части.
         /// </summary>
-        public Point2D[,] TipBowBodyVertexes { get; } =
+        public Point2D[,,] TipBowBodyVertexes { get; } =
         {
             {
-                new Point2D(-43, 0),
-                new Point2D(-26, 26),
-                new Point2D(25, 26),
-                new Point2D(43, 0),
-                new Point2D(26, -19),
-                new Point2D(-26, -19)
+                { new Point2D(-43, 0), new Point2D(-26, 26) },
+                { new Point2D(-26, 26), new Point2D(25, 26) },
+                { new Point2D(25, 26), new Point2D(43, 0) },
+                { new Point2D(43, 0), new Point2D(26, -19) },
+                { new Point2D(26, -19), new Point2D(-26, -19) },
+                { new Point2D(-26, -19), new Point2D(-43, 0) }
             }            
         };
 

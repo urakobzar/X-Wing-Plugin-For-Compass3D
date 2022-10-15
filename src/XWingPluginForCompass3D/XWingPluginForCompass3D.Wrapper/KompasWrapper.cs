@@ -94,6 +94,124 @@ namespace XWingPluginForCompass3D.Wrapper
         }
 
         /// <summary>
+        /// Создание плоскости эскиза по точке.
+        /// </summary>
+        /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
+        /// <returns>Сформированная плоскость эскиз.</returns>
+        private ksEntity CreatePlaneByPoint(Point3D planePoint)
+        {
+            ksEntityCollection collection =
+                Part.EntityCollection((short)Obj3dType.o3d_face);
+            collection.SelectByPoint(planePoint.X, planePoint.Y, planePoint.Z);
+            ksEntity plane = collection.First();
+            return plane;
+        }
+
+        /// <summary>
+        /// Формирование параметров эскиза.
+        /// </summary>
+        /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
+        /// <param name="sketch">Эскиз.</param>
+        /// <returns>Сформированные параметры эскиза.</returns>
+        private ksSketchDefinition CreateSketchDefinition(Point3D planePoint,
+            ksEntity sketch)
+        {
+            ksSketchDefinition definition =
+                (ksSketchDefinition)sketch.GetDefinition();
+            ksEntity plane = CreatePlaneByPoint(planePoint);
+            definition.SetPlane(plane);
+            sketch.Create();
+            return definition;
+        }
+
+        /// <summary>
+        /// Создание на эскизе отрезков.
+        /// </summary>
+        /// <param name="sketchEdit">Объект графического документа.</param>
+        /// <param name="segmentPoints">Массив точек для построения отрезков.</param>
+        /// <param name="isMustBeMirrored">Отражение координат:
+        /// true - координаты отражаются, false - не отражаются.</param>
+        private static void CreateSegments(ksDocument2D sketchEdit,
+            Point2D[,,] segmentPoints, bool isMustBeMirrored)
+        {
+            for (var i = 0; i < segmentPoints.GetLength(0); i++)
+            {
+                for (var j = 0; j < segmentPoints.GetLength(1); j++)
+                {
+                    sketchEdit.ksLineSeg(segmentPoints[i, j, 0].X,
+                        segmentPoints[i, j, 0].Y,
+                        segmentPoints[i, j, 1].X,
+                        segmentPoints[i, j, 1].Y, 1);
+                    if (!isMustBeMirrored) continue;
+                    sketchEdit.ksLineSeg(-segmentPoints[i, j, 0].X,
+                        segmentPoints[i, j, 0].Y,
+                        -segmentPoints[i, j, 1].X,
+                        segmentPoints[i, j, 1].Y, 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Создание на эскизе окружностей.
+        /// </summary>
+        /// <param name="sketchEdit">Объект графического документа.</param>
+        /// <param name="circles">Массив окружностей для построения.</param>
+        /// <param name="isMustBeMirrored">Отражение координат:
+        /// true - координаты отражаются, false - не отражаются.</param>
+        private static void CreateCircles(ksDocument2D sketchEdit,
+            Circle[,] circles, bool isMustBeMirrored)
+        {
+            for (var i = 0; i < circles.GetLength(0); i++)
+            {
+                for (var j = 0; j < circles.GetLength(1); j++)
+                {
+                    sketchEdit.ksCircle(circles[i, j].Center.X,
+                        circles[i, j].Center.Y,
+                        circles[i, j].Radius, 1);
+                    if (!isMustBeMirrored) continue;
+                    sketchEdit.ksCircle(-circles[i, j].Center.X,
+                        circles[i, j].Center.Y,
+                        circles[i, j].Radius, 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Создание на эскизе дуг.
+        /// </summary>
+        /// <param name="sketchEdit">Объект графического документа.</param>
+        /// <param name="arcs">Массив дуг для построения.</param>
+        /// <param name="isMustBeMirrored">Отражение координат:
+        /// true - координаты отражаются, false - не отражаются.</param>
+        private static void CreateArs(ksDocument2D sketchEdit, Arc[,] arcs,
+            bool isMustBeMirrored)
+        {
+            for (var i = 0; i < arcs.GetLength(0); i++)
+            {
+                for (var j = 0; j < arcs.GetLength(1); j++)
+                {
+                    sketchEdit.ksArcByPoint(arcs[i, j].Center.X,
+                        arcs[i, j].Center.Y,
+                        arcs[i, j].Radius,
+                        arcs[i, j].StartPoint.X,
+                        arcs[i, j].StartPoint.Y,
+                        arcs[i, j].EndPoint.X,
+                        arcs[i, j].EndPoint.Y,
+                        arcs[i, j].Direction, 1);
+                    if (!isMustBeMirrored) continue;
+                    sketchEdit.ksArcByPoint(-arcs[i, j].Center.X,
+                        arcs[i, j].Center.Y,
+                        arcs[i, j].Radius,
+                        -arcs[i, j].StartPoint.X,
+                        arcs[i, j].StartPoint.Y,
+                        -arcs[i, j].EndPoint.X,
+                        arcs[i, j].EndPoint.Y,
+                        (short)-arcs[i, j].Direction, 1);
+                }
+            }
+        }
+
+        /// <summary>
         /// Выдавливание эскиза на определенное расстояние.
         /// </summary>
         /// <param name="sketch">Эскиз.</param>
@@ -106,11 +224,11 @@ namespace XWingPluginForCompass3D.Wrapper
         public void ExtrudeSketch(ksEntity sketch, double height, bool direction,
             double draftValue, bool isMustBeThin)
         {
-            ksEntity entity = 
+            ksEntity entity =
                 (ksEntity)Part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
             ksBaseExtrusionDefinition definition =
                 (ksBaseExtrusionDefinition)entity.GetDefinition();
-	        // TODO: дубль  ИСПРАВИЛ
+            // TODO: дубль  ИСПРАВИЛ
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -119,11 +237,11 @@ namespace XWingPluginForCompass3D.Wrapper
             {
                 definition.directionType = (short)Direction_Type.dtReverse;
             }
-            definition.SetSideParam(direction, (short)End_Type.etBlind, 
+            definition.SetSideParam(direction, (short)End_Type.etBlind,
                 height, draftValue);
             if (isMustBeThin)
             {
-                definition.SetThinParam(true, (short)End_Type.etBlind, 
+                definition.SetThinParam(true, (short)End_Type.etBlind,
                     1, 0);
             }
             definition.SetSketch(sketch);
@@ -140,7 +258,7 @@ namespace XWingPluginForCompass3D.Wrapper
         {
             ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
             ksCutExtrusionDefinition definition = (ksCutExtrusionDefinition)entity.GetDefinition();
-			// TODO: дубль  ИСПРАВИЛ
+            // TODO: дубль  ИСПРАВИЛ
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -155,122 +273,22 @@ namespace XWingPluginForCompass3D.Wrapper
         }
 
         /// <summary>
-        /// Создание плоскости эскиза по точке.
-        /// </summary>
-        /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
-        /// <returns>Сформированная плоскость эскиз.</returns>
-        public ksEntity CreatePlaneByPoint(Point3D planePoint)
-        {
-            ksEntityCollection collection = 
-                Part.EntityCollection((short)Obj3dType.o3d_face);
-            collection.SelectByPoint(planePoint.X, planePoint.Y, planePoint.Z);
-            ksEntity plane = collection.First();
-            return plane;
-        }
-
-        /// <summary>
-        /// Создание эскиза многоугольника по базовой плоскости.
-        /// </summary>
-        /// <param name="planeType">Базовая плоскость.</param>
-        /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
-        /// <param name="isMirrored"></param>
-        /// <returns>Сформированный эскиз.</returns>
-        public ksEntity CreatePolygonByDefaultPlane(Obj3dType planeType,
-            Point2D[,] polygonVertices, bool isMirrored)
-        {
-            ksEntity plane = (ksEntity)Part.GetDefaultEntity((short)planeType);
-            ksEntity sketch = CreatePolygons(plane, polygonVertices, isMirrored);
-            return sketch;
-        }
-
-        /// <summary>
-        /// Создание эскиза многоугольника по точке.
-        /// </summary>
-        /// <param name="planePoint">Массив координат центра плоскости.</param>
-        /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
-        /// <param name="isMustBeMirrored">Отражение координат:
-        /// true - координаты отражаются, false - не отражаются.</param>
-        /// <returns></returns>
-        public ksEntity CreatePolygonSketchByPoint(Point3D planePoint,
-            Point2D[,] polygonVertices, bool isMustBeMirrored)
-        {
-            ksEntity basePlane = CreatePlaneByPoint(planePoint);
-            ksEntity sketch = CreatePolygons(basePlane,
-                polygonVertices, isMustBeMirrored);
-            return sketch;
-        }
-
-        /// <summary>
-        /// Создание многоугольников по координатам вершин.
-        /// </summary>
-        /// <param name="plane">Плоскость эскиза.</param>
-        /// <param name="vertices">Координаты вершины многоугольника.</param>
-        /// <param name="isMustBeMirrored">Отражение координат:
-        /// true - координаты отражаются, false - не отражаются.</param>
-        /// <returns>Сформированный эскиз.</returns>
-        public ksEntity CreatePolygons(ksEntity plane, Point2D[,] vertices, bool isMustBeMirrored)
-        {
-            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            definition.SetPlane(plane);
-            sketch.Create();
-            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            for (var i = 0; i < vertices.GetLength(0); i++)
-            {
-                for (var j = 0; j < vertices.GetLength(1) - 1; j++)
-                {
-                    sketchEdit.ksLineSeg(vertices[i, j].X, vertices[i, j].Y,
-                        vertices[i, j + 1].X, vertices[i, j + 1].Y, 1);
-                    if (isMustBeMirrored)
-                    {
-                        sketchEdit.ksLineSeg(-vertices[i, j].X, vertices[i, j].Y,
-                        -vertices[i, j + 1].X, vertices[i, j + 1].Y, 1);
-                    }
-                }
-                sketchEdit.ksLineSeg(vertices[i, vertices.GetLength(1) - 1].X,
-                    vertices[i, vertices.GetLength(1) - 1].Y,
-                        vertices[i, 0].X, vertices[i, 0].Y, 1);
-                if (isMustBeMirrored)
-                {
-                    sketchEdit.ksLineSeg(-vertices[i, vertices.GetLength(1) - 1].X,
-                    vertices[i, vertices.GetLength(1) - 1].Y,
-                        -vertices[i, 0].X, vertices[i, 0].Y, 1);
-                }
-            }
-            definition.EndEdit();
-            return sketch;
-        }
-
-        /// <summary>
-        /// Создание эскиза окружностей.
-        /// </summary>
-        /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
-        /// <param name="circles">Параметры окружности, включающие центр и радиус.</param>
-        /// <returns>Сформированный эскиз.</returns>
-        public ksEntity CreateCirclesSketch(Point3D planePoint, Circle[,] circles)
-        {
-            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = CreateSketchDefinition(planePoint, sketch);
-            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            CreateCircles(sketchEdit,circles,false);
-            definition.EndEdit();
-            return sketch;
-        }
-
-        /// <summary>
         /// Создания фаски.
         /// </summary>
         /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
         /// <param name="chamferDistance">Массив расстояний для создания фаски.</param>
         /// <param name="edgeCoordinate">Координата ребра, где будет фаска.</param>
-        public void CreateChamfer(double shift, double[] chamferDistance, Point3D edgeCoordinate)
+        public void CreateChamfer(double shift, double[] chamferDistance, 
+            Point3D edgeCoordinate)
         {
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_chamfer);
             ksChamferDefinition definition = sketch.GetDefinition();
             definition.tangent = true;
-            definition.SetChamferParam(true, chamferDistance[0], chamferDistance[1]);
+            definition.SetChamferParam(true, 
+                chamferDistance[0], chamferDistance[1]);
             ksEntityCollection array = definition.array();
-            ksEntityCollection collection = Part.EntityCollection((short)Obj3dType.o3d_edge);
+            ksEntityCollection collection = 
+                Part.EntityCollection((short)Obj3dType.o3d_edge);
             collection.SelectByPoint(edgeCoordinate.X, edgeCoordinate.Y,
                 edgeCoordinate.Z + shift);
             ksEntity edge = collection.Last();
@@ -284,7 +302,8 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <param name="shift">Сдвиг по координатам из-за изменяемого параметра.</param>
         /// <param name="edgeCoordinatesArray">Массив координат ребер, где будет скругление.</param>
         /// <param name="radius">Радиус скругления.</param>
-        public void CreateFillet(double shift, Point3D[] edgeCoordinatesArray, double radius)
+        public void CreateFillet(double shift, 
+            Point3D[] edgeCoordinatesArray, double radius)
         {
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_fillet);
             ksFilletDefinition definition = sketch.GetDefinition();
@@ -293,7 +312,8 @@ namespace XWingPluginForCompass3D.Wrapper
             ksEntityCollection array = definition.array();
             for (var i = 0; i < edgeCoordinatesArray.GetLength(0); i++)
             {
-                ksEntityCollection collection = Part.EntityCollection((short)Obj3dType.o3d_edge);
+                ksEntityCollection collection = 
+                    Part.EntityCollection((short)Obj3dType.o3d_edge);
                 collection.SelectByPoint(edgeCoordinatesArray[i].X,
                     edgeCoordinatesArray[i].Y,
                     edgeCoordinatesArray[i].Z + shift);
@@ -305,6 +325,78 @@ namespace XWingPluginForCompass3D.Wrapper
         }
 
         /// <summary>
+        /// Создание эскиза многоугольника по базовой плоскости.
+        /// </summary>
+        /// <param name="planeType">Базовая плоскость.</param>
+        /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
+        /// <param name="isMirrored"></param>
+        /// <returns>Сформированный эскиз.</returns>
+        public ksEntity BuildPolygonByDefaultPlane(Obj3dType planeType,
+            Point2D[,,] polygonVertices, bool isMirrored)
+        {
+            ksEntity plane = (ksEntity)Part.GetDefaultEntity((short)planeType);
+            ksEntity sketch = 
+                BuildPolygons(plane, polygonVertices, isMirrored);
+            return sketch;
+        }
+
+        /// <summary>
+        /// Создание эскиза многоугольника по точке.
+        /// </summary>
+        /// <param name="planePoint">Массив координат центра плоскости.</param>
+        /// <param name="polygonVertices">Массив координат вершин многоугольника.</param>
+        /// <param name="isMustBeMirrored">Отражение координат:
+        /// true - координаты отражаются, false - не отражаются.</param>
+        /// <returns>Сформированный эскиз.</returns>
+        public ksEntity BuildPolygonSketchByPoint(Point3D planePoint,
+            Point2D[,,] polygonVertices, bool isMustBeMirrored)
+        {
+            ksEntity plane = CreatePlaneByPoint(planePoint);
+            ksEntity sketch = 
+                BuildPolygons(plane, polygonVertices, isMustBeMirrored);
+            return sketch;
+        }
+
+        /// <summary>
+        /// Создание многоугольников по координатам вершин.
+        /// </summary>
+        /// <param name="plane">Плоскость эскиза.</param>
+        /// <param name="segmentPoints">Координаты вершины многоугольника.</param>
+        /// <param name="isMustBeMirrored">Отражение координат:
+        /// true - координаты отражаются, false - не отражаются.</param>
+        /// <returns>Сформированный эскиз.</returns>
+        private ksEntity BuildPolygons(ksEntity plane,
+            Point2D[,,] segmentPoints, bool isMustBeMirrored)
+        {
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksSketchDefinition definition =
+                (ksSketchDefinition)sketch.GetDefinition();
+            definition.SetPlane(plane);
+            sketch.Create();
+            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
+            CreateSegments(sketchEdit, segmentPoints, isMustBeMirrored);
+            definition.EndEdit();
+            return sketch;
+        }
+
+        /// <summary>
+        /// Создание эскиза окружностей.
+        /// </summary>
+        /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
+        /// <param name="circles">Параметры окружности, включающие центр и радиус.</param>
+        /// <returns>Сформированный эскиз.</returns>
+        public ksEntity BuildCirclesSketch(Point3D planePoint, Circle[,] circles)
+        {
+            ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksSketchDefinition definition =
+                CreateSketchDefinition(planePoint, sketch);
+            ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
+            CreateCircles(sketchEdit, circles, false);
+            definition.EndEdit();
+            return sketch;
+        }
+
+        /// <summary>
         /// Создание эскиза из отрезков и дуг.
         /// </summary>
         /// <param name="planePoint">Центр плоскости, на которой строится эскиз.</param>
@@ -313,13 +405,13 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <param name="isMustBeMirrored">Отражение координат:
         /// true - координаты отражаются, false - не отражаются.</param>
         /// <returns>Сформированный эскиз.</returns>
-        public ksEntity CreateSegmentsWithArcs(Point3D planePoint, Point2D[,,] segmentPoints,
-            Arc[,] arcs, bool isMustBeMirrored)
+        public ksEntity BuildSegmentsWithArcs(Point3D planePoint, 
+            Point2D[,,] segmentPoints, Arc[,] arcs, bool isMustBeMirrored)
         {
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = CreateSketchDefinition(planePoint, sketch);
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            // TODO: дубль
+            // TODO: дубль  ИСПРАВИЛ
             CreateSegments(sketchEdit, segmentPoints, isMustBeMirrored);
             CreateArs(sketchEdit, arcs, isMustBeMirrored);
             definition.EndEdit();
@@ -333,7 +425,7 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <param name="segmentPoints">Массив точек, являющихся концами отрезков.</param>
         /// <param name="circles">Массив кругов.</param>
         /// <returns>Сформированный эскиз.</returns>
-        public ksEntity CreateSegmentsWithCircles(Point3D planePoint,
+        public ksEntity BuildSegmentsWithCircles(Point3D planePoint,
             Point2D[,,] segmentPoints, Circle[,] circles)
         {
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
@@ -357,99 +449,12 @@ namespace XWingPluginForCompass3D.Wrapper
             Point2D[,,] segmentPoints, bool isMustBeMirrored)
         {
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = CreateSketchDefinition(planePoint, sketch);
+            ksSketchDefinition definition = 
+                CreateSketchDefinition(planePoint, sketch);
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
             CreateSegments(sketchEdit, segmentPoints, isMustBeMirrored);
             definition.EndEdit();
             return sketch;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="planePoint"></param>
-        /// <param name="sketch"></param>
-        /// <returns></returns>
-        private ksSketchDefinition CreateSketchDefinition(Point3D planePoint, 
-            ksEntity sketch)
-        {
-            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            ksEntity plane = CreatePlaneByPoint(planePoint);
-            definition.SetPlane(plane);
-            sketch.Create();
-            return definition;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sketchEdit"></param>
-        /// <param name="segmentPoints"></param>
-        /// <param name="isMustBeMirrored"></param>
-        private static void CreateSegments(ksDocument2D sketchEdit, 
-            Point2D[,,] segmentPoints, bool isMustBeMirrored)
-        {
-            for (var i = 0; i < segmentPoints.GetLength(0); i++)
-            {
-                for (var j = 0; j < segmentPoints.GetLength(1); j++)
-                {
-                    sketchEdit.ksLineSeg(segmentPoints[i, j, 0].X, segmentPoints[i, j, 0].Y,
-                        segmentPoints[i, j, 1].X, segmentPoints[i, j, 1].Y, 1);
-                    if (!isMustBeMirrored) continue;
-                    sketchEdit.ksLineSeg(-segmentPoints[i, j, 0].X, segmentPoints[i, j, 0].Y,
-                        -segmentPoints[i, j, 1].X, segmentPoints[i, j, 1].Y, 1);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sketchEdit"></param>
-        /// <param name="circles"></param>
-        /// <param name="isMustBeMirrored"></param>
-        private static void CreateCircles(ksDocument2D sketchEdit, 
-            Circle[,] circles, bool isMustBeMirrored)
-        {
-            for (var i = 0; i < circles.GetLength(0); i++)
-            {
-                for (var j = 0; j < circles.GetLength(1); j++)
-                {
-                    sketchEdit.ksCircle(circles[i, j].Center.X, circles[i, j].Center.Y,
-                        circles[i, j].Radius, 1);
-                    if (!isMustBeMirrored) continue;
-                    sketchEdit.ksCircle(-circles[i, j].Center.X, circles[i, j].Center.Y,
-                        circles[i, j].Radius, 1);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sketchEdit"></param>
-        /// <param name="arcs"></param>
-        /// <param name="isMustBeMirrored"></param>
-        private static void CreateArs(ksDocument2D sketchEdit, Arc[,] arcs, 
-            bool isMustBeMirrored)
-        {
-            for (var i = 0; i < arcs.GetLength(0); i++)
-            {
-                for (var j = 0; j < arcs.GetLength(1); j++)
-                {
-                    sketchEdit.ksArcByPoint(arcs[i, j].Center.X, arcs[i, j].Center.Y,
-                        arcs[i, j].Radius,
-                        arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y,
-                        arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
-                        arcs[i, j].Direction, 1);
-                    if (!isMustBeMirrored) continue;
-                    sketchEdit.ksArcByPoint(-arcs[i, j].Center.X, arcs[i, j].Center.Y,
-                        arcs[i, j].Radius,
-                        -arcs[i, j].StartPoint.X, arcs[i, j].StartPoint.Y,
-                        -arcs[i, j].EndPoint.X, arcs[i, j].EndPoint.Y,
-                        (short)-arcs[i, j].Direction, 1);
-                }
-            }
         }
 
         /// <summary>
@@ -462,10 +467,8 @@ namespace XWingPluginForCompass3D.Wrapper
             // Построение эскиза полуокружности с осью вращения.
 
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
-            ksSketchDefinition definition = (ksSketchDefinition)sketch.GetDefinition();
-            ksEntity plane = CreatePlaneByPoint(planePoint);
-            definition.SetPlane(plane);
-            sketch.Create();
+            ksSketchDefinition definition = 
+                CreateSketchDefinition(planePoint, sketch);
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
             sketchEdit.ksLineSeg(arc.StartPoint.X, arc.StartPoint.Y,
                 arc.EndPoint.X, arc.EndPoint.Y, 3);
