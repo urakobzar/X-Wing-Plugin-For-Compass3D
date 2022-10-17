@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.Wrapper", "XWingPluginForCompass3D.Wrapper\XWingPluginForCompass3D.Wrapper.csproj", "{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingPluginForCompass3D.UnitTests", "XWingPluginForCompass3D.UnitTests\XWingPluginForCompass3D.UnitTests.csproj", "{D4D50903-EB54-4BD1-8282-97A84CE73776}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F304A9E1-4F9D-40DA-B7F8-165AA1EF1FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D50903-EB54-4BD1-8282-97A84CE73776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D50903-EB54-4BD1-8282-97A84CE73776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D50903-EB54-4BD1-8282-97A84CE73776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D50903-EB54-4BD1-8282-97A84CE73776}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
