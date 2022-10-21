@@ -1,9 +1,11 @@
-﻿namespace XWingPluginForCompass3D.Model
+﻿using System;
+
+namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс точки в трехмерном пространстве.
     /// </summary>
-    public class Point3D: Point2D
+    public class Point3D: Point2D, IEquatable<Point3D>
     {
         /// <summary>
         /// Координата по оси Z.
@@ -19,6 +21,11 @@
         public Point3D(double x, double y, double z): base (x,y)
         {
             Z = z;
+        }
+
+        public bool Equals(Point3D other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

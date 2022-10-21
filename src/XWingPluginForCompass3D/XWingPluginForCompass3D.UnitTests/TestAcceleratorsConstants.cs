@@ -24,7 +24,8 @@ namespace XWingPluginForCompass3D.UnitTests
                 new Point3D(100, 100, 100);
             _constants.CurrentPlane = excepted;
             var actual = _constants.CurrentPlane;
-            Assert.IsTrue(_check.CheckEqual(excepted, actual));
+            //Assert.IsTrue(_check.CheckEqual(excepted, actual));
+            Assert.AreEqual(excepted,actual);
         }
 
         [Test(Description = "Позитивный тест геттера CurrentPlane")]
