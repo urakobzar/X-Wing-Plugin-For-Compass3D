@@ -5,7 +5,7 @@ namespace XWingPluginForCompass3D.Model
     /// <summary>
     /// Класс точки в двухмерном пространстве.
     /// </summary>
-    public class Point2D
+    public class Point2D: IEquatable<Point2D>
     {
         /// <summary>
         /// Координата по оси X.
@@ -26,6 +26,11 @@ namespace XWingPluginForCompass3D.Model
         {
             X = x;
             Y = y;
+        }
+
+        public bool Equals(Point2D other)
+        {
+            throw new NotImplementedException();
         }
     }
 }
