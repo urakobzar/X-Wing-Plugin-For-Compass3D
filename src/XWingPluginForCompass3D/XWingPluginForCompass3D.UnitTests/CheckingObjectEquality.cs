@@ -3,7 +3,9 @@ using XWingPluginForCompass3D.Model;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
-    public class CheckingObjectEquality
+	// TODO: XML
+	// TODO: для класса Point2D можно реализовать интерфейс IEquatable 
+	public class CheckingObjectEquality
     {
         public bool CheckEqual(Point2D[,,] excepted, Point2D[,,] actual)
         {

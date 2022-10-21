@@ -1,9 +1,12 @@
-﻿using XWingPluginForCompass3D.Model;
+﻿using System;
+using System.Collections.Generic;
+using XWingPluginForCompass3D.Model;
 using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
     [TestFixture]
+    // TODO: XML
     public class TestAcceleratorsConstants
     {
         private const int Difference = 20;
@@ -25,7 +28,8 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         [Test(Description = "Позитивный тест геттера CurrentPlane")]
-        public void TestCurrentPlaneGet_CorrectValue()
+        // TODO: Дубль. Сделать Dictionary<Перечеление, Func<Pont3D>>
+		public void TestCurrentPlaneGet_CorrectValue()
         {
             var excepted =
                 new Point3D(98.760456, 54.834961, -600 - Difference);
@@ -34,9 +38,10 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         [Test(Description = "Позитивный тест геттера AirIntakePlane")]
-        public void TestAirIntakePlaneGet_CorrectValue()
+        // TODO: Дубль. Сделать Dictionary<Перечеление, Func<Pont3D>>
+		public void TestAirIntakePlaneGet_CorrectValue()
         {
-            var excepted =
+			var excepted =
                 new Point3D(112.6678295, 104.4724056, -570 - Difference);
             var actual = _constants.AirIntakePlane;
             Assert.IsTrue(_check.CheckEqual(excepted, actual));

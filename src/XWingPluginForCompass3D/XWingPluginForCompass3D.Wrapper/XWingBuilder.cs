@@ -253,8 +253,7 @@ namespace XWingPluginForCompass3D.Wrapper
                 constants.CurrentBlasterCircles[0,0].Center.X;
             constants.CurrentPlane.Y = 
                 constants.CurrentBlasterCircles[0,0].Center.Y;
-
-            // TODO: дубль  ИСПРАВИЛ
+            
             // Построение перехода на вторую основу бластера.
             BuildBlasterCylindersWithShift(constants, 11, 0,  5);
 
@@ -270,8 +269,7 @@ namespace XWingPluginForCompass3D.Wrapper
                 constants.TipsBaseSegments, constants.TipsBaseArcs, true);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, blasterTipLength, 
                 true, 0, false);
-
-            // TODO: дубль  ИСПРАВИЛ
+            
             // Построение антенн на острие бластера.
             BuildAntenna(constants.SideRightTipPlane,
                 constants.RightAntennaSegments, constants.RightAntennaArcs);
@@ -389,7 +387,6 @@ namespace XWingPluginForCompass3D.Wrapper
                 true, 10, false);
 
             // Выдавливание нижней части сопла.
-            // TODO: именование градусы радианы? ИСПРАВИЛ
             var angleInRadians = 10 * Math.PI / 180;
             var radius = constants.TurbineCircles[0,0].Radius +
                          Math.Tan(angleInRadians) * nozzleLength / 2;

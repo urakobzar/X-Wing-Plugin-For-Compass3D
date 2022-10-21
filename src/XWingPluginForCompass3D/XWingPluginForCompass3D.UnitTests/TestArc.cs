@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace XWingPluginForCompass3D.UnitTests
 {
     [TestFixture]
+    // TODO: XML
     public class TestArc
     {
         [Test(Description = "Позитивный тест геттера StartPoint")]

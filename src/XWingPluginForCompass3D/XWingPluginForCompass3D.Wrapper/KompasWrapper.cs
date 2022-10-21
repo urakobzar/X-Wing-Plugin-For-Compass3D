@@ -220,7 +220,6 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <param name="draftValue">Угол, на который изменяется проекция эскиза.</param>
         /// <param name="isMustBeThin">Толщина стенок: true - выдавливается контур,
         /// false - эскиз.</param>
-        // TODO: переименовать параметр isThin  ИСПРАВИЛ
         public void ExtrudeSketch(ksEntity sketch, double height, bool direction,
             double draftValue, bool isMustBeThin)
         {
@@ -228,7 +227,6 @@ namespace XWingPluginForCompass3D.Wrapper
                 (ksEntity)Part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
             ksBaseExtrusionDefinition definition =
                 (ksBaseExtrusionDefinition)entity.GetDefinition();
-            // TODO: дубль  ИСПРАВИЛ
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -258,7 +256,6 @@ namespace XWingPluginForCompass3D.Wrapper
         {
             ksEntity entity = (ksEntity)Part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
             ksCutExtrusionDefinition definition = (ksCutExtrusionDefinition)entity.GetDefinition();
-            // TODO: дубль  ИСПРАВИЛ
             if (direction)
             {
                 definition.directionType = (short)Direction_Type.dtNormal;
@@ -411,7 +408,6 @@ namespace XWingPluginForCompass3D.Wrapper
             ksEntity sketch = Part.NewEntity((short)Obj3dType.o3d_sketch);
             ksSketchDefinition definition = CreateSketchDefinition(planePoint, sketch);
             ksDocument2D sketchEdit = (ksDocument2D)definition.BeginEdit();
-            // TODO: дубль  ИСПРАВИЛ
             CreateSegments(sketchEdit, segmentPoints, isMustBeMirrored);
             CreateArs(sketchEdit, arcs, isMustBeMirrored);
             definition.EndEdit();

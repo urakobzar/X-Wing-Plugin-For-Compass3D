@@ -3,7 +3,6 @@
     /// <summary>
     /// Перечисление параметров XWing.
     /// </summary>
-    // TODO: XWingParameterType? ИСПРАВИЛ
     public enum XWingParameterType
     {
         /// <summary>

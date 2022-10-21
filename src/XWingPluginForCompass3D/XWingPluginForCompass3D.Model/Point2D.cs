@@ -1,4 +1,6 @@
-﻿namespace XWingPluginForCompass3D.Model
+﻿using System;
+
+namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс точки в двухмерном пространстве.

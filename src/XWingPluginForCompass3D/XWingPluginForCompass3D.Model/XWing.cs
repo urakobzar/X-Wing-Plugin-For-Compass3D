@@ -24,7 +24,6 @@ namespace XWingPluginForCompass3D.Model
         public XWing()
         {
             ErrorList = new Dictionary<XWingParameterType, string>();
-            // TODO: Не создавать каждый раз новый параметр, а присваивать значения ИСПРАВИЛ
             Parameters = new Dictionary<XWingParameterType, Parameter>()
             {
                 { XWingParameterType.BodyLength, 
@@ -62,7 +61,6 @@ namespace XWingPluginForCompass3D.Model
             double acceleratorNozzleLength)
         {
             ErrorList.Clear();
-            // TODO: вынести конструкции if ИСПРАВИЛ
             Parameters[XWingParameterType.BodyLength].Value = bodyLength;
             CheckParametersRelationship(bodyLength, wingWidth + 20,
                 XWingParameterType.WingWidth,

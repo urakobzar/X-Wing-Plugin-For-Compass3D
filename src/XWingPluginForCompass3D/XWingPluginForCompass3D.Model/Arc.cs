@@ -29,7 +29,6 @@
         /// <summary>
         /// Конечная точка дуги.
         /// </summary>
-        // TODO: можно просто set get ИСПРАВИЛ
         public Point2D EndPoint { set; get; }
 
         /// <summary>

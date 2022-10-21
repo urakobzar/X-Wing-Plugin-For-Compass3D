@@ -16,13 +16,11 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Объект класса построения детали.
         /// </summary>
-        // TODO: private ИСПРАВИЛ
         private XWingBuilder XWingBuilder { get; }
 
         /// <summary>
         /// Словарь Тип параметра-TextBox.
         /// </summary>
-        // TODO: private ИСПРАВИЛ
         private Dictionary <XWingParameterType, TextBox> ParameterToTextBox { get; }
 
         /// <summary>
@@ -54,7 +52,6 @@ namespace XWingPluginForCompass3D.View
             // Добавления всем TextBox события, когда пользователь вводит символ.
 
             BodyLengthTextBox.KeyPress += BanCharacterInput;
-            // TODO: ИСПРАВИЛ
             WingWidthTextBox.KeyPress += BanCharacterInput;
             BowLengthTextBox.KeyPress += BanCharacterInput;
             WeaponBlasterTipLengthTextBox.KeyPress += BanCharacterInput;
@@ -73,7 +70,6 @@ namespace XWingPluginForCompass3D.View
             try
             {
                 var bodyLength = double.Parse(BodyLengthTextBox.Text);
-                // TODO: var ИСПРАВИЛ
                 var wingWidth = double.Parse(WingWidthTextBox.Text);
                 var bowLength = double.Parse(BowLengthTextBox.Text);
                 var weaponBlasterTipLength = 
