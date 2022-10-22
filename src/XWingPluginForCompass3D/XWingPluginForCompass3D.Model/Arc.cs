@@ -1,9 +1,11 @@
-﻿namespace XWingPluginForCompass3D.Model
+﻿using System;
+
+namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс дуги.
     /// </summary>
-    public class Arc: Circle
+    public class Arc: Circle, IEquatable<Arc>
     {
         /// <summary>
         /// Создает экземпляр класса для построения дуги.
@@ -35,5 +37,10 @@
         /// Направление дуги.
         /// </summary>
         public short Direction { set; get; }
+
+        public bool Equals(Arc other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

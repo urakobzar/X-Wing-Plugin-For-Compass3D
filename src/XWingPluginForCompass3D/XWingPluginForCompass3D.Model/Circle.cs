@@ -1,9 +1,11 @@
-﻿namespace XWingPluginForCompass3D.Model
+﻿using System;
+
+namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс круга.
     /// </summary>
-    public class Circle
+    public class Circle: IEquatable<Circle>
     {
         /// <summary>
         /// Возвращает точку центра круга.
@@ -24,6 +26,11 @@
         {
             Radius = radius;
             Center = center;
+        }
+
+        public bool Equals(Circle other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

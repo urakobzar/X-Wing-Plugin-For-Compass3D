@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using XWingPluginForCompass3D.Model;
 using NUnit.Framework;
 
@@ -11,19 +12,40 @@ namespace XWingPluginForCompass3D.UnitTests
     {
         private const int Difference = 20;
 
-        private readonly AcceleratorsConstants _constants =
+        private static readonly AcceleratorsConstants _constants =
             new AcceleratorsConstants(Difference);
 
         private readonly CheckingObjectEquality _check =
             new CheckingObjectEquality();
 
+        private enum Point3DTypes
+        {
+            CurrentPlane,
+            AirIntakePlane,
+            TurbinePlane
+        }
+
+        /*private Dictionary<Point3DTypes, Func<Point3D>> dictionary = new Dictionary<Point3DTypes, Func<Point3D>>()
+        {
+            [Point3DTypes.CurrentPlane] = () => _constants.CurrentPlane,
+            [Point3DTypes.AirIntakePlane] = () => _constants.AirIntakePlane,
+            [Point3DTypes.TurbinePlane] = () => _constants.TurbinePlane,
+        };*/
+
         [Test(Description = "Позитивный тест сеттера CurrentPlane")]
         public void TestCurrentPlaneSet_CorrectValue()
         {
+            Func<Point3D> pFunc = () => _constants.CurrentPlane;
+            /*Dictionary<Point3DTypes, Func<Point3D>> dictionary = new Dictionary<Point3DTypes, Func<Point3D>>()
+            {
+                {Point3DTypes.CurrentPlane, pFunc}
+            };*/
+            /*var type = Point3DTypes.CurrentPlane;*/
             var excepted =
                 new Point3D(100, 100, 100);
             _constants.CurrentPlane = excepted;
-            var actual = _constants.CurrentPlane;
+            //var actual = _constants.CurrentPlane;
+            Point3D actual = pFunc;
             //Assert.IsTrue(_check.CheckEqual(excepted, actual));
             Assert.AreEqual(excepted,actual);
         }
