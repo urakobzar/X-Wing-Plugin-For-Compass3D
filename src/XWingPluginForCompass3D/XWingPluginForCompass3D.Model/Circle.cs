@@ -28,9 +28,11 @@ namespace XWingPluginForCompass3D.Model
             Center = center;
         }
 
-        public bool Equals(Circle other)
+        public bool Equals(Circle expected)
         {
-            throw new NotImplementedException();
+            return expected != null &&
+                   Center.Equals(expected.Center) &&
+                   (expected.Radius == Radius);
         }
     }
 }

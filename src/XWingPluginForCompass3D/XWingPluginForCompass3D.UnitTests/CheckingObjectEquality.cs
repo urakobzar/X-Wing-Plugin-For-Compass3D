@@ -15,8 +15,7 @@ namespace XWingPluginForCompass3D.UnitTests
                 {
                     for (var k = 0; k < excepted.GetLength(2); k++)
                     {
-                        if (((excepted[i, j, k].X != actual[i, j, k].X) ||
-                             (excepted[i, j, k].Y != actual[i, j, k].Y)))
+                        if (!actual[i, j, k].Equals(excepted[i, j, k]))
                         {
                             return false;
                         }
