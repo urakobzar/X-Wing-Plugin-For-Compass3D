@@ -41,7 +41,7 @@
         /// Массив точек для построения отрезков вершин основания
         /// ускорителя звездолета. В ходе программы координаты отразятся.
         /// </summary>
-        public Point2D[,,] AcceleratorsBaseVertexes { get; } =
+        public Point2D[,,] AcceleratorsBaseSegments { get; } =
         {
             {
                 { new Point2D(-69.2385653, 55.7923285), 

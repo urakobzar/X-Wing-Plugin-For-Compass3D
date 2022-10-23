@@ -322,7 +322,7 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание оснований ускорителей на крыльях.            
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.CurrentPlane,
-                constants.AcceleratorsBaseVertexes, true);
+                constants.AcceleratorsBaseSegments, true);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 280, 
                 false, 0, false);
 

@@ -23,9 +23,12 @@ namespace XWingPluginForCompass3D.Model
             Z = z;
         }
 
-        public bool Equals(Point3D other)
+        public bool Equals(Point3D expected)
         {
-            throw new NotImplementedException();
+            return expected != null &&
+                   expected.X.Equals(X) &&
+                   expected.Y.Equals(Y) &&
+                   expected.Z.Equals(Z);
         }
     }
 }
