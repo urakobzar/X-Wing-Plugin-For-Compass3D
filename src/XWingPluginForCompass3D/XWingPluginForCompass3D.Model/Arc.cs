@@ -38,9 +38,20 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         public short Direction { set; get; }
 
-        public bool Equals(Arc other)
+        /// <summary>
+        /// Проверка на равенство объектов класса.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
+        public bool Equals(Arc expected)
         {
-            throw new NotImplementedException();
+            return expected != null &&
+                   Center.Equals(expected.Center) &&
+                   StartPoint.Equals(expected.StartPoint) &&
+                   EndPoint.Equals(expected.EndPoint) &&
+                   Direction.Equals(expected.Direction) &&
+                   Radius.Equals(expected.Radius);
         }
     }
 }

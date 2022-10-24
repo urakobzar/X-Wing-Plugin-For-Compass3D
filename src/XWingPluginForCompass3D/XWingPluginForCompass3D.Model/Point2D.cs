@@ -28,12 +28,17 @@ namespace XWingPluginForCompass3D.Model
             Y = y;
         }
 
+        /// <summary>
+        /// Проверка на равенство объектов класса.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
         public bool Equals(Point2D expected)
         {
             return expected != null &&
                    expected.X.Equals(X) &&
                    expected.Y.Equals(Y);
         }
-        
     }
 }

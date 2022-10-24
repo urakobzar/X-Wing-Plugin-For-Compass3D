@@ -28,11 +28,17 @@ namespace XWingPluginForCompass3D.Model
             Center = center;
         }
 
+        /// <summary>
+        /// Проверка на равенство объектов класса.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
         public bool Equals(Circle expected)
         {
             return expected != null &&
                    Center.Equals(expected.Center) &&
-                   (expected.Radius == Radius);
+                   Radius.Equals(expected.Radius);
         }
     }
 }

@@ -23,6 +23,12 @@ namespace XWingPluginForCompass3D.Model
             Z = z;
         }
 
+        /// <summary>
+        /// Проверка на равенство объектов класса.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
         public bool Equals(Point3D expected)
         {
             return expected != null &&

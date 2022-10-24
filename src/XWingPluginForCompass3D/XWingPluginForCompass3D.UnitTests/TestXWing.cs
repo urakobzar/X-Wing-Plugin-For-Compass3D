@@ -7,7 +7,7 @@ namespace XWingPluginForCompass3D.UnitTests
     [TestFixture]
     public class TestXWing
     {
-        readonly XWing _xWing = new XWing();
+        private readonly XWing _xWing = new XWing();
         
         [Test(Description = "Позитивный тест геттера ErrorList")]
         public void TestErrorListGet_CorrectValue()
@@ -62,7 +62,7 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test(Description = "Позитивный тест геттера ErrorList")]
+        [Test(Description = "Негативный тест геттера ErrorList")]
         public void TestParametersSet_IncorrectValue()
         {
             const double bodyLength = 400;
