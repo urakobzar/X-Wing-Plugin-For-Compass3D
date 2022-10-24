@@ -366,7 +366,8 @@ namespace XWingPluginForCompass3D.UnitTests
                     new Point2D(-0.2463156, 657.6332256),
                     new Point2D(-0.2463156, 607.6413140), 1);
             var actual = _constants.DroidHeadArc;
-            Assert.IsTrue(_check.CheckEqual(excepted, actual));
+            //Assert.IsTrue(_check.CheckEqual(excepted, actual));
+            Assert.IsTrue(actual.Equals(excepted));
         }
 
         [Test(Description = "Позитивный тест геттера BackDrawingCircles")]
