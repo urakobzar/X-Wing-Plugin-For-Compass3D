@@ -16,7 +16,7 @@
 
             CuttingPlane = new Point3D(0, -121.493198, -600 - bodyLength);
 
-            WingsCutVertexes = new[,,]
+            WingsCutSegments = new[,,]
             {
                 {
                     {
@@ -64,7 +64,7 @@
         /// Массив точек для построения отрезков эскиза каждого крыла.
         /// В ходе программы координаты будут отражены.
         /// </summary>
-        public Point2D[,,] BaseVertexes { get; } =
+        public Point2D[,,] BaseSegments { get; } =
         {
             {
                 { new Point2D(69.173833, 55.779384), 
@@ -92,6 +92,6 @@
         /// Массив точек для построения отрезков выреза на крыльях.
         /// В ходе программы координаты будут отражены.
         /// </summary>
-        public Point2D[,,] WingsCutVertexes { get; }
+        public Point2D[,,] WingsCutSegments { get; }
     }
 }

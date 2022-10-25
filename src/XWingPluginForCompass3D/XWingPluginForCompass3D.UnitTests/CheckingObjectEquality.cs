@@ -4,7 +4,7 @@ using XWingPluginForCompass3D.Model;
 namespace XWingPluginForCompass3D.UnitTests
 {
 	// TODO: XML
-	// TODO: для класса Point2D можно реализовать интерфейс IEquatable 
+	// TODO: для класса Point2D можно реализовать интерфейс IEquatable  ИСПРАВИЛ
 	public class CheckingObjectEquality
     {
         public bool CheckEqual(Point2D[,,] expected, Point2D[,,] actual)
@@ -38,14 +38,7 @@ namespace XWingPluginForCompass3D.UnitTests
 
             return true;
         }
-
-        public bool CheckEqual(Point3D excepted, Point3D actual)
-        {
-            return (excepted.X == actual.X) &&
-                   (excepted.Y == actual.Y) &&
-                   (excepted.Z == actual.Z);
-        }
-
+        
         public bool CheckEqual(Circle[,] excepted, Circle[,] actual)
         {
             for (var i = 0; i < excepted.GetLength(0); i++)

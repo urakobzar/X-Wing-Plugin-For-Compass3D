@@ -769,7 +769,7 @@ namespace XWingPluginForCompass3D.UnitTests
         /// <param name="z">Координата Z.</param>
         /// <param name="type">Параметр поля типа Point3D.</param>
         [Test(Description = "Позитивный тест геттеров на возвращение" +
-                            "точки 3D плоскости.")]
+                            "точки 3D пространства.")]
         [TestCase(112.6678295, 104.4724056, -570 - Difference,
             Point3DTypes.AirIntakePlane)]
         [TestCase(121.2172883, 104.4724056, -800 - Difference,
@@ -780,7 +780,7 @@ namespace XWingPluginForCompass3D.UnitTests
         {
             var expected = new Point3D(x, y, z);
             var actual = _point3DFunc[type]();
-            Assert.IsTrue(actual.Equals(expected));
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace XWingPluginForCompass3D.UnitTests
             var expected = new Point3D(100, 100, 100);
             Constants.CurrentPlane = expected;
             var actual = _point3DFunc[type]();
-            Assert.IsTrue(actual.Equals(expected));
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>

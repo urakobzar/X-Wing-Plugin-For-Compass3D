@@ -18,7 +18,7 @@
         /// Массив точек для построения отрезков верхнего основания
         /// носовой части звездолета.
         /// </summary>
-        public Point2D[,,] UpperBaseVertexes { get; } =
+        public Point2D[,,] UpperBaseSegments { get; } =
         {
             {
                 { new Point2D(-43, 0), new Point2D(-26, 26) },
@@ -34,7 +34,7 @@
         /// Массив точек для построения отрезков
         /// грани носовой части звездолета.
         /// </summary>
-        public Point2D[,,] UpperFaceVertexes { get; } =
+        public Point2D[,,] UpperFaceSegments { get; } =
         {
             {
                 { new Point2D(54.3956890, 604.5579518), 
@@ -52,7 +52,7 @@
         /// Массив точек для построения отрезков выреза кокпита звездолета.
         /// В ходе программы координаты отразятся.
         /// </summary>
-        public Point2D[,,] CockpitCutoutVertexes { get; } =
+        public Point2D[,,] CockpitCutoutSegments { get; } =
         {
             {
                 { new Point2D(-26, 75.9010621), 
@@ -67,7 +67,7 @@
         /// <summary>
         /// Массив точек для построения отрезков среза кокпита.
         /// </summary>
-        public Point2D[,,] CockpitSliceVertexes { get; } =
+        public Point2D[,,] CockpitSliceSegments { get; } =
         {
             {
                 { new Point2D(-1, 25.9010621), 
@@ -82,7 +82,7 @@
         /// <summary>
         /// Массив точек для построения отрезков основания острия носовой части.
         /// </summary>
-        public Point2D[,,] TipBowBodyVertexes { get; } =
+        public Point2D[,,] TipBowBodySegments { get; } =
         {
             {
                 { new Point2D(-43, 0), new Point2D(-26, 26) },
@@ -141,13 +141,13 @@
         /// <summary>
         /// Координата центра верхнего ребра острия носовой части звездолета.
         /// </summary>
-        public Point3D TipUpperEdge { get; } = 
+        public Point3D TipUpperEdgePoint { get; } = 
             new Point3D(-0.4256897, 17.2511336, 100);
 
         /// <summary>
         /// Координата центра нижнего ребра острия носовой части звездолета.
         /// </summary>
-        public Point3D TipLowerEdge { get; } = 
+        public Point3D TipLowerEdgePoint { get; } = 
             new Point3D(0, -10.2511336, 100);
 
         /// <summary>
