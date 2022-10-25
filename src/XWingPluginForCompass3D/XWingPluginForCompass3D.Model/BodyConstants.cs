@@ -13,7 +13,7 @@
         {
             UpperFacePlane 
                 = new Point3D(0, 78.493198, -600 - (bodyLength / 2));
-            UpperFaceVertexes = new[,,]
+            UpperFaceSegments = new[,,]
             {
                 {
                     { new Point2D(-54.395689, 600 + bodyLength), 
@@ -28,7 +28,7 @@
             };
             LowerFacePlane 
                 = new Point3D(0, -71.493198, -600 - (bodyLength / 2));
-            LowerFaceVertexes = new[,,]
+            LowerFaceSegments = new[,,]
             {
                 {
                     { new Point2D(-49.470255, -600 - bodyLength), 
@@ -106,7 +106,7 @@
         /// <summary>
         /// Массив точек для построения отрезков верхнего основания корпуса звездолета.
         /// </summary>
-        public Point2D[,,] BaseVertexes { get; } =
+        public Point2D[,,] BaseSegments { get; } =
         {
             {
                 { new Point2D(108.977589, -4.985001), 
@@ -127,18 +127,18 @@
         /// <summary>
         /// Массив точек для построения отрезков верхней грани корпуса звездолета.
         /// </summary>
-        public Point2D[,,] UpperFaceVertexes { get; }
+        public Point2D[,,] UpperFaceSegments { get; }
 
         /// <summary>
         /// Массив точек для построения отрезков нижней грани корпуса звездолета.
         /// </summary>
-        public Point2D[,,] LowerFaceVertexes { get; }
+        public Point2D[,,] LowerFaceSegments { get; }
 
         /// <summary>
         /// Массив точек для построения отрезков выреза выдавленных частей
         /// корпуса звездолета. В ходе программы координаты отразятся.
         /// </summary>
-        public Point2D[,,] BodyCutoutVertexes { get; } =
+        public Point2D[,,] BodyCutoutSegments { get; } =
         {
             {
                 { new Point2D(-49.470255, -121.493198), 
@@ -161,7 +161,7 @@
         /// <summary>
         /// Массив точек для построения отрезков среза нижней части корпуса звездолета.
         /// </summary>
-        public Point2D[,,] LowerBodySliceVertexes { get; } =
+        public Point2D[,,] LowerBodySliceSegments { get; } =
         {
             {
                 { new Point2D(600, 71.493198), 
@@ -178,7 +178,7 @@
         /// части корпуса звездолета. Поле необходимо для того, чтобы убрать
         /// зазор между носом и корпусом.
         /// </summary>
-        public Point2D[,,] BowBodyFaceVertexes { get; } =
+        public Point2D[,,] BowBodyFaceSegments { get; } =
         {
             {
                 { new Point2D(54.395689, 25.901062), 
@@ -196,7 +196,7 @@
         /// Массив точек для построения отрезков углубления
         /// верхней части корпуса звездолета.
         /// </summary>
-        public Point2D[,,] DeepUpperBodyFaceVertexes { get; } =
+        public Point2D[,,] DeepUpperBodyFaceSegments { get; } =
         {
             {
                 { new Point2D(-25, 607.6599144), 
@@ -228,7 +228,7 @@
         /// Массив точек для построения отрезков прямоугольников
         /// для выдавливания в верхней части корпуса.
         /// </summary>
-        public Point2D[,,] UpperBodyExtrudingRectangles { get; } =
+        public Point2D[,,] UpperBodyExtrudingRectanglesSegments { get; } =
         {
             {
                 { new Point2D(-19.2033454, 663.7722065), 
@@ -296,7 +296,7 @@
         /// Массив точек для построения отрезков выреза
         /// задней части корпуса звездолета.
         /// </summary>
-        public Point2D[,,] BackBodyDeepVertexes { get; } =
+        public Point2D[,,] BackBodyDeepSegments { get; } =
         {
             {
                 { new Point2D(-97, -4), new Point2D(-20, 123) },

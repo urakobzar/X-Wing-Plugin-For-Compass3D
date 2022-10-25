@@ -34,7 +34,7 @@ namespace XWingPluginForCompass3D.UnitTests
             new CheckingObjectEquality();
 
         /// <summary>
-        /// Перечисление полей типа Point3D класса констант ускорителей.
+        /// Перечисление полей типа Point3D класса констант крыльев.
         /// </summary>
         public enum Point3DTypes
         {
@@ -43,12 +43,12 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Перечисление полей типа Point2D класса констант ускорителей.
+        /// Перечисление полей типа Point2D класса констант крыльев.
         /// </summary>
         public enum Point2DTypes
         {
-            BaseVertexes,
-            WingsCutVertexes
+            BaseSegments,
+            WingsCutSegments
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace XWingPluginForCompass3D.UnitTests
         private readonly Dictionary<Point2DTypes, Func<Point2D[,,]>> _point2DFunc
             = new Dictionary<Point2DTypes, Func<Point2D[,,]>>
             {
-                [Point2DTypes.BaseVertexes] = () => Constants.BaseVertexes,
-                [Point2DTypes.WingsCutVertexes] = () => Constants.WingsCutVertexes
+                [Point2DTypes.BaseSegments] = () => Constants.BaseSegments,
+                [Point2DTypes.WingsCutSegments] = () => Constants.WingsCutSegments
             };
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace XWingPluginForCompass3D.UnitTests
         private readonly Dictionary<Point2DTypes, Point2D[,,]> _point2Ds
             = new Dictionary<Point2DTypes, Point2D[,,]>
             {
-                [Point2DTypes.BaseVertexes] = new[, ,]
+                [Point2DTypes.BaseSegments] = new[, ,]
                 {
                     {
                         { new Point2D(69.173833, 55.779384),
@@ -103,7 +103,7 @@ namespace XWingPluginForCompass3D.UnitTests
                             new Point2D(77.853158, -39.308584) }
                     }
                 },
-                [Point2DTypes.WingsCutVertexes] = new[, ,]
+                [Point2DTypes.WingsCutSegments] = new[, ,]
                 {
                     {
                         {
@@ -145,7 +145,7 @@ namespace XWingPluginForCompass3D.UnitTests
         /// <param name="z">Координата Z.</param>
         /// <param name="type">Параметр поля типа Point3D.</param>
         [Test(Description = "Позитивный тест геттеров на возвращение" +
-                            "точки 3D плоскости.")]
+                            "точки 3D пространства.")]
         [TestCase(0, 0, -600 - BodyLength,
             Point3DTypes.BackBodyPlane)]
         [TestCase(0, -121.493198, -600 - BodyLength,
@@ -155,14 +155,18 @@ namespace XWingPluginForCompass3D.UnitTests
         {
             var expected = new Point3D(x, y, z);
             var actual = _point3DFunc[type]();
-            Assert.IsTrue(actual.Equals(expected));
+            Assert.AreEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Тест на возврат поля константы типа Point2D.
+        /// </summary>
+        /// <param name="type">Параметр поля типа Point2D.</param>
         [Test(Description = "Позитивный тест геттеров на возвращение массива" +
                             "точек для построения отрезков.")]
-        [TestCase(Point2DTypes.BaseVertexes)]
-        [TestCase(Point2DTypes.WingsCutVertexes)]
-        public void TestVertexesGet_CorrectValue(Point2DTypes type)
+        [TestCase(Point2DTypes.BaseSegments)]
+        [TestCase(Point2DTypes.WingsCutSegments)]
+        public void TestSegmentsGet_CorrectValue(Point2DTypes type)
         {
             var expected = _point2Ds[type];
             var actual = _point2DFunc[type]();

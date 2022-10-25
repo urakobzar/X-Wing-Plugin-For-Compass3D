@@ -5,6 +5,9 @@ using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей констант для построения бластеров.
+    /// </summary>
     [TestFixture]
     public class TestBlastersConstants
     {
@@ -26,7 +29,7 @@ namespace XWingPluginForCompass3D.UnitTests
             new CheckingObjectEquality();
 
         /// <summary>
-        /// Перечисление полей типа Point3D класса констант ускорителей.
+        /// Перечисление полей типа Point3D класса констант бластеров.
         /// </summary>
         public enum Point3DTypes
         {
@@ -37,7 +40,7 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Перечисление полей типа Point2D класса констант ускорителей.
+        /// Перечисление полей типа Point2D класса констант бластеров.
         /// </summary>
         public enum Point2DTypes
         {
@@ -48,7 +51,7 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Перечисление полей типа Circle класса констант ускорителей.
+        /// Перечисление полей типа Circle класса констант бластеров.
         /// </summary>
         public enum CircleTypes
         {
@@ -57,7 +60,7 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Перечисление полей типа Arc класса констант ускорителей.
+        /// Перечисление полей типа Arc класса констант бластеров.
         /// </summary>
         public enum ArcTypes
         {
@@ -67,7 +70,7 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Словарь, где ключ - перечисление типа Point2D,
+        /// Словарь, где ключ - перечисление типа Point3D,
         /// значение - делегат на возвращение значения константы.
         /// </summary>
         private readonly Dictionary<Point3DTypes, Func<Point3D>> _point3DFunc
@@ -347,7 +350,7 @@ namespace XWingPluginForCompass3D.UnitTests
         /// <param name="z">Координата Z.</param>
         /// <param name="type">Параметр поля типа Point3D.</param>
         [Test(Description = "Позитивный тест геттеров на возвращение" +
-                            "точки 3D плоскости.")]
+                            "точки 3D пространства.")]
         [TestCase(-612.468507, -180, -200 - Difference,
             Point3DTypes.SideRightTipPlane)]
         [TestCase(612.468507, -180, -200 - Difference,
@@ -359,7 +362,7 @@ namespace XWingPluginForCompass3D.UnitTests
         {
             var expected = new Point3D(x, y, z);
             var actual = _point3DFunc[type]();
-            Assert.IsTrue(actual.Equals(expected));
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -368,10 +371,11 @@ namespace XWingPluginForCompass3D.UnitTests
         [Test(Description = "Позитивный тест сеттера CurrentPlane")]
         public void TestCurrentPlaneSet_CorrectValue()
         {
+            const Point3DTypes type = Point3DTypes.CurrentPlane;
             var expected = new Point3D(100, 100, 100);
             Constants.CurrentPlane = expected;
-            var actual = Constants.CurrentPlane;
-            Assert.IsTrue(_check.CheckEqual(expected, actual));
+            var actual = _point3DFunc[type]();
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>

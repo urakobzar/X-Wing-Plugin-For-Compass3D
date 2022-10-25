@@ -57,7 +57,7 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание основы носовой части корпуса
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonByDefaultPlane(Wrapper.DefaultPlaneXoY,
-                constants.UpperBaseVertexes, false);
+                constants.UpperBaseSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 600, 
                 false, 5, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, bowLength,
@@ -66,26 +66,26 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание кабины            
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.UpperFacePlane,
-                constants.UpperFaceVertexes, false);
+                constants.UpperFaceSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 50,
 	            true, 0, false);
 
             // Вырез кабины                        
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.CockpitFrontFacePlane,
-                constants.CockpitCutoutVertexes, true);
+                constants.CockpitCutoutSegments, true);
             Wrapper.CutExtrusion(Wrapper.Sketch, 602.5, true);
 
             // Срез кабины
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.CockpitSideFacePlane,
-                constants.CockpitSliceVertexes, false);
+                constants.CockpitSliceSegments, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 100, true);
 
             // Острие носа
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.TipFrontBasePlane,
-                constants.TipBowBodyVertexes, false);
+                constants.TipBowBodySegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 100, 
                 true, -5, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 35, 
@@ -93,11 +93,11 @@ namespace XWingPluginForCompass3D.Wrapper
 
             // Фаска верхней части острия носовой части
             Wrapper.CreateChamfer(bowLength, constants.TipUpperChamferDistances,
-                constants.TipUpperEdge);
+                constants.TipUpperEdgePoint);
 
             // Фаска нижней части острия носовой части
             Wrapper.CreateChamfer(bowLength, constants.TipLowerChamferDistances,
-                constants.TipLowerEdge);
+                constants.TipLowerEdgePoint);
 
             // Скругление основной части острия
             Wrapper.CreateFillet(bowLength, 
@@ -120,48 +120,48 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание основного корпуса на заданную пользователем величину.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.UpperBasePlane,
-                constants.BaseVertexes, false);
+                constants.BaseSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, bodyLength, 
                 true, 0, false);
 
             // Выдавливание верхней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.UpperFacePlane,
-                constants.UpperFaceVertexes, false);
+                constants.UpperFaceSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 50, 
                 true, 0, false);
 
             // Выдавливание нижней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.LowerFacePlane,
-                constants.LowerFaceVertexes, false);
+                constants.LowerFaceSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 50, 
                 true, 0, false);
 
             // Срез нижней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.LowerSideBackPlane,
-                constants.LowerBodySliceVertexes, false);
+                constants.LowerBodySliceSegments, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 100, true);
 
             // Вырез нижней части корпуса: срезаются углы призмы.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.BackBodyPlane,
-                constants.BodyCutoutVertexes, true);
+                constants.BodyCutoutSegments, true);
             Wrapper.CutExtrusion(Wrapper.Sketch, bodyLength, true);
 
             // Выдавливание верхней задней грани носовой части корпуса:
             // чтобы не было зазора с основным корпусом.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.BowBodyBackPlane,
-                constants.BowBodyFaceVertexes, false);
+                constants.BowBodyFaceSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 4.5, 
                 true, 0, false);
 
             // Углубление для верхней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.UpperBodyPartFacePlane,
-                constants.DeepUpperBodyFaceVertexes, false);
+                constants.DeepUpperBodyFaceSegments, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 5, true);
 
             // Выдавливание окружностей в верхней части корпуса.
@@ -174,7 +174,7 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание прямоугольников с вырезом в верхней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.DeepBodyPartFacePlane,
-                constants.UpperBodyExtrudingRectangles, false);
+                constants.UpperBodyExtrudingRectanglesSegments, false);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, 10, 
                 true, 0, false);
 
@@ -185,7 +185,7 @@ namespace XWingPluginForCompass3D.Wrapper
             // Углубление задней части корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(constants.BackBodyPlane,
-                constants.BackBodyDeepVertexes, false);
+                constants.BackBodyDeepSegments, false);
             Wrapper.CutExtrusion(Wrapper.Sketch, 10, true);
 
             // Первый рисунок задней части корпуса.
@@ -215,14 +215,14 @@ namespace XWingPluginForCompass3D.Wrapper
             // Выдавливание крыльев, начиная с конца корпуса.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(wingsConstants.BackBodyPlane,
-                wingsConstants.BaseVertexes, true);
+                wingsConstants.BaseSegments, true);
             Wrapper.ExtrudeSketch(Wrapper.Sketch, wingsWidth,
                 false, 0, false);
 
             // Вырезание формы крыла.
             Wrapper.Sketch = 
                 Wrapper.BuildPolygonSketchByPoint(wingsConstants.CuttingPlane,
-                wingsConstants.WingsCutVertexes, true);
+                wingsConstants.WingsCutSegments, true);
             Wrapper.CutExtrusion(Wrapper.Sketch, 350, true);
             Wrapper.CutExtrusion(Wrapper.Sketch, 100, false);
         }
