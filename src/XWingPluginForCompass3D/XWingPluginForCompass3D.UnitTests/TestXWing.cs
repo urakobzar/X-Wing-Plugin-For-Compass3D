@@ -4,12 +4,21 @@ using System.Collections.Generic;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей класса звездолета.
+    /// </summary>
     [TestFixture]
     public class TestXWing
     {
+        /// <summary>
+        /// Объект класса звездолета.
+        /// </summary>
         private readonly XWing _xWing = new XWing();
-        
-        [Test(Description = "Позитивный тест геттера ErrorList")]
+
+        /// <summary>
+        /// Позитивный тест геттера ErrorList.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера ErrorList.")]
         public void TestErrorListGet_CorrectValue()
         {
             var expected = new Dictionary<XWingParameterType, string>();
@@ -17,10 +26,12 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(expected,actual);
         }
 
-        [Test(Description = "Позитивный тест геттера Parameters")]
+        /// <summary>
+        /// Позитивный тест геттера Parameters.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Parameters.")]
         public void TestParametersGet_CorrectValue()
         {
-            var check = new CheckingObjectEquality();
             var expected = new Dictionary<XWingParameterType, Parameter>()
             {
                 { XWingParameterType.BodyLength,
@@ -43,10 +54,13 @@ namespace XWingPluginForCompass3D.UnitTests
                         XWingParameterType.AcceleratorNozzleLength, _xWing.ErrorList)},
             };
             var actual = _xWing.Parameters;
-            Assert.IsTrue(check.CheckEqual(expected, actual));
+            Assert.AreEqual(expected, actual);
         }
 
-        [Test(Description = "Позитивный тест геттера ErrorList")]
+        /// <summary>
+        /// Позитивный тест сеттера Parameters.
+        /// </summary>
+        [Test(Description = "Позитивный тест сеттера Parameters.")]
         public void TestParametersSet_CorrectValue()
         {
             const double bodyLength = 300;
@@ -62,7 +76,10 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test(Description = "Негативный тест геттера ErrorList")]
+        /// <summary>
+        /// Негативный тест сеттера Parameters.
+        /// </summary>
+        [Test(Description = "Негативный тест сеттера Parameters.")]
         public void TestParametersSet_IncorrectValue()
         {
             const double bodyLength = 400;
