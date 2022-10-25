@@ -4,11 +4,16 @@ using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей класса параметра.
+    /// </summary>
     [TestFixture]
     public class TestParameter
     {
-
-        [Test(Description = "Позитивный тест геттера Value")]
+        /// <summary>
+        /// Позитивный тест геттера Value.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Value.")]
         public void TestValueGet_CorrectValue()
         {
             var parameter = new Parameter(10, 1, 20,
@@ -19,7 +24,10 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test(Description = "Негативный тест геттера Value, Value < MinValue")]
+        /// <summary>
+        /// Негативный тест геттера Value, когда Value < MinValue.
+        /// </summary>
+        [Test(Description = "Негативный тест геттера Value, когда Value < MinValue.")]
         public void TestValueMixValueGet_IncorrectValue()
         {
             var parameter = new Parameter(-10, 1, 20,
@@ -30,7 +38,10 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test(Description = "Негативный тест геттера Value, Value < MinValue")]
+        /// <summary>
+        /// Негативный тест геттера Value, когда Value > MaxValue.
+        /// </summary>
+        [Test(Description = "Негативный тест геттера Value, когда Value > MaxValue.")]
         public void TestValueMaxValueGet_IncorrectValue()
         {
             var parameter = new Parameter(25, 1, 20,

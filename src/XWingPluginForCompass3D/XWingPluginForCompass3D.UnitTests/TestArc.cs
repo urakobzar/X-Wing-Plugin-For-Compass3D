@@ -3,11 +3,17 @@ using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей класса дуги.
+    /// </summary>
     [TestFixture]
-    // TODO: XML
+    // TODO: XML    ИСПРАВИЛ
     public class TestArc
     {
-        [Test(Description = "Позитивный тест геттера StartPoint")]
+        /// <summary>
+        /// Позитивный тест геттера StartPoint.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера StartPoint.")]
         public void TestStartPointGet_CorrectValue()
         {
             var value = new Point2D(-5,0);
@@ -17,7 +23,10 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(value, actual);
         }
 
-        [Test(Description = "Позитивный тест геттера EndPoint")]
+        /// <summary>
+        /// Позитивный тест геттера EndPoint.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера EndPoint.")]
         public void TestEndPointGet_CorrectValue()
         {
             var value = new Point2D(5, 0);
@@ -27,10 +36,13 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(value, actual);
         }
 
-        [Test(Description = "Позитивный тест геттера Direction")]
+        /// <summary>
+        /// Позитивный тест геттера Direction.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Direction.")]
         public void TestDirectionGet_CorrectValue()
         {
-            short value = 1;
+            const short value = 1;
             var arc = new Arc(new Point2D(0, 0), 5,
                 new Point2D(-5, 0), new Point2D(5, 0), value);
             var actual = arc.Direction;

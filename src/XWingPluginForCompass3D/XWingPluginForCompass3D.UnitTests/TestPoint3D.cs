@@ -3,10 +3,16 @@ using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей класса 3D-точки.
+    /// </summary>
     [TestFixture]
     public class TestPoint3D
     {
-        [Test(Description = "Позитивный тест геттера Z")]
+        /// <summary>
+        /// Позитивный тест геттера Z.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Z.")]
         public void TestZGet_CorrectValue()
         {
             const int value = 10;

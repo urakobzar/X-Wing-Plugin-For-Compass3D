@@ -3,10 +3,16 @@ using NUnit.Framework;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
+    /// <summary>
+    /// Класс тестирования полей класса круга.
+    /// </summary>
     [TestFixture]
     public class TestCircle
     {
-        [Test(Description = "Позитивный тест геттера Center")]
+        /// <summary>
+        /// Позитивный тест геттера Center.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Center.")]
         public void TestCenterGet_CorrectValue()
         {
             var value = new Point2D(0, 0);
@@ -15,7 +21,10 @@ namespace XWingPluginForCompass3D.UnitTests
             Assert.AreEqual(value,actual);
         }
 
-        [Test(Description = "Позитивный тест геттера Radius")]
+        /// <summary>
+        /// Позитивный тест геттера Radius.
+        /// </summary>
+        [Test(Description = "Позитивный тест геттера Radius.")]
         public void TestRadiusGet_CorrectValue()
         {
             const int value = 10;

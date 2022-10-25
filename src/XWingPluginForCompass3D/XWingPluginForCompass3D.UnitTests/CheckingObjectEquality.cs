@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
-using XWingPluginForCompass3D.Model;
+﻿using XWingPluginForCompass3D.Model;
 
 namespace XWingPluginForCompass3D.UnitTests
 {
-	// TODO: XML
-	// TODO: для класса Point2D можно реализовать интерфейс IEquatable  ИСПРАВИЛ
-	public class CheckingObjectEquality
+    /// <summary>
+    /// Класс проверки равенства объектов класса.
+    /// </summary>
+    // TODO: XML    ИСПРАВИЛ
+    // TODO: для класса Point2D можно реализовать интерфейс IEquatable  ИСПРАВИЛ
+    public class CheckingObjectEquality
     {
+        /// <summary>
+        /// Сравнение трехмерных массивов класса Point2D.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <param name="actual">Текущий объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
         public bool CheckEqual(Point2D[,,] expected, Point2D[,,] actual)
         {
             for (var i = 0; i < expected.GetLength(0); i++)
@@ -26,6 +35,13 @@ namespace XWingPluginForCompass3D.UnitTests
             return true;
         }
 
+        /// <summary>
+        /// Сравнение одномерных массивов класса Point3D.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <param name="actual">Текущий объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
         public bool CheckEqual(Point3D[] expected, Point3D[] actual)
         {
             for (var i = 0; i < expected.GetLength(0); i++)
@@ -38,14 +54,21 @@ namespace XWingPluginForCompass3D.UnitTests
 
             return true;
         }
-        
-        public bool CheckEqual(Circle[,] excepted, Circle[,] actual)
+
+        /// <summary>
+        /// Сравнение двумерных массивов класса Circle.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <param name="actual">Текущий объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
+        public bool CheckEqual(Circle[,] expected, Circle[,] actual)
         {
-            for (var i = 0; i < excepted.GetLength(0); i++)
+            for (var i = 0; i < expected.GetLength(0); i++)
             {
-                for (var j = 0; j < excepted.GetLength(1); j++)
+                for (var j = 0; j < expected.GetLength(1); j++)
                 {
-                    if (!actual[i, j].Equals(excepted[i, j]))
+                    if (!actual[i, j].Equals(expected[i, j]))
                     {
                         return false;
                     }
@@ -55,30 +78,23 @@ namespace XWingPluginForCompass3D.UnitTests
             return true;
         }
 
-        public bool CheckEqual(Arc[,] excepted, Arc[,] actual)
+        /// <summary>
+        /// Сравнение двумерных массивов класса Arc.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <param name="actual">Текущий объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
+        public bool CheckEqual(Arc[,] expected, Arc[,] actual)
         {
-            for (var i = 0; i < excepted.GetLength(0); i++)
+            for (var i = 0; i < expected.GetLength(0); i++)
             {
-                for (var j = 0; j < excepted.GetLength(1); j++)
+                for (var j = 0; j < expected.GetLength(1); j++)
                 {
-                    if (!actual[i, j].Equals(excepted[i, j]))
+                    if (!actual[i, j].Equals(expected[i, j]))
                     {
                         return false;
                     }
-                }
-            }
-
-            return true;
-        }
-
-        public bool CheckEqual(Dictionary<XWingParameterType, Parameter> excepted, 
-            Dictionary<XWingParameterType, Parameter> actual)
-        {
-            foreach (var key in excepted.Keys)
-            {
-                if (excepted[key].Value != actual[key].Value)
-                {
-                    return false;
                 }
             }
 

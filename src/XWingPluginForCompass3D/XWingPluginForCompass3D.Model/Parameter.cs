@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
     /// Класс параметра.
     /// </summary>
-    public class Parameter
+    public class Parameter: IEquatable<Parameter>
     {
         /// <summary>
         /// Значение параметра.
@@ -113,6 +114,24 @@ namespace XWingPluginForCompass3D.Model
             if (!(value > MaxValue)) return true;
             ErrorList.Add(ParameterType, MaxErrorMessage);
             return false;
+        }
+
+        /// <summary>
+        /// Проверка на равенство объектов класса.
+        /// </summary>
+        /// <param name="expected">Сравниваемый объект.</param>
+        /// <returns>Возвращает true, если элементы равны,
+        /// false - в обратном случае.</returns>
+        public bool Equals(Parameter expected)
+        {
+            return expected != null &&
+                   expected.Value.Equals(Value) &&
+                   expected.MinValue.Equals(MinValue) &&
+                   expected.MaxValue.Equals(MaxValue) &&
+                   expected.MinErrorMessage.Equals(MinErrorMessage) &&
+                   expected.MaxErrorMessage.Equals(MaxErrorMessage) &&
+                   expected.ErrorList.Equals(ErrorList) &&
+                   expected.ParameterType.Equals(ParameterType);
         }
     }
 }
