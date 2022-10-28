@@ -31,7 +31,8 @@ namespace XWingPluginForCompass3D.Model
         /// false - в обратном случае.</returns>
         public bool Equals(Point3D expected)
         {
-            return base.Equals(expected) &&
+            return expected != null &&
+                   base.Equals(expected) &&
                    expected.Z.Equals(Z);
         }
     }

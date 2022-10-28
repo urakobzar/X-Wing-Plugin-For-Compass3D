@@ -46,13 +46,12 @@ namespace XWingPluginForCompass3D.Model
         /// false - в обратном случае.</returns>
         public bool Equals(Arc expected)
         {
-            // TODO: как в Point3D
+            // TODO: как в Point3D  ИСПРАВИЛ
             return expected != null &&
-                   Center.Equals(expected.Center) &&
+                   base.Equals(expected) &&
                    StartPoint.Equals(expected.StartPoint) &&
                    EndPoint.Equals(expected.EndPoint) &&
-                   Direction.Equals(expected.Direction) &&
-                   Radius.Equals(expected.Radius);
+                   Direction.Equals(expected.Direction);
         }
     }
 }
