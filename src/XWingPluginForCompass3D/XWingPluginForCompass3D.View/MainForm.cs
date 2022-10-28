@@ -16,20 +16,21 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Объект класса построения детали.
         /// </summary>
-        // TODO: заменить на поля
-        private XWingBuilder XWingBuilder { get; }
+        // TODO: заменить на поля   ИСПРАВИЛ
+        private readonly XWingBuilder _xWingBuilder;
 
-		/// <summary>
-		/// Словарь Тип параметра-TextBox.
-		/// </summary>
-		// TODO: заменить на поля
-		private Dictionary <XWingParameterType, TextBox> ParameterToTextBox { get; }
+        /// <summary>
+        /// Словарь Тип параметра-TextBox.
+        /// </summary>
+        // TODO: заменить на поля   ИСПРАВИЛ
+        private readonly Dictionary<XWingParameterType, TextBox> 
+            _parameterToTextBox;
 
-		/// <summary>
-		/// Объект параметров X-Wing.
-		/// </summary>
-		// TODO: заменить на поля
-		private XWing XWingObject { get; }
+        /// <summary>
+        /// Объект параметров X-Wing.
+        /// </summary>
+        // TODO: заменить на поля   ИСПРАВИЛ
+        private readonly XWing _xWingObject;
 
         /// <summary>
         /// Конструктор основной формы.
@@ -37,9 +38,9 @@ namespace XWingPluginForCompass3D.View
         public MainForm()
         {
             InitializeComponent();
-            XWingObject = new XWing();
-            XWingBuilder = new XWingBuilder();
-            ParameterToTextBox = new Dictionary <XWingParameterType, TextBox>
+            _xWingObject = new XWing();
+            _xWingBuilder = new XWingBuilder();
+            _parameterToTextBox = new Dictionary <XWingParameterType, TextBox>
             {
 	            { XWingParameterType.BodyLength, BodyLengthTextBox },
 	            { XWingParameterType.WingWidth, WingWidthTextBox },
@@ -81,16 +82,16 @@ namespace XWingPluginForCompass3D.View
                     double.Parse(AcceleratorTurbineLengthTextBox.Text);
                 var acceleratorNozzleLength = 
                     double.Parse(AcceleratorNozzleLengthTextBox.Text);
-                XWingObject.SetParameters(bodyLength, wingWidth, 
+                _xWingObject.SetParameters(bodyLength, wingWidth, 
                     bowLength,weaponBlasterTipLength,
                     acceleratorTurbineLength, acceleratorNozzleLength);
-                if (XWingObject.ErrorList.Count > 0)
+                if (_xWingObject.ErrorList.Count > 0)
                 {
-                    ShowErrorList(XWingObject.ErrorList);
+                    ShowErrorList(_xWingObject.ErrorList);
                 }
                 else
                 {
-                    XWingBuilder.BuildDetail(XWingObject);
+                    _xWingBuilder.BuildDetail(_xWingObject);
                 }
             }
             catch
@@ -123,7 +124,7 @@ namespace XWingPluginForCompass3D.View
         /// </summary>
         private void SetWhiteColor()
         {
-            foreach (var keyValue in ParameterToTextBox)
+            foreach (var keyValue in _parameterToTextBox)
             {
                 keyValue.Value.BackColor = Color.White;
             }
@@ -138,7 +139,7 @@ namespace XWingPluginForCompass3D.View
             var message = string.Empty;
             foreach (var keyValue in errorList)
             {
-                if (!ParameterToTextBox.TryGetValue(keyValue.Key, out var textBox)) 
+                if (!_parameterToTextBox.TryGetValue(keyValue.Key, out var textBox)) 
                     continue;
                 textBox.BackColor = Color.LightPink;
                 message += "• " + keyValue.Value + "\n" + "\n";
@@ -152,9 +153,9 @@ namespace XWingPluginForCompass3D.View
         /// </summary>
         private void FindEmptyTextBox()
         {
-	        // TODO: string.Empty
-			foreach (var keyValue in ParameterToTextBox.Where
-                         (keyValue => keyValue.Value.Text == ""))
+	        // TODO: string.Empty   ИСПРАВИЛ
+			foreach (var keyValue in _parameterToTextBox.Where
+                         (keyValue => keyValue.Value.Text == string.Empty))
             {
                 keyValue.Value.BackColor = Color.LightPink;
             }

@@ -15,15 +15,17 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         private double _value;
 
+        // TODO: убрать свойство
         /// <summary>
         /// Сообщение о несоблюдении границы минимума.
         /// </summary>
-        private string _minErrorMessage;
+        private readonly string _minErrorMessage;
 
+        // TODO: убрать свойство
         /// <summary>
         /// Сообщение о несоблюдении границы максимума.
         /// </summary>
-        private string _maxErrorMessage;
+        private readonly string _maxErrorMessage;
 
         /// <summary>
         /// Устанавливает и возвращает значение параметра.
@@ -43,45 +45,23 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Минимальное допустимое значение параметра.
         /// </summary>
-        private int MinValue { get; }
+        private readonly int _minValue;
 
         /// <summary>
         /// Максимальное допустимое значение параметра.
         /// </summary>
-        private int MaxValue { get; }
-
-        // TODO: убрать свойство
-        /// <summary>
-        /// Устанавливает и возвращает сообщение о несоблюдении границы минимума.
-        /// </summary>
-        private string MinErrorMessage
-        {
-            set => _minErrorMessage = value + " не может быть менее " +
-                                      MinValue + " мм.";
-            get => _minErrorMessage;
-        }
-
-        // TODO: убрать свойство
-		/// <summary>
-		/// Устанавливает и возвращает сообщение о несоблюдении границы максимума.
-		/// </summary>
-		private string MaxErrorMessage
-        {
-            set => _maxErrorMessage = value + " не может быть более " +
-                                      MaxValue + " мм.";
-            get => _maxErrorMessage;
-        }
+        private readonly int _maxValue;
 
         /// <summary>
         /// Тип параметра.
         /// </summary>
-        private XWingParameterType ParameterType { get; }
+        private readonly XWingParameterType _parameterType;
 
         // TODO: Errors
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>
-        private Dictionary<XWingParameterType, string> ErrorList { get; }
+        private readonly Dictionary<XWingParameterType, string> _errors;
 
         /// <summary>
         /// Создает объект класса параметра.
@@ -91,17 +71,19 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="maxValue">Максимальное возможное значение.</param>
         /// <param name="errorMessage">Сообщение о том, какой это параметр.</param>
         /// <param name="parameterType">Тип параметра.</param>
-        /// <param name="errorList"></param>
+        /// <param name="errors"></param>
         public Parameter(double value, int minValue, int maxValue, 
             string errorMessage, XWingParameterType parameterType,
-            Dictionary<XWingParameterType, string> errorList)
+            Dictionary<XWingParameterType, string> errors)
         {
-            ErrorList = errorList;
-            MinValue = minValue;
-            MaxValue = maxValue;
-            MinErrorMessage = errorMessage;
-            MaxErrorMessage = errorMessage;
-            ParameterType = parameterType;
+            _errors = errors;
+            _minValue = minValue;
+            _maxValue = maxValue;
+            _minErrorMessage = errorMessage + " не может быть менее " +
+                              _minValue + " мм.";
+            _maxErrorMessage = errorMessage + " не может быть более " +
+                              _maxValue + " мм.";
+            _parameterType = parameterType;
             Value = value;
         }
 
@@ -111,13 +93,13 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="value">Введенное значение параметра.</param>
         private bool CheckRange(double value)
         {
-            if (value < MinValue)
+            if (value < _minValue)
             {
-                ErrorList.Add(ParameterType, MinErrorMessage);
+                _errors.Add(_parameterType, _minErrorMessage);
                 return false;
             }
-            if (!(value > MaxValue)) return true;
-            ErrorList.Add(ParameterType, MaxErrorMessage);
+            if (!(value > _maxValue)) return true;
+            _errors.Add(_parameterType, _maxErrorMessage);
             return false;
         }
 
@@ -131,12 +113,12 @@ namespace XWingPluginForCompass3D.Model
         {
             return expected != null &&
                    expected.Value.Equals(Value) &&
-                   expected.MinValue.Equals(MinValue) &&
-                   expected.MaxValue.Equals(MaxValue) &&
-                   expected.MinErrorMessage.Equals(MinErrorMessage) &&
-                   expected.MaxErrorMessage.Equals(MaxErrorMessage) &&
-                   expected.ErrorList.Equals(ErrorList) &&
-                   expected.ParameterType.Equals(ParameterType);
+                   expected._minValue.Equals(_minValue) &&
+                   expected._maxValue.Equals(_maxValue) &&
+                   expected._minErrorMessage.Equals(_minErrorMessage) &&
+                   expected._maxErrorMessage.Equals(_maxErrorMessage) &&
+                   expected._errors.Equals(_errors) &&
+                   expected._parameterType.Equals(_parameterType);
         }
     }
 }
