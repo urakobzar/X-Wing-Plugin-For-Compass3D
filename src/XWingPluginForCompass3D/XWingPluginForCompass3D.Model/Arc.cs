@@ -46,6 +46,7 @@ namespace XWingPluginForCompass3D.Model
         /// false - в обратном случае.</returns>
         public bool Equals(Arc expected)
         {
+            // TODO: как в Point3D
             return expected != null &&
                    Center.Equals(expected.Center) &&
                    StartPoint.Equals(expected.StartPoint) &&

@@ -61,6 +61,7 @@ namespace XWingPluginForCompass3D.UnitTests
         /// Позитивный тест сеттера Parameters.
         /// </summary>
         [Test(Description = "Позитивный тест сеттера Parameters.")]
+        // TODO: дубль
         public void TestParametersSet_CorrectValue()
         {
             const double bodyLength = 300;

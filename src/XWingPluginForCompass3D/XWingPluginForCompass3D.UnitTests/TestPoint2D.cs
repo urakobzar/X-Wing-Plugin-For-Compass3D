@@ -7,7 +7,8 @@ namespace XWingPluginForCompass3D.UnitTests
     /// Класс тестирования полей класса 2D-точки.
     /// </summary>
     [TestFixture]
-    public class TestPoint2D
+	// TODO: нет тестов на Equals. Так везде, где есть интерфейс IEquatable
+	public class TestPoint2D
     {
         /// <summary>
         /// Позитивный тест геттера X.

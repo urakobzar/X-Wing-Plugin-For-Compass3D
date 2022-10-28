@@ -7,7 +7,6 @@ namespace XWingPluginForCompass3D.UnitTests
     /// Класс тестирования полей класса дуги.
     /// </summary>
     [TestFixture]
-    // TODO: XML    ИСПРАВИЛ
     public class TestArc
     {
         /// <summary>

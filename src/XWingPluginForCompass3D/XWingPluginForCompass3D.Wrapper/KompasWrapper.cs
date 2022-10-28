@@ -11,20 +11,23 @@ namespace XWingPluginForCompass3D.Wrapper
     /// </summary>
     public class KompasWrapper
     {
-        /// <summary>
-        /// Объект Компас API.
-        /// </summary>
-        public KompasObject Kompas { set; get; }
+		/// <summary>
+		/// Объект Компас API.
+		/// </summary>
+		// TODO: приватное поле
+		public KompasObject Kompas { set; get; }
 
         /// <summary>
         /// Деталь.
         /// </summary>
+        // TODO: приватное поле
         public ksPart Part { set; get; }
 
-        /// <summary>
-        /// Документ-модель.
-        /// </summary>
-        public ksDocument3D Document { set; get; }
+		/// <summary>
+		/// Документ-модель.
+		/// </summary>
+		// TODO: приватное поле
+		public ksDocument3D Document { set; get; }
 
         /// <summary>
         /// Возвращает базовую плоскость XOY.
@@ -34,6 +37,7 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <summary>
         /// Эскиз.
         /// </summary>
+        // TODO: в локальную переменную, где это нужно
         public ksEntity Sketch { set; get; }
 
         /// <summary>

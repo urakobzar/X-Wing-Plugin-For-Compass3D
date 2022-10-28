@@ -16,17 +16,20 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Объект класса построения детали.
         /// </summary>
+        // TODO: заменить на поля
         private XWingBuilder XWingBuilder { get; }
 
-        /// <summary>
-        /// Словарь Тип параметра-TextBox.
-        /// </summary>
-        private Dictionary <XWingParameterType, TextBox> ParameterToTextBox { get; }
+		/// <summary>
+		/// Словарь Тип параметра-TextBox.
+		/// </summary>
+		// TODO: заменить на поля
+		private Dictionary <XWingParameterType, TextBox> ParameterToTextBox { get; }
 
-        /// <summary>
-        /// Объект параметров X-Wing.
-        /// </summary>
-        private XWing XWingObject { get; }
+		/// <summary>
+		/// Объект параметров X-Wing.
+		/// </summary>
+		// TODO: заменить на поля
+		private XWing XWingObject { get; }
 
         /// <summary>
         /// Конструктор основной формы.
@@ -132,7 +135,6 @@ namespace XWingPluginForCompass3D.View
         /// <param name="errorList">Список выявленных ошибок</param>
         private void ShowErrorList(Dictionary <XWingParameterType, string> errorList)
         {
-            // TODO: string.Empty ИСПРАВИЛ
             var message = string.Empty;
             foreach (var keyValue in errorList)
             {
@@ -150,7 +152,8 @@ namespace XWingPluginForCompass3D.View
         /// </summary>
         private void FindEmptyTextBox()
         {
-            foreach (var keyValue in ParameterToTextBox.Where
+	        // TODO: string.Empty
+			foreach (var keyValue in ParameterToTextBox.Where
                          (keyValue => keyValue.Value.Text == ""))
             {
                 keyValue.Value.BackColor = Color.LightPink;

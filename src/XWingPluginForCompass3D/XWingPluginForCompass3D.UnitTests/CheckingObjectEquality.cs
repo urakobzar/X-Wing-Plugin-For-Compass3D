@@ -5,8 +5,6 @@ namespace XWingPluginForCompass3D.UnitTests
     /// <summary>
     /// Класс проверки равенства объектов класса.
     /// </summary>
-    // TODO: XML    ИСПРАВИЛ
-    // TODO: для класса Point2D можно реализовать интерфейс IEquatable  ИСПРАВИЛ
     public class CheckingObjectEquality
     {
         /// <summary>

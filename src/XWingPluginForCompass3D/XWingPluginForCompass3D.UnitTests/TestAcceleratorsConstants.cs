@@ -9,7 +9,6 @@ namespace XWingPluginForCompass3D.UnitTests
     /// Класс тестирования полей констант для построения ускорителей.
     /// </summary>
     [TestFixture]
-    // TODO: XML    ИСПРАВИЛ
     public class TestAcceleratorsConstants
     {
         /// <summary>
@@ -774,7 +773,6 @@ namespace XWingPluginForCompass3D.UnitTests
             Point3DTypes.AirIntakePlane)]
         [TestCase(121.2172883, 104.4724056, -800 - Difference,
             Point3DTypes.TurbinePlane)]
-        // TODO: Дубль. Сделать Dictionary<Перечеление, Func<Pont3D>>   ИСПРАВИЛ
         public void TestPlaneGet_CorrectValue(double x, double y, double z,
             Point3DTypes type)
         {
