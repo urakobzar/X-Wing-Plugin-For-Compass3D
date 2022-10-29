@@ -30,7 +30,7 @@ namespace XWingPluginForCompass3D.View
         /// Объект параметров X-Wing.
         /// </summary>
         // TODO: заменить на поля   ИСПРАВИЛ
-        private readonly XWing _xWingObject;
+        private readonly XWing _xWing;
 
         /// <summary>
         /// Конструктор основной формы.
@@ -38,7 +38,7 @@ namespace XWingPluginForCompass3D.View
         public MainForm()
         {
             InitializeComponent();
-            _xWingObject = new XWing();
+            _xWing = new XWing();
             _xWingBuilder = new XWingBuilder();
             _parameterToTextBox = new Dictionary <XWingParameterType, TextBox>
             {
@@ -53,7 +53,7 @@ namespace XWingPluginForCompass3D.View
                     AcceleratorNozzleLengthTextBox }
             };
 
-            // Добавления всем TextBox события, когда пользователь вводит символ.
+            // Добавление всем TextBox события, когда пользователь вводит символ.
 
             BodyLengthTextBox.KeyPress += BanCharacterInput;
             WingWidthTextBox.KeyPress += BanCharacterInput;
@@ -61,6 +61,53 @@ namespace XWingPluginForCompass3D.View
             WeaponBlasterTipLengthTextBox.KeyPress += BanCharacterInput;
             AcceleratorTurbineLengthTextBox.KeyPress += BanCharacterInput;
             AcceleratorNozzleLengthTextBox.KeyPress += BanCharacterInput;
+
+            // Добавление всем TextBox события, когда изменятся текст.
+
+            BodyLengthTextBox.TextChanged += FindError;
+            WingWidthTextBox.TextChanged += FindError;
+            BowLengthTextBox.TextChanged += FindError;
+            WeaponBlasterTipLengthTextBox.TextChanged += FindError;
+            AcceleratorTurbineLengthTextBox.TextChanged += FindError;
+            AcceleratorNozzleLengthTextBox.TextChanged += FindError;
+        }
+
+        /// <summary>
+        /// Проверка введенных значений в режиме реального времени.
+        /// </summary>
+        /// <param name="sender">TextBox.</param>
+        /// <param name="e">Изменение текста в TextBox.</param>
+        private void FindError(object sender, EventArgs e)
+        {
+            foreach (var keyValue in _parameterToTextBox)
+            {
+                keyValue.Value.BackColor = Color.White;
+            }
+            try
+            {
+                var bodyLength = double.Parse(BodyLengthTextBox.Text);
+                var wingWidth = double.Parse(WingWidthTextBox.Text);
+                var bowLength = double.Parse(BowLengthTextBox.Text);
+                var weaponBlasterTipLength =
+                    double.Parse(WeaponBlasterTipLengthTextBox.Text);
+                var acceleratorTurbineLength =
+                    double.Parse(AcceleratorTurbineLengthTextBox.Text);
+                var acceleratorNozzleLength =
+                    double.Parse(AcceleratorNozzleLengthTextBox.Text);
+                _xWing.SetParameters(bodyLength, wingWidth,
+                    bowLength, weaponBlasterTipLength,
+                    acceleratorTurbineLength, acceleratorNozzleLength);
+
+                foreach (var keyValue in _xWing.Errors)
+                {
+                    _parameterToTextBox[keyValue.Key].BackColor = Color.LightPink;
+                }
+            }
+            catch
+            {
+                CheckEmptyTextBox();
+            }
+
         }
 
         /// <summary>
@@ -70,33 +117,26 @@ namespace XWingPluginForCompass3D.View
         /// <param name="e">Нажатие на кнопку.</param>
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            SetWhiteColor();
-            try
+            if(CheckEmptyTextBox())
             {
-                var bodyLength = double.Parse(BodyLengthTextBox.Text);
-                var wingWidth = double.Parse(WingWidthTextBox.Text);
-                var bowLength = double.Parse(BowLengthTextBox.Text);
-                var weaponBlasterTipLength = 
-                    double.Parse(WeaponBlasterTipLengthTextBox.Text);
-                var acceleratorTurbineLength = 
-                    double.Parse(AcceleratorTurbineLengthTextBox.Text);
-                var acceleratorNozzleLength = 
-                    double.Parse(AcceleratorNozzleLengthTextBox.Text);
-                _xWingObject.SetParameters(bodyLength, wingWidth, 
-                    bowLength,weaponBlasterTipLength,
-                    acceleratorTurbineLength, acceleratorNozzleLength);
-                if (_xWingObject.ErrorList.Count > 0)
+                if (_xWing.Errors.Count > 0)
                 {
-                    ShowErrorList(_xWingObject.ErrorList);
+                    var message = string.Empty;
+                    foreach (var keyValue in _xWing.Errors)
+                    {
+                        message += "• " + keyValue.Value + "\n" + "\n";
+                    }
+
+                    MessageBox.Show(message, @"Неверно введены данные!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    _xWingBuilder.BuildDetail(_xWingObject);
+                    _xWingBuilder.BuildDetail(_xWing);
                 }
             }
-            catch
+            else
             {
-                FindEmptyTextBox();
                 MessageBox.Show(
 	                @"Ошибка при построении! Проверьте введенные данные.", 
                     @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -120,45 +160,22 @@ namespace XWingPluginForCompass3D.View
         }
 
         /// <summary>
-        /// Установка белого цвета TextBox.
-        /// </summary>
-        private void SetWhiteColor()
-        {
-            foreach (var keyValue in _parameterToTextBox)
-            {
-                keyValue.Value.BackColor = Color.White;
-            }
-        }
-
-        /// <summary>
-        /// Демонстрация неправильно введенных параметров.
-        /// </summary>
-        /// <param name="errorList">Список выявленных ошибок</param>
-        private void ShowErrorList(Dictionary <XWingParameterType, string> errorList)
-        {
-            var message = string.Empty;
-            foreach (var keyValue in errorList)
-            {
-                if (!_parameterToTextBox.TryGetValue(keyValue.Key, out var textBox)) 
-                    continue;
-                textBox.BackColor = Color.LightPink;
-                message += "• " + keyValue.Value + "\n" + "\n";
-            }
-            MessageBox.Show(message, @"Неверно введены данные!", 
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        /// <summary>
         /// Поиск пустых TextBox.
         /// </summary>
-        private void FindEmptyTextBox()
+        /// <returns>Возвращает true, если нет пустых ячеек,
+        /// возвращает false в обратном случае.</returns>
+        private bool CheckEmptyTextBox()
         {
+            var counter = 0;
 	        // TODO: string.Empty   ИСПРАВИЛ
 			foreach (var keyValue in _parameterToTextBox.Where
                          (keyValue => keyValue.Value.Text == string.Empty))
             {
+                counter += 1;
                 keyValue.Value.BackColor = Color.LightPink;
             }
+
+            return counter == 0;
         }
     }
 }

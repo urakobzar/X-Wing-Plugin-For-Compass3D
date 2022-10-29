@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// TODO: Проверять корректность значений при вводе значения параметров,
+// TODO: Проверять корректность значений при вводе значения параметров, ИСПРАВИЛ
 // а не после нажатия на кнопку "Построить"
 namespace XWingPluginForCompass3D.Model
 {
@@ -15,33 +15,6 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         private double _value;
 
-        // TODO: убрать свойство
-        /// <summary>
-        /// Сообщение о несоблюдении границы минимума.
-        /// </summary>
-        private readonly string _minErrorMessage;
-
-        // TODO: убрать свойство
-        /// <summary>
-        /// Сообщение о несоблюдении границы максимума.
-        /// </summary>
-        private readonly string _maxErrorMessage;
-
-        /// <summary>
-        /// Устанавливает и возвращает значение параметра.
-        /// </summary>
-        public double Value
-        {
-            set
-            {
-                if (CheckRange(value))
-                {
-                    _value = value;
-                }
-            }
-            get => _value;
-        }
-
         /// <summary>
         /// Минимальное допустимое значение параметра.
         /// </summary>
@@ -52,16 +25,43 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         private readonly int _maxValue;
 
+        // TODO: убрать свойство    ИСПРАВИЛ
+        /// <summary>
+        /// Сообщение о несоблюдении границы минимума.
+        /// </summary>
+        private readonly string _minErrorMessage;
+
+        // TODO: убрать свойство    ИСПРАВИЛ
+        /// <summary>
+        /// Сообщение о несоблюдении границы максимума.
+        /// </summary>
+        private readonly string _maxErrorMessage;
+
         /// <summary>
         /// Тип параметра.
         /// </summary>
         private readonly XWingParameterType _parameterType;
-
-        // TODO: Errors
+        
+        // TODO: Errors     ИСПРАВИЛ
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>
         private readonly Dictionary<XWingParameterType, string> _errors;
+
+        /// <summary>
+        /// Устанавливает и возвращает значение параметра.
+        /// </summary>
+        public double Value
+        {
+            get => _value;
+            set
+            {
+                if (CheckRange(value))
+                {
+                    _value = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Создает объект класса параметра.

@@ -51,5 +51,17 @@ namespace XWingPluginForCompass3D.UnitTests
             var actual = parameter.Value;
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Позитивный тест метода Equals.
+        /// </summary>
+        [Test(Description = "Позитивный тест метода Equals.")]
+        public void TestEquals_CorrectValue()
+        {
+            var expected = new Parameter(5, 0, 10, "string.Empty",
+                XWingParameterType.BodyLength, new Dictionary<XWingParameterType, string>());
+            var actual = expected;
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

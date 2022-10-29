@@ -47,5 +47,18 @@ namespace XWingPluginForCompass3D.UnitTests
             var actual = arc.Direction;
             Assert.AreEqual(value, actual);
         }
+
+        /// <summary>
+        /// Позитивный тест метода Equals.
+        /// </summary>
+        [Test(Description = "Позитивный тест метода Equals.")]
+        public void TestEquals_CorrectValue()
+        {
+            var expected = new Arc(new Point2D(0, 0), 5,
+                new Point2D(-5, 0), new Point2D(5, 0), 1);
+            var actual = new Arc(new Point2D(0, 0), 5,
+                new Point2D(-5, 0), new Point2D(5, 0), 1);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

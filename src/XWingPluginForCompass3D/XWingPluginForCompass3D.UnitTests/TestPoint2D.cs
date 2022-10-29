@@ -7,7 +7,7 @@ namespace XWingPluginForCompass3D.UnitTests
     /// Класс тестирования полей класса 2D-точки.
     /// </summary>
     [TestFixture]
-	// TODO: нет тестов на Equals. Так везде, где есть интерфейс IEquatable
+	// TODO: нет тестов на Equals. Так везде, где есть интерфейс IEquatable ИСПРАВИЛ
 	public class TestPoint2D
     {
         /// <summary>
@@ -32,6 +32,17 @@ namespace XWingPluginForCompass3D.UnitTests
             var point2D = new Point2D(5, value);
             var actual = point2D.Y;
             Assert.AreEqual(value, actual);
+        }
+
+        /// <summary>
+        /// Позитивный тест метода Equals.
+        /// </summary>
+        [Test(Description = "Позитивный тест метода Equals.")]
+        public void TestEquals_CorrectValue()
+        {
+            var expected = new Point2D(0, 0);
+            var actual = new Point2D(0, 0);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
