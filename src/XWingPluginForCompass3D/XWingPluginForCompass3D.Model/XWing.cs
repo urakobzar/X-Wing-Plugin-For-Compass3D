@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace XWingPluginForCompass3D.Model
 {
@@ -12,13 +11,13 @@ namespace XWingPluginForCompass3D.Model
         /// Словарь, где ключ: тип параметра звездолета из перечисления, 
         /// значение: соответствующий параметр.
         /// </summary>
-        public Dictionary<XWingParameterType, Parameter> Parameters { set; get; }
+        public Dictionary<XWingParameterType, Parameter> Parameters { get; set; }
 
         // TODO: Errors     ИСПРАВИЛ
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>
-        public Dictionary<XWingParameterType, string> Errors { set; get; }
+        public Dictionary<XWingParameterType, string> Errors { get; set; }
 
         /// <summary>
         /// Создает объект класса звездолета для построения.
@@ -46,6 +45,9 @@ namespace XWingPluginForCompass3D.Model
                 { XWingParameterType.AcceleratorNozzleLength,
                     new Parameter(50, 50, 100,"Длина сопла ускорителя",
                         XWingParameterType.AcceleratorNozzleLength, Errors)},
+                { XWingParameterType.CaseBodySetHeight,
+                    new Parameter(10, 10, 20,"Высота установок крыши корпуса",
+                        XWingParameterType.CaseBodySetHeight, Errors)}
             };
         }
 
@@ -58,9 +60,10 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="weaponBlasterTipLength">Длина острия оружейного бластера звездолета</param>
         /// <param name="acceleratorTurbineLength">Длина турбины ускорителя звездолета</param>
         /// <param name="acceleratorNozzleLength">Длина сопла ускорителя звездолета</param>
+        /// <param name="caseBodySetHeight">Высота установок крыши корпуса.</param>
         public void SetParameters (double bodyLength, double wingWidth, double bowLength,
             double weaponBlasterTipLength, double acceleratorTurbineLength,
-            double acceleratorNozzleLength)
+            double acceleratorNozzleLength, double caseBodySetHeight)
         {
             Errors.Clear();
             Parameters[XWingParameterType.BodyLength].Value = bodyLength;
@@ -88,6 +91,8 @@ namespace XWingPluginForCompass3D.Model
                 "чем в 4 раза больше, чем длина сопла.");
             Parameters[XWingParameterType.AcceleratorNozzleLength].Value = 
                 acceleratorNozzleLength;
+            Parameters[XWingParameterType.CaseBodySetHeight].Value =
+                caseBodySetHeight;
         }
 
         /// <summary>

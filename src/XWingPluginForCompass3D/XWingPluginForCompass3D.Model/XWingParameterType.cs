@@ -33,6 +33,11 @@
         /// <summary>
         /// Длина сопла ускорителя звездолета.
         /// </summary>
-        AcceleratorNozzleLength        
+        AcceleratorNozzleLength,
+
+        /// <summary>
+        /// Высота установок крыши корпуса.
+        /// </summary>
+        CaseBodySetHeight
     }
 }

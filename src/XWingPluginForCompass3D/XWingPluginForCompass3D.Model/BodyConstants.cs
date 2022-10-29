@@ -9,10 +9,11 @@
         /// Создает экземпляр класса констант для построения корпуса.
         /// </summary>
         /// <param name="bodyLength">Длина корпуса звездолета.</param>
-        public BodyConstants(double bodyLength)
+        /// <param name="caseBodySetHeight">Высота установок крыши корпуса.</param>
+        public BodyConstants(double bodyLength, double caseBodySetHeight)
         {
-            UpperFacePlane 
-                = new Point3D(0, 78.493198, -600 - (bodyLength / 2));
+            UpperFacePlane = 
+                new Point3D(0, 78.493198, -600 - (bodyLength / 2));
             UpperFaceSegments = new[,,]
             {
                 {
@@ -26,8 +27,8 @@
                         new Point2D(-54.395689, 600 + bodyLength)}
                 }                
             };
-            LowerFacePlane 
-                = new Point3D(0, -71.493198, -600 - (bodyLength / 2));
+            LowerFacePlane = 
+                new Point3D(0, -71.493198, -600 - (bodyLength / 2));
             LowerFaceSegments = new[,,]
             {
                 {
@@ -41,12 +42,15 @@
                         new Point2D(-49.470255, -600 - bodyLength) }
                 }                
             };
-            LowerSideBackPlane 
-                = new Point3D(-49.470255, -96.493198, -600 - (bodyLength / 2));
-            BackBodyPlane 
-                = new Point3D(0, 0, -600 - bodyLength);
-            BackDeepPlane 
-                = new Point3D(87.3, 11.5, -590 - bodyLength);
+            LowerSideBackPlane = 
+                new Point3D(-49.470255, -96.493198, -600 - (bodyLength / 2));
+            BackBodyPlane = 
+                new Point3D(0, 0, -600 - bodyLength);
+            BackDeepPlane = 
+                new Point3D(87.3, 11.5, -590 - bodyLength);
+            BaseDroidHeadPlane =
+                new Point3D(-0.2033454, 123.493198 + caseBodySetHeight, 
+                    -632.6372698);
         }
 
         /// <summary>
@@ -90,8 +94,7 @@
         /// <summary>
         /// Координата центра плоскости основания головы робота звездолета.
         /// </summary>
-        public Point3D BaseDroidHeadPlane { get; } = 
-            new Point3D(-0.2033454, 133.493198, -632.6372698);
+        public Point3D BaseDroidHeadPlane;
 
         /// <summary>
         /// Координата центра плоскости задней части корпуса звездолета.

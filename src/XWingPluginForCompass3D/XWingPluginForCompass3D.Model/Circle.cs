@@ -15,7 +15,7 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Радиус круга.
         /// </summary>
-        public double Radius { set; get; }
+        public double Radius { get; set; }
 
         /// <summary>
         /// Параметризованный конструктор.

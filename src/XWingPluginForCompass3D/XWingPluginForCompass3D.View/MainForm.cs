@@ -50,7 +50,9 @@ namespace XWingPluginForCompass3D.View
 	            { XWingParameterType.AcceleratorTurbineLength, 
                     AcceleratorTurbineLengthTextBox },
 	            { XWingParameterType.AcceleratorNozzleLength, 
-                    AcceleratorNozzleLengthTextBox }
+                    AcceleratorNozzleLengthTextBox },
+                { XWingParameterType.CaseBodySetHeight,
+                    CaseBodySetHeightTextBox }
             };
 
             // Добавление всем TextBox события, когда пользователь вводит символ.
@@ -61,6 +63,7 @@ namespace XWingPluginForCompass3D.View
             WeaponBlasterTipLengthTextBox.KeyPress += BanCharacterInput;
             AcceleratorTurbineLengthTextBox.KeyPress += BanCharacterInput;
             AcceleratorNozzleLengthTextBox.KeyPress += BanCharacterInput;
+            CaseBodySetHeightTextBox.KeyPress += BanCharacterInput;
 
             // Добавление всем TextBox события, когда изменятся текст.
 
@@ -70,6 +73,7 @@ namespace XWingPluginForCompass3D.View
             WeaponBlasterTipLengthTextBox.TextChanged += FindError;
             AcceleratorTurbineLengthTextBox.TextChanged += FindError;
             AcceleratorNozzleLengthTextBox.TextChanged += FindError;
+            CaseBodySetHeightTextBox.TextChanged += FindError;
         }
 
         /// <summary>
@@ -94,9 +98,12 @@ namespace XWingPluginForCompass3D.View
                     double.Parse(AcceleratorTurbineLengthTextBox.Text);
                 var acceleratorNozzleLength =
                     double.Parse(AcceleratorNozzleLengthTextBox.Text);
+                var caseBodySetHeight =
+                    double.Parse(CaseBodySetHeightTextBox.Text);
                 _xWing.SetParameters(bodyLength, wingWidth,
                     bowLength, weaponBlasterTipLength,
-                    acceleratorTurbineLength, acceleratorNozzleLength);
+                    acceleratorTurbineLength, acceleratorNozzleLength,
+                    caseBodySetHeight);
 
                 foreach (var keyValue in _xWing.Errors)
                 {
@@ -107,7 +114,6 @@ namespace XWingPluginForCompass3D.View
             {
                 CheckEmptyTextBox();
             }
-
         }
 
         /// <summary>

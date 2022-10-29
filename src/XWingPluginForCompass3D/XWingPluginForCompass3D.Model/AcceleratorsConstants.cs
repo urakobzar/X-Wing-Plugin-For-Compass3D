@@ -25,7 +25,7 @@
         /// после выдавливания.Начальная координата - центр передней
         /// перпендикулярной плоскости правого верхнего крыла.
         /// </summary>
-        public Point3D CurrentPlane { set; get; }
+        public Point3D CurrentPlane { get; set; }
 
         /// <summary>
         /// Координата передней плоскости воздухозаборника звездолета.
@@ -91,7 +91,7 @@
         /// Массив окружностей, используемых для построения турбин ускорителей.
         /// Центр координат окружностей не меняется, меняется только радиус.
         /// </summary>
-        public Circle[,] TurbineCircles { set; get; } =
+        public Circle[,] TurbineCircles { get; set; } =
         {
             {
                 new Circle(new Point2D(109.6678295, 

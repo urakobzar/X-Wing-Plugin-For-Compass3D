@@ -117,14 +117,14 @@
         /// после выдавливания. Начальная координата - центр передней
         /// перпендикулярной плоскости правого верхнего крыла.
         /// </summary>
-        public Point3D CurrentPlane { set; get; }
+        public Point3D CurrentPlane { get; set; }
 
         /// <summary>
         /// Массив окружностей, используемых для построения всех
         /// цилиндров бластеров. Центр координат окружностей не меняется,
         /// меняется только радиус.
         /// </summary>
-        public Circle[,] CurrentBlasterCircles { set; get; } =
+        public Circle[,] CurrentBlasterCircles { get; set; } =
         {
             {
                 new Circle(new Point2D(-617.468507, -180), 25),

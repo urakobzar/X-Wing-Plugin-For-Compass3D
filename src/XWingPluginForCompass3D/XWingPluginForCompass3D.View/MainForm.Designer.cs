@@ -49,6 +49,9 @@ namespace XWingPluginForCompass3D.View
             this.MillimetersLabel4 = new System.Windows.Forms.Label();
             this.MillimetersLabel5 = new System.Windows.Forms.Label();
             this.MillimetersLabel6 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.CaseBodySetHeightLabel = new System.Windows.Forms.Label();
+            this.CaseBodySetHeightTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // AcceleratorNozzleLengthLabel
@@ -175,7 +178,7 @@ namespace XWingPluginForCompass3D.View
             // 
             this.BuildButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BuildButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BuildButton.Location = new System.Drawing.Point(12, 198);
+            this.BuildButton.Location = new System.Drawing.Point(12, 243);
             this.BuildButton.Name = "BuildButton";
             this.BuildButton.Size = new System.Drawing.Size(383, 36);
             this.BuildButton.TabIndex = 26;
@@ -243,12 +246,45 @@ namespace XWingPluginForCompass3D.View
             this.MillimetersLabel6.TabIndex = 44;
             this.MillimetersLabel6.Text = "мм";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(364, 200);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 20);
+            this.label1.TabIndex = 47;
+            this.label1.Text = "мм";
+            // 
+            // CaseBodySetHeightLabel
+            // 
+            this.CaseBodySetHeightLabel.AutoSize = true;
+            this.CaseBodySetHeightLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CaseBodySetHeightLabel.Location = new System.Drawing.Point(12, 200);
+            this.CaseBodySetHeightLabel.Name = "CaseBodySetHeightLabel";
+            this.CaseBodySetHeightLabel.Size = new System.Drawing.Size(223, 40);
+            this.CaseBodySetHeightLabel.TabIndex = 46;
+            this.CaseBodySetHeightLabel.Text = "Высота установок крыши\r\nкорпуса\r\n";
+            // 
+            // CaseBodySetHeightTextBox
+            // 
+            this.CaseBodySetHeightTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CaseBodySetHeightTextBox.Location = new System.Drawing.Point(258, 197);
+            this.CaseBodySetHeightTextBox.MaxLength = 10;
+            this.CaseBodySetHeightTextBox.Name = "CaseBodySetHeightTextBox";
+            this.CaseBodySetHeightTextBox.Size = new System.Drawing.Size(100, 26);
+            this.CaseBodySetHeightTextBox.TabIndex = 45;
+            this.CaseBodySetHeightTextBox.Text = "10";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(409, 243);
+            this.ClientSize = new System.Drawing.Size(409, 284);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CaseBodySetHeightLabel);
+            this.Controls.Add(this.CaseBodySetHeightTextBox);
             this.Controls.Add(this.MillimetersLabel6);
             this.Controls.Add(this.MillimetersLabel5);
             this.Controls.Add(this.MillimetersLabel4);
@@ -269,7 +305,8 @@ namespace XWingPluginForCompass3D.View
             this.Controls.Add(this.BodyLengthTextBox);
             this.Controls.Add(this.BuildButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(425, 282);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(425, 323);
             this.MinimumSize = new System.Drawing.Size(425, 282);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -300,6 +337,9 @@ namespace XWingPluginForCompass3D.View
         private System.Windows.Forms.Label MillimetersLabel4;
         private System.Windows.Forms.Label MillimetersLabel5;
         private System.Windows.Forms.Label MillimetersLabel6;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label CaseBodySetHeightLabel;
+        private System.Windows.Forms.TextBox CaseBodySetHeightTextBox;
     }
 }
 

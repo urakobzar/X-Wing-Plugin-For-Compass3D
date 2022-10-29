@@ -15,8 +15,8 @@ namespace XWingPluginForCompass3D.Model
         /// <param name="startPoint">Начальная точка дуги.</param>
         /// <param name="endPoint">Конечная точка дуги.</param>
         /// <param name="direction">Направление обхода.</param>
-        public Arc (Point2D center, double radius, Point2D startPoint, Point2D endPoint,
-            short direction): base(center, radius)
+        public Arc (Point2D center, double radius, Point2D startPoint, 
+            Point2D endPoint, short direction): base(center, radius)
         {
             StartPoint = startPoint;
             EndPoint = endPoint;
@@ -26,17 +26,17 @@ namespace XWingPluginForCompass3D.Model
         /// <summary>
         /// Начальная точка дуги.
         /// </summary>
-        public Point2D StartPoint { set; get; }
+        public Point2D StartPoint { get; set; }
 
         /// <summary>
         /// Конечная точка дуги.
         /// </summary>
-        public Point2D EndPoint { set; get; }
+        public Point2D EndPoint { get; set; }
 
         /// <summary>
         /// Направление дуги.
         /// </summary>
-        public short Direction { set; get; }
+        public short Direction { get; set; }
 
         /// <summary>
         /// Проверка на равенство объектов класса.

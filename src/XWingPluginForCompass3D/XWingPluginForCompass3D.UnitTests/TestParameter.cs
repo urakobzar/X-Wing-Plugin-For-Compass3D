@@ -25,7 +25,7 @@ namespace XWingPluginForCompass3D.UnitTests
         }
 
         /// <summary>
-        /// Негативный тест геттера Value, когда Value < MinValue.
+        /// Негативный тест геттера Value, когда Value < MinValue. />
         /// </summary>
         [Test(Description = "Негативный тест геттера Value, когда Value < MinValue.")]
         public void TestValueMixValueGet_IncorrectValue()

@@ -17,10 +17,15 @@ namespace XWingPluginForCompass3D.UnitTests
         private const int BodyLength = 300;
 
         /// <summary>
+        /// Высота установок крыши корпуса.
+        /// </summary>
+        private const int CaseBodySetHeight = 10;
+
+        /// <summary>
         /// Объект класса констант для построения корпуса.
         /// </summary>
         private static readonly BodyConstants Constants =
-            new BodyConstants(BodyLength);
+            new BodyConstants(BodyLength, CaseBodySetHeight);
 
         /// <summary>
         /// Объект класса для проверки равенства массивов созданных классов.
@@ -380,7 +385,7 @@ namespace XWingPluginForCompass3D.UnitTests
             Point3DTypes.UpperBodyPartFacePlane)]
         [TestCase(0, 123.493198, -660,
             Point3DTypes.DeepBodyPartFacePlane)]
-        [TestCase(-0.2033454, 133.493198, -632.6372698,
+        [TestCase(-0.2033454, 123.493198 + CaseBodySetHeight, -632.6372698,
             Point3DTypes.BaseDroidHeadPlane)]
         [TestCase(0, 0, -600 - BodyLength,
             Point3DTypes.BackBodyPlane)]

@@ -52,6 +52,9 @@ namespace XWingPluginForCompass3D.UnitTests
                 { XWingParameterType.AcceleratorNozzleLength,
                     new Parameter(50, 50, 100,"Длина сопла ускорителя",
                         XWingParameterType.AcceleratorNozzleLength, _xWing.Errors)},
+                { XWingParameterType.CaseBodySetHeight,
+                    new Parameter(10, 10, 20,"Высота установок крыши корпуса",
+                        XWingParameterType.CaseBodySetHeight, _xWing.Errors)}
             };
             var actual = _xWing.Parameters;
             Assert.AreEqual(expected, actual);
@@ -71,8 +74,9 @@ namespace XWingPluginForCompass3D.UnitTests
             const double weaponBlasterTipLength = 80;
             const double acceleratorTurbineLength = 150;
             const double acceleratorNozzleLength = 50;
+            const double caseBodySetHeight = 10;
             _xWing.SetParameters(bodyLength, wingWidth, bowLength, weaponBlasterTipLength, 
-                acceleratorTurbineLength, acceleratorNozzleLength);
+                acceleratorTurbineLength, acceleratorNozzleLength, caseBodySetHeight);
             var actual = _xWing.Errors.Count;
             Assert.AreEqual(expected, actual);
         }
