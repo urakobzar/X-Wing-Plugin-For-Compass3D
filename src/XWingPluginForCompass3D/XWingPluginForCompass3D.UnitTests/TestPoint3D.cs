@@ -20,5 +20,16 @@ namespace XWingPluginForCompass3D.UnitTests
             var actual = point3D.Z;
             Assert.AreEqual(value,actual);
         }
+
+        /// <summary>
+        /// Позитивный тест метода Equals.
+        /// </summary>
+        [Test(Description = "Позитивный тест метода Equals.")]
+        public void TestEquals_CorrectValue()
+        {
+            var expected = new Point3D(0, 0, 0);
+            var actual = new Point3D(0, 0, 0);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

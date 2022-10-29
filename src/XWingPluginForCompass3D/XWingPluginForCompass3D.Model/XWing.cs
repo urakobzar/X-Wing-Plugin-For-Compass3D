@@ -14,38 +14,38 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         public Dictionary<XWingParameterType, Parameter> Parameters { set; get; }
 
-        // TODO: Errors
+        // TODO: Errors     ИСПРАВИЛ
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>
-        public Dictionary<XWingParameterType, string> ErrorList { set; get; }
+        public Dictionary<XWingParameterType, string> Errors { set; get; }
 
         /// <summary>
         /// Создает объект класса звездолета для построения.
         /// </summary>
         public XWing()
         {
-            ErrorList = new Dictionary<XWingParameterType, string>();
+            Errors = new Dictionary<XWingParameterType, string>();
             Parameters = new Dictionary<XWingParameterType, Parameter>()
             {
                 { XWingParameterType.BodyLength, 
                     new Parameter(300, 300, 400,"Длина корпуса",
-                    XWingParameterType.BodyLength, ErrorList)},
+                    XWingParameterType.BodyLength, Errors)},
                 { XWingParameterType.WingWidth, 
                     new Parameter(300, 300, 400,"Ширина крыльев",
-                    XWingParameterType.WingWidth, ErrorList)},
+                    XWingParameterType.WingWidth, Errors)},
                 { XWingParameterType.BowLength, 
                     new Parameter(50, 50, 100,"Длина носовой части корпуса",
-                    XWingParameterType.BowLength, ErrorList)},
+                    XWingParameterType.BowLength, Errors)},
                 { XWingParameterType.WeaponBlasterTipLength,
                     new Parameter(80, 80, 130,"Длина острия бластера",
-                        XWingParameterType.WeaponBlasterTipLength, ErrorList)},
+                        XWingParameterType.WeaponBlasterTipLength, Errors)},
                 { XWingParameterType.AcceleratorTurbineLength,
                     new Parameter(150, 150, 250,"Длина турбины",
-                        XWingParameterType.AcceleratorTurbineLength, ErrorList)},
+                        XWingParameterType.AcceleratorTurbineLength, Errors)},
                 { XWingParameterType.AcceleratorNozzleLength,
                     new Parameter(50, 50, 100,"Длина сопла ускорителя",
-                        XWingParameterType.AcceleratorNozzleLength, ErrorList)},
+                        XWingParameterType.AcceleratorNozzleLength, Errors)},
             };
         }
 
@@ -62,15 +62,18 @@ namespace XWingPluginForCompass3D.Model
             double weaponBlasterTipLength, double acceleratorTurbineLength,
             double acceleratorNozzleLength)
         {
-            ErrorList.Clear();
+            Errors.Clear();
             Parameters[XWingParameterType.BodyLength].Value = bodyLength;
             CheckParametersRelationship(bodyLength, wingWidth + 20,
                 XWingParameterType.WingWidth,
                 "Ширина крыльев должна быть не меньше длины корпуса более, " +
                 "чем на 20 мм.");
-            CheckParametersRelationship(wingWidth, bodyLength,
-                XWingParameterType.WingWidth,
-                "Ширина крыльев не может быть больше длины корпуса.");
+            if (!Errors.ContainsKey(XWingParameterType.WingWidth))
+            {
+                CheckParametersRelationship(wingWidth, bodyLength,
+                    XWingParameterType.WingWidth,
+                    "Ширина крыльев не может быть больше длины корпуса.");
+            }
             CheckParametersRelationship(bowLength, weaponBlasterTipLength, 
                 XWingParameterType.BowLength, 
                 "Длина носа не может быть больше, чем длина острия.");
@@ -99,7 +102,7 @@ namespace XWingPluginForCompass3D.Model
         {
             if (value > mainParameter)
             {
-                ErrorList.Add(parameterType, errorMessage);
+                Errors.Add(parameterType, errorMessage);
             }
             else
             {

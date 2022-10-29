@@ -32,5 +32,16 @@ namespace XWingPluginForCompass3D.UnitTests
             var actual = circle.Radius;
             Assert.AreEqual(value, actual);
         }
+
+        /// <summary>
+        /// Позитивный тест метода Equals.
+        /// </summary>
+        [Test(Description = "Позитивный тест метода Equals.")]
+        public void TestEquals_CorrectValue()
+        {
+            var expected = new Circle(new Point2D(0, 0), 5);
+            var actual = new Circle(new Point2D(0, 0), 5);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
