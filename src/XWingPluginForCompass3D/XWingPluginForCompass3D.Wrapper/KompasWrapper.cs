@@ -14,19 +14,16 @@ namespace XWingPluginForCompass3D.Wrapper
         /// <summary>
         /// Объект Компас API.
         /// </summary>
-        // TODO: приватное поле ИСПРАВИЛ
         private KompasObject _kompas;
 
         /// <summary>
         /// Деталь.
         /// </summary>
-        // TODO: приватное поле ИСПРАВИЛ
         private ksPart _part;
 
         /// <summary>
         /// Документ-модель.
         /// </summary>
-        // TODO: приватное поле ИСПРАВИЛ
         private ksDocument3D _document;
 
         /// <summary>

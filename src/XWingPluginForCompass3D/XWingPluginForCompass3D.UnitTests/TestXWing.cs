@@ -66,7 +66,6 @@ namespace XWingPluginForCompass3D.UnitTests
         [Test(Description = "Позитивный и негативный тест сеттера Parameters.")]
         [TestCase(300,0, Description = "Позитивный тест сеттера Parameters.")]
         [TestCase(400, 1, Description = "Негативный тест сеттера Parameters.")]
-        // TODO: дубль  ИСПРАВИЛ
         public void TestParametersSet_CorrectValue(double bodyLength, int expected)
         {
             const double wingWidth = 300;

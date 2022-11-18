@@ -16,20 +16,17 @@ namespace XWingPluginForCompass3D.View
         /// <summary>
         /// Объект класса построения детали.
         /// </summary>
-        // TODO: заменить на поля   ИСПРАВИЛ
         private readonly XWingBuilder _xWingBuilder;
 
         /// <summary>
         /// Словарь Тип параметра-TextBox.
         /// </summary>
-        // TODO: заменить на поля   ИСПРАВИЛ
         private readonly Dictionary<XWingParameterType, TextBox> 
             _parameterToTextBox;
 
         /// <summary>
         /// Объект параметров X-Wing.
         /// </summary>
-        // TODO: заменить на поля   ИСПРАВИЛ
         private readonly XWing _xWing;
 
         /// <summary>
@@ -173,7 +170,6 @@ namespace XWingPluginForCompass3D.View
         private bool CheckEmptyTextBox()
         {
             var counter = 0;
-	        // TODO: string.Empty   ИСПРАВИЛ
 			foreach (var keyValue in _parameterToTextBox.Where
                          (keyValue => keyValue.Value.Text == string.Empty))
             {

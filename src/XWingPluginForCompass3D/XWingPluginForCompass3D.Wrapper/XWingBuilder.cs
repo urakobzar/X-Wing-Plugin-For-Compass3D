@@ -55,7 +55,6 @@ namespace XWingPluginForCompass3D.Wrapper
         {
             // Объект класса констант для построения носовой части детали.            
             var constants = new BowBodyConstants(bowLength);
-            // TODO: в локальную переменную, где это нужно  ИСПРАВИЛ
             // Выдавливание основы носовой части корпуса
             var sketch = 
                 _wrapper.BuildPolygonByDefaultPlane(_wrapper.DefaultPlaneXoY,

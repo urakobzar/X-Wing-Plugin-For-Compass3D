@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// TODO: Проверять корректность значений при вводе значения параметров, ИСПРАВИЛ
-// а не после нажатия на кнопку "Построить"
 namespace XWingPluginForCompass3D.Model
 {
     /// <summary>
@@ -24,14 +22,12 @@ namespace XWingPluginForCompass3D.Model
         /// Максимальное допустимое значение параметра.
         /// </summary>
         private readonly int _maxValue;
-
-        // TODO: убрать свойство    ИСПРАВИЛ
+        
         /// <summary>
         /// Сообщение о несоблюдении границы минимума.
         /// </summary>
         private readonly string _minErrorMessage;
-
-        // TODO: убрать свойство    ИСПРАВИЛ
+        
         /// <summary>
         /// Сообщение о несоблюдении границы максимума.
         /// </summary>
@@ -42,7 +38,6 @@ namespace XWingPluginForCompass3D.Model
         /// </summary>
         private readonly XWingParameterType _parameterType;
         
-        // TODO: Errors     ИСПРАВИЛ
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>

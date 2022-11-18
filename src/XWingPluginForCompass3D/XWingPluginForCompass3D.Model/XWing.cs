@@ -12,8 +12,7 @@ namespace XWingPluginForCompass3D.Model
         /// значение: соответствующий параметр.
         /// </summary>
         public Dictionary<XWingParameterType, Parameter> Parameters { get; set; }
-
-        // TODO: Errors     ИСПРАВИЛ
+        
         /// <summary>
         /// Список ошибок введенного параметра.
         /// </summary>
